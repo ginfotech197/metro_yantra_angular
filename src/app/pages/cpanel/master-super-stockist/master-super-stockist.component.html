@@ -1,0 +1,312 @@
+<div style="text-align: center;"><h1>Super Stockist</h1></div>
+
+<!-- <div [ngStyle]="{'background-color': (screenWidth>=1280 ) ? 'red' : 'yellow'}">test</div> -->
+
+<mat-tab-group class="ml-5" [selectedIndex]="selectedTab">
+  <mat-tab label="Create">
+    <!--    first tab-->
+
+    <div class=" flex-row ">
+      <div [ngClass]="screenWidth >= 1280 ? 'col-6' : 'col-10'" >
+        <!-- <div [ngClass]="screenWidth >= 1280 ? 'col-6' : 'col-10'" class="col-6"> -->
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}">New Super Stockist Form</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="50px" fxLayoutGap.xs="0">
+              <!-- <div [attr.fxFlex]="screenWidth >= 1280 ? 45 : 100" > -->
+                <div  fxFlex="100">
+                <form [formGroup]="superStockistMasterForm">
+                  <div class="" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}">Super Stockist Name</mat-label>
+                      <input type="text" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}" matInput formControlName="userName" placeholder="Enter name">
+
+                      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="!superStockistMasterForm.get('userName').valid && superStockistMasterForm.get('userName').touched">
+                        <mat-error *ngIf="superStockistMasterForm.get('userName').errors['required']">This field is Required</mat-error>
+                        <mat-error *ngIf="superStockistMasterForm.get('userName').errors['minlength']">Minimum length of name is {{superStockistMasterForm.get('userName').errors.minlength.requiredLength}}</mat-error>
+                      </div>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="100">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}">PASSWORD</mat-label>
+                      <input type="text" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}" matInput formControlName="pin" placeholder="Enter name" (change)="checkPinValidation()">
+                    </mat-form-field>
+                  </div>
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <div class="col-10 m-0 p-0">
+                      <mat-form-field fxFlex="col 100">
+                        <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}">Commission</mat-label>
+                        <input type="text" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}" matInput formControlName="commission" placeholder="Commission">
+                      </mat-form-field>
+                    </div>
+                    <!-- <label style="color: red">(Max: 100)</label> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <button class="pull-right" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}" mat-raised-button color="primary"mat-stroked-button (click)="createNewSuperStockist()">Create</button>
+              <!-- <button class="pull-right" mat-raised-button color="primary"mat-stroked-button (click)="createNewSuperStockist()" [disabled]="!superStockistMasterForm.valid || isSuperStockistUpdateAble || pinCheckValidator">Create</button> -->
+              <button class="pull-right" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}" mat-raised-button color="primary"mat-stroked-button (click)="updateSuperStockist()" [disabled]="!isSuperStockistUpdateAble">Update</button>
+              <button class="pull-right" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px'}" mat-raised-button color="warn" mat-stroked-button (click)="clearMasterSuperStockistForm()">clear</button>
+            </div>
+
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="mt-2 col-12" style="background-color: #6c757d5e">
+
+        <table [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '20px'}" matSort class="table table-bordered table-sm" style="border: none !important; color: white;">
+          <thead>
+          <tr>
+            <th scope="colgroup" colspan="5" class="text-center">Super Stockist List</th>
+            <th scope="colgroup" colspan="2" class="text-center">
+              <label>Search</label>
+              <input class="col-12" [(ngModel)]="searchItem" placeholder="Search">
+            </th>
+            <th scope="colgroup" colspan="4" class="text-center"><button mat-button color="primary" (click)="refreshSuperStockistList()"> Refresh <span class="material-icons">refresh</span> </button></th>
+          </tr>
+          <tr>
+            <th >Id</th>
+            <th mat-sort-header="userName">SS name</th>
+            <th mat-sort-header="pin">Pass</th>
+            <th mat-sort-header="balance">Bal</th>
+            <th mat-sort-header="balance">Comm</th>
+            <th>Action</th>
+
+            <th mat-sort-header="stockistName">Blocked</th>
+            <th mat-sort-header="edit">Edit</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr [ngStyle]="getBackgroundColor(indexOfElement)" *ngFor="let superStockist of superStockists | filter: searchItem | paginate: { itemsPerPage: itemsOnEveryPage, currentPage: p1 };let indexOfElement=index">
+            <td>{{(indexOfElement+1)}}</td>
+            <td>{{superStockist.userName}}</td>
+            <td>{{superStockist.password}}</td>
+            <td>{{superStockist.balance}}</td>
+            <td>{{superStockist.commission}}</td>
+            <td>
+              <a style="cursor: pointer"><img src="assets/images/transfer_point.png"
+                (click)="onTerminalSelectTransferPoint(superStockist.userId); selectedTab = 1"></a>
+              <a style="cursor: pointer"><img src="assets/images/adjust_point.png"
+                (click)="onTerminalSelect(superStockist.userId); selectedTab = 2"></a>
+            </td>
+            <td><input type="checkbox" [checked]="superStockist.blocked == 1" (click)="updateBlock(superStockist.userId)"></td>
+            <td><i class="bi bi-pencil-square" (click)="editStockist(superStockist)"></i></td>
+          </tr>
+          </tbody>
+
+        </table>
+        <pagination-controls (pageChange)="p1 = $event"></pagination-controls>
+
+
+
+      </div>
+    </div>
+
+  </mat-tab>
+
+  <!--second tab-->
+  <mat-tab label="Transfer Point">
+    <div class="d-flex flex-row mt-2">
+      <!-- <div class="col-2"></div> -->
+      <div class="col-10">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Recharge  Super Stockist</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="25">
+                <form [formGroup]="superStockistLimitForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Super Stockist</mat-label>
+                      <mat-select  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}" (selectionChange)="onSuperStockistSelectTransferPoint($event)" formControlName="beneficiaryUid">
+                        <mat-option *ngFor="let stockist of superStockists" [value]="stockist.userId" >
+                          {{stockist.pin}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedSuperStockistTransferPoint">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Name</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}" [value]="selectedSuperStockistTransferPoint.userName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedSuperStockistTransferPoint">
+                      <mat-label  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Current balance</mat-label>
+                      <input type="text" readonly matInput [value]="selectedSuperStockistTransferPoint.balance"  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field class="d-flex" fxFlex="100">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Recharge amount</mat-label>
+                      <input type="text" matInput formControlName="amount"  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}"  placeholder="Enter amount">
+                      <mat-icon matSuffix> money</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="legacy" *ngIf="selectedSuperStockistTransferPoint" class="ml-5 pl-5">
+                      <mat-label  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">User balance</mat-label>
+                      <input type="text" readonly matInput [value]="user.balance"  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <button class="pull-right" mat-raised-button color="warn" mat-stroked-button  (click)="rechargeToSuperStockist()"  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Adjust Point">
+    <div class="d-flex flex-row mt-2">
+      <!-- <div class="col-2"></div> -->
+      <div class="col-10">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Adjust point</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="25">
+                <form [formGroup]="superStockistAdjustForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Super Stockist</mat-label>
+                      <mat-select (selectionChange)="onSuperStockistSelect($event)" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}" formControlName="beneficiaryUid">
+                        <mat-option *ngFor="let stockist of superStockists" [value]="stockist.userId">
+                          {{stockist.pin}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedSuperStockist">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Name</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}" [value]="selectedSuperStockist.userName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedSuperStockist">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Current balance</mat-label>
+                      <input type="text" readonly matInput [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}" [value]="selectedSuperStockist.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field class="d-flex" fxFlex="100">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Recharge amount</mat-label>
+                      <input type="text" matInput formControlName="amount" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}"  placeholder="Enter amount">
+                      <mat-icon matSuffix> money</mat-icon>
+                      <!-- <mat-error *ngIf="superStockistAdjustForm.get('amount').hasError('max')">
+                        Amount should not exceed {{superStockistAdjustForm.controls.amount.errors.max.max}}
+                      </mat-error> -->
+                    </mat-form-field>
+                    <mat-form-field appearance="legacy" *ngIf="selectedSuperStockist" class="ml-5 pl-5">
+                      <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">User balance</mat-label>
+                      <input type="text" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}" readonly matInput [value]="user.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <button class="pull-right" mat-raised-button color="warn" mat-stroked-button [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}"  (click)="adjustPointToSuperStockist()">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+    <!-- <pre>{{superStockistAdjustForm.value | json}}</pre> -->
+  </mat-tab>
+
+  <mat-tab label="Transaction Report">
+    <div class="d-flex flex-row mt-2">
+      <!-- <div class="col-2"></div> -->
+      <div class="col-8">
+<!--        <pre>{{superStockists | json}}</pre>-->
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Super Stockist Transaction Report</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="60">
+
+                <div fxFlex="100">
+                  <ng-select [items]="superStockists"
+                             bindLabel="pin"
+                             bindValue="userId"
+                             [(ngModel)]="rechargedToID">
+                  </ng-select>
+                </div>
+
+              </div>
+            </div>
+            <button class="ml-4" mat-raised-button color="warn" (click)="getTransaction()">Search</button>
+          </mat-card-content>
+
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+
+    <div class="mt-2" style="background-color: #6c757d5e" >
+      <table matSort  class="table table-bordered table-sm" style="border: none !important; color: white;">
+        <thead>
+        <tr>
+          <th scope="colgroup" colspan="7" class="text-center">Transaction List</th>
+        </tr>
+        <tr>
+          <th >Sl No.</th>
+          <th mat-sort-header="terminalName">Recharge To</th>
+          <th mat-sort-header="pin">Recharge By</th>
+          <th mat-sort-header="balance">Old Amount</th>
+          <th mat-sort-header="balance">Recharged Amount</th>
+          <th mat-sort-header="stockistName">New Amount</th>
+          <th mat-sort-header="stockistName">Date and Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of transactionData; let i = index ">
+          <td >{{i+1}}</td>
+          <td >{{data.rechargedTo.userName}}</td>
+          <td >{{data.rechargedby.userName}}</td>
+          <td >{{data.oldAmount}}</td>
+          <td >{{data.rechargedAmount}}</td>
+          <td >{{data.newAmount}}</td>
+          <td >{{data.dateAndTime}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-tab>
+
+
+
+
+</mat-tab-group>

@@ -1,0 +1,49 @@
+
+<div class="col-6">
+  Welcome to {{user.userName}}
+</div>
+
+<div class="d-flex ml-3">
+  <div class="col-2" style="background-color: rgb(107, 205, 247); border-radius: 5px; color: aliceblue;">
+    <div> Current time <br>
+      <h4>{{currentTime}}</h4>
+    </div>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<div class="mt-2 col-6">
+  <!-- <table class="table table-bordered table-danger text-center col-8">
+    <thead>
+      <tr>
+        <th scope="row">Online</th>
+        <td colspan="3">{{gameData[6].online}} </td>
+      </tr>
+    </thead>
+    <thead>
+      <tr>
+        <th>Game Data</th>
+        <th>Total Bet</th>
+        <th>Total Win</th>
+        <th>Profit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of gameData.slice(0,-1)">
+        <td>{{data.game_name}}</td>
+        <td>{{data.total_bet}}</td>
+        <td>{{data.total_win}}</td>
+        <td>{{data.profit}}</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>{{grandBet}}</td>
+        <td>{{grandWin}}</td>
+        <td>{{grandProfit}}</td>
+      </tr>
+    </tbody>
+  </table> -->
+</div>
+<div class="p-2 bd-highlight">
+  <router-outlet></router-outlet>
+</div>

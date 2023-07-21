@@ -1,0 +1,333 @@
+<!--<p>master-stockist works!</p>-->
+<!--<p>master-stockist works!</p>-->
+<!--<p>master-stockist works!</p>-->
+<!--<p>master-stockist works!</p>-->
+<!--<p>master-stockist works!</p>-->
+<!--<p>master-stockist works!</p>-->
+<!--<p>master-stockist works!</p>-->
+<!--<p>master-stockist works!</p>-->
+<marquee behavior="" class="blink" direction="" style="color: red !important;">Reports available only for last 30 days</marquee>
+
+<div style="text-align: center;"><h1>Stockist</h1></div>
+<mat-tab-group [selectedIndex]="selectedTab">
+  <mat-tab label="stockist">
+    <!--    first tab-->
+
+    <div class=" flex-row mt-2">
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>New Stockist Form</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100">
+                <form [formGroup]="stockistMasterForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Stockist Name</mat-label>
+                      <input type="text" matInput formControlName="userName" placeholder="Enter name" (change)="checkPinValidation()">
+
+                      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="!stockistMasterForm.get('userName').valid && stockistMasterForm.get('userName').touched">
+                        <mat-error *ngIf="stockistMasterForm.get('userName').errors['required']">This field is Required</mat-error>
+                        <mat-error *ngIf="stockistMasterForm.get('userName').errors['minlength']">Minimum length of name is {{stockistMasterForm.get('userName').errors.minlength.requiredLength}}</mat-error>
+                      </div>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="100">
+                      <mat-label>PIN</mat-label>
+                      <input type="text" matInput formControlName="pin" placeholder="Enter name">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Super Stockist</mat-label>
+                      <mat-select formControlName="superStockistId" disabled>
+                        <mat-option *ngFor="let superStockist of superStockists" [value]="superStockist.userId">
+                          {{superStockist.userName}} ({{superStockist.commission}}%)
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <div class="col-10 m-0 p-0">
+                      <mat-form-field fxFlex="100">
+                        <mat-label>Commission</mat-label>
+                        <input type="text" matInput formControlName="commission" placeholder="Commission">
+                      </mat-form-field>
+                    </div>
+                    <label style="color: red">(Max: {{user.commission}})</label>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <button class="pull-right" mat-raised-button color="primary"mat-stroked-button (click)="createNewStockist()" [disabled]="!stockistMasterForm.valid || isStockistUpdatAble || pinCheckValidator">Create</button>
+              <button class="pull-right" mat-raised-button color="primary"mat-stroked-button (click)="updateStockist()" [disabled]="!isStockistUpdatAble">Update</button>
+              <button class="pull-right" mat-raised-button color="warn" mat-stroked-button (click)="clearMasterStockistForm()">clear</button>
+            </div>
+
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-12 mt-2" style="background-color: #6c757d5e">
+
+        <table matSort class="table table-bordered table-sm" style="border: none !important; color: white;">
+          <thead>
+          <tr>
+            <th scope="colgroup" colspan="5" class="text-center">Stockist List</th>
+            <th scope="colgroup" colspan="4" class="text-center"><button mat-button color="primary" (click)="refreshStockistList()"> Refresh <span class="material-icons">refresh</span> </button></th>
+
+          </tr>
+          <tr>
+            <th >Id</th>
+            <th mat-sort-header="userName">Stockist name</th>
+            <th mat-sort-header="pin">Pin</th>
+            <th mat-sort-header="balance">Balance</th>
+            <th mat-sort-header="balance">Commission</th>
+            <th>Action</th>
+
+            <th mat-sort-header="balance">Super Stockist Name</th>
+            <th mat-sort-header="stockistName">Blocked</th>
+            <th mat-sort-header="edit">Edit</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr [ngStyle]="getBackgroundColor(indexOfElement)" *ngFor="let stockist of sortedStockistList;let indexOfElement=index">
+            <td>{{(indexOfElement+1)}}</td>
+            <td>{{stockist.userName}}</td>
+            <td>{{stockist.password}}</td>
+            <td>{{stockist.balance}}</td>
+            <td>{{stockist.commission}}</td>
+            <td>
+              <a style="cursor: pointer"><img src="assets/images/transfer_point.png"
+                  (click)="onStockistSelection(stockist.userId); selectedTab = 1"></a>
+              <a style="cursor: pointer"><img src="assets/images/adjust_point.png"
+                  (click)="onStockistSelectionAdjustPoint(stockist.userId); selectedTab = 2"></a>
+            </td>
+            <td>{{stockist.superStockistName}}</td>
+            <td><input type="checkbox" [checked]="stockist.blocked" (click)="updateBlock(stockist.userId)"></td>
+            <td><i class="bi bi-pencil-square" (click)="editStockist(stockist)"></i></td>
+          </tr>
+          </tbody>
+
+        </table>
+        <!-- <pagination-controls (pageChange)="p1 = $event"></pagination-controls> -->
+
+      </div>
+    </div>
+
+  </mat-tab>
+
+  <!--second tab-->
+  <mat-tab label="Transfer Point">
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Recharge Stockist</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="25">
+                <form [formGroup]="stockistLimitForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Stockist</mat-label>
+                      <mat-select (selectionChange)="onStockistSelectAdjustPoint($event)" formControlName="beneficiaryUid">
+                        <mat-option *ngFor="let stockist of sortedStockistList" [value]="stockist.userId">
+                          {{stockist.pin}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedStockistTransferPoint">
+                      <mat-label>Name</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [value]="selectedStockistTransferPoint.userName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedStockistTransferPoint">
+                      <mat-label>Current balance</mat-label>
+                      <input type="text" readonly matInput [value]="selectedStockistTransferPoint.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field class="d-flex" fxFlex="100">
+                      <mat-label>Recharge amount</mat-label>
+                      <input type="number" min="1" matInput formControlName="amount"  placeholder="Enter amount">
+                      <mat-icon matSuffix> money</mat-icon>
+                      <!-- <mat-error *ngIf="stockistLimitForm.get('amount').hasError('max')">
+                        Amount should not exceed {{stockistLimitForm.controls.amount.errors.max.max}}
+                      </mat-error> -->
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedStockistTransferPoint" class="ml-5">
+                      <mat-label>User balance</mat-label>
+                      <input type="text" readonly matInput [value]="user.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <button class="pull-right" mat-raised-button color="warn" mat-stroked-button  (click)="rechargeToStockist()">Save</button>
+                    <!-- <button class="pull-right" mat-raised-button color="warn" mat-stroked-button [disabled]="!stockistLimitForm.valid" (click)="rechargeToStockist()">Save</button> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Adjust Point">
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Adjust Point</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="25">
+                <form [formGroup]="stockistAdjustForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Stockist</mat-label>
+                      <mat-select (selectionChange)="onStockistSelect($event)" formControlName="beneficiaryUid">
+                        <mat-option *ngFor="let stockist of sortedStockistList" [value]="stockist.userId">
+                          {{stockist.pin}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedStockist">
+                      <mat-label>Name</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [value]="selectedStockist.userName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedStockist">
+                      <mat-label>Current balance</mat-label>
+                      <input type="text" readonly matInput [value]="selectedStockist.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <!-- <mat-form-field class="d-flex" fxFlex="100">
+                      <mat-label>Recharge amount</mat-label>
+                      <input type="number" min="1" matInput formControlName="amount"  placeholder="Enter amount">
+                      <mat-icon matSuffix> money</mat-icon>
+                    </mat-form-field> -->
+
+                    <mat-form-field class="d-flex" fxFlex="100">
+                      <mat-label>Recharge amount</mat-label>
+                      <input type="number" min="1" matInput formControlName="amount"  placeholder="Enter amount">
+                      <mat-icon matSuffix> money</mat-icon>
+                      <!-- <mat-error *ngIf="stockistAdjustForm.get('amount').hasError('max')">
+                        Amount should not exceed {{stockistAdjustForm.controls.amount.errors.max.max}}
+                      </mat-error> -->
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedStockist" class="ml-5">
+                      <mat-label>User balance</mat-label>
+                      <input type="text" readonly matInput [value]="user.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <button class="pull-right" mat-raised-button color="warn" mat-stroked-button  (click)="adjustPointToStockist()">Save</button>
+                    <!-- <button class="pull-right" mat-raised-button color="warn" mat-stroked-button [disabled]="!stockistAdjustForm.valid" (click)="adjustPointToStockist()">Save</button> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+
+    <!-- <pre>{{stockistAdjustForm.value | json}}</pre> -->
+  </mat-tab>
+
+  <!--third tab-->
+  <mat-tab label="Tranaction Report">
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Stockist Tranaction Report  </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="60">
+                <ng-select [items]="sortedStockistList"
+                           bindLabel="pin"
+                           bindValue="userId"
+                           [(ngModel)]="rechargedToID">
+                </ng-select>
+              </div>
+            </div>
+            <button class="ml-4" mat-raised-button color="warn" (click)="getTransaction()">Search</button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+    <div class="mt-2" style="background-color: #6c757d5e">
+
+      <table matSort  class="table table-bordered table-sm" style="border: none !important; color: white;">
+        <thead>
+        <tr>
+          <th scope="colgroup" colspan="7" class="text-center">Transaction List</th>
+        </tr>
+        <tr>
+          <th >Sl No.</th>
+          <th mat-sort-header="terminalName">Recharge To</th>
+          <th mat-sort-header="pin">Recharge By</th>
+          <th mat-sort-header="balance">Old Amount</th>
+          <th mat-sort-header="balance">Recharged Amount</th>
+          <th mat-sort-header="stockistName">New Amount</th>
+          <th mat-sort-header="stockistName">Date and Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of transactionData; let i = index ">
+          <td >{{i+1}}</td>
+          <td >{{data.rechargedTo.userName}}</td>
+          <td >{{data.rechargedby.userName}}</td>
+          <td >{{data.oldAmount}}</td>
+          <td >{{data.rechargedAmount}}</td>
+          <td >{{data.newAmount}}</td>
+          <td >{{data.dateAndTime}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+  </mat-tab>
+</mat-tab-group>

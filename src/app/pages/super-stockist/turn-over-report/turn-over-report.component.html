@@ -1,0 +1,167 @@
+<!-- <p>turn-over-report works!</p> -->
+<marquee behavior="" class="blink" direction="" style="color: rgb(255, 255, 255) !important;"  *ngIf="superStockistTurnOverReportEnabled">Reports available only for last 30 days</marquee>
+
+<div class="pt-1 d-flex">
+    <div class="col">
+        <mat-form-field appearance="fill">
+            <mat-label>Start date</mat-label>
+            <input matInput [max]="maxDate" [min]="minDate" [matDatepicker]="picker" [(ngModel)]="StartDateFilter">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker [(ngModel)]="StartDateFilter"></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field appearance="fill">
+            <mat-label>End date</mat-label>
+            <input matInput [max]="maxDate" [min]="minDate" [matDatepicker]="picker1" [(ngModel)]="EndDateFilter">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 [(ngModel)]="EndDateFilter"></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <button mat-button color="accent" style="font-size: 20px;" (click)="searchTurnOverReport()">Search</button>
+</div>
+
+<div>
+    <button mat-button [hidden]="superStockistTurnOverReportEnabled" (click)="revertBack()"><span
+            class="material-icons">arrow_back</span></button>
+    
+
+    <table class="table table-bordered table-dark" *ngIf="superStockistTurnOverReportEnabled">
+        <thead>
+            <tr>
+                <th scope="colgroup" colspan="3" class="text-center">
+                  <mat-slide-toggle [checked]="superStockistToggle == 1" (change)="onToggleSuperStockist($event)">All
+                  </mat-slide-toggle>
+                </th>
+                <th scope="colgroup" colspan="2" class="text-center">
+                  <label>Search</label>
+                  <input class="col-12" [(ngModel)]="superStockistSearch" placeholder="Super Stockist Search">
+                </th>
+              </tr>
+            <tr>
+                <th scope="col">SS Name</th>
+                <th scope="col">Total Bet</th>
+                <th scope="col">Total Win Claimed</th>
+                <th scope="col">Total Win Unclaimed</th>
+                <th scope="col">Profit</th>
+                <th scope="col">Total Commission</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngIf="turnOverreport">
+                <td><button mat-button (click)="searchStockist()" style="color: yellow;">{{userData.userName}}</button>
+                </td>
+                <td>{{turnOverreport.total_bet}}</td>
+                <td>{{turnOverreport.total_win_claimed}}</td>
+                <td>{{turnOverreport.total_win_unclaimed}}</td>
+                <td>{{turnOverreport.profit}}</td>
+                <td>{{turnOverreport.total_commission}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <!-- for stockist -->
+    <marquee behavior="" class="blink" direction="" *ngIf="stockistTurnOverReportEnabled" style="color: red !important;">Reports available only for last 30 days</marquee>
+
+    <table class="table table-bordered table-dark" *ngIf="stockistTurnOverReportEnabled">
+        <thead>
+            <tr>
+                <th>Sl No.</th>
+                <th scope="col">S Name</th>
+                <th scope="col">Total Bet</th>
+                <th scope="col">Total Win Claimed</th>
+                <th scope="col">Total Win Unclaimed</th>
+                <th scope="col">Profit</th>
+                <th scope="col">Total Commission</th>
+                <th scope="col">NTP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of stockistOverSuperStockist; let i=index">
+                <td>{{i+1}}</td>
+                <td style="color: yellow;"><button mat-button (click)="searchTerminal(x)">{{x.stockist_name}}</button>
+                </td>
+                <td>{{x.total_bet}}</td>
+                <td>{{x.total_win_claimed}}</td>
+                <td>{{x.total_win_unclaimed}}</td>
+                <td>{{x.profit}}</td>
+                <td>{{x.total_commission}}</td>
+                <td>{{(x.total_bet - x.total_commission- x.total_win_claimed).toFixed(2)}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <marquee behavior="" class="blink" direction="" *ngIf="terminalTurnOverReportEnabled" style="color: red !important;">Reports available only for last 30 days</marquee>
+
+    <table class="table table-bordered table-dark" *ngIf="terminalTurnOverReportEnabled">
+        <thead>
+            <tr>
+                <th>Sl No.</th>
+                <th scope="col">T Name</th>
+                <th scope="col">Total Bet</th>
+                <th scope="col">Total Win Claimed</th>
+                <th scope="col">Total Win Unclaimed</th>
+                <th scope="col">Profit</th>
+                <th scope="col">Total Commission</th>
+                <th scope="col">NTP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of terminalTurnOverReport; let i=index">
+                <td>{{i+1}}</td>
+                <td><button mat-button style="color: yellow;"
+                        (click)="searchTerminalBarCode(x)">{{x.terminal_name}}</button></td>
+                <!-- <td>{{x.terminal_name}}</td> -->
+                <td>{{x.total_bet}}</td>
+                <td>{{x.total_win_claimed}}</td>
+                <td>{{x.total_win_unclaimed}}</td>
+                <td>{{x.profit}}</td>
+                <td>{{x.total_commission}}</td>
+                <td>{{(x.total_bet - x.total_commission- x.total_win_claimed).toFixed(2)}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <marquee behavior="" class="blink" direction="" *ngIf="terminalBarcodeTurnOverReportEnabled" style="color: red !important;">Reports available only for last 30 days</marquee>
+
+    <table class="table table-bordered table-dark" *ngIf="terminalBarcodeTurnOverReportEnabled">
+        <thead>
+            <tr>
+                <th>Barcode</th>
+                <th>Draw time</th>
+                <th>Terminal</th>
+                <th>Game</th>
+                <th>Ticket take time</th>
+                <th>Qty</th>
+                <th>Play</th>
+                <th>UnClaimed</th>
+                <th>Claimed</th>
+                <th>Cancelled</th>
+                <th>Result</th>
+                <th>Bonus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let record of barcodeReportRecords ;let indexOfElement=index">
+                <td>
+                    <button style="color: white !important;" class="btn">{{record.barcode_number}}</button>
+                </td>
+                <td>{{record.draw_time}}</td>
+                <td>{{record.terminal_pin}}</td>
+                <td>{{(record.game_name == 'SINGLE DOUBLE TRIPLE')? 'Triple chance': record.game_name}}</td>
+                <td>{{record.ticket_taken_time}}</td>
+                <td>{{record.total_quantity}}</td>
+                <td>{{record.amount}}</td>
+                <td>{{(record.prize_value > 0)? (record.is_claimed == 0)? (record.prize_value): '--' : '--' }}</td>
+                <td>{{(record.prize_value > 0)? (record.is_claimed == 1)? (record.prize_value): '--' : '--' }}</td>
+                <td>{{(record.is_cancelled == 1)? 'Yes' : 'No'}}</td>
+                <td>{{record.result}}</td>
+                <td>{{record.bonus == 1? 'N' : record.bonus+'X'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

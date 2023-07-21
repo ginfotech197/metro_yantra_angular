@@ -1,0 +1,65 @@
+
+<div *ngIf="passwordValidatedStatus == false" style="text-align: center;">
+  <form [formGroup]="highSecurityPassword">
+    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px"
+         fxLayoutGap.xs="0">
+      <mat-form-field fxFlex="100" class="col-5">
+        <mat-label>Enter high security password</mat-label>
+        <input type="password" matInput formControlName="password" placeholder="Enter name">
+      </mat-form-field>
+    </div>
+  </form>
+  <button mat-raised-button color="primary" (click)="validateSettingsPassword()">Verify</button>
+</div>
+
+<div *ngIf="passwordValidatedStatus == true">
+  <div class="m-5" style="text-align: center" >
+    <table class="table table-bordered text-center col-3" style="background-color: #96D4D4;" >
+      <thead>
+      <tr>
+        <th scope="row">Clear Cache</th>
+        <td colspan="3"><button mat-raised-button color="primary" (click)="clearCache()">Clear</button></td>
+      </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="d-flex">
+    <div class="col-12">
+      <table class="table table-bordered text-center col-6" style="background-color: #96D4D4;" >
+        <thead>
+        <!-- <tr>
+          <th>Triple Chance</th>
+          <th><button mat-raised-button color="primary" [disabled]="gameGenerateButtonDisable[1]" (click)="generateResult(1, 'Triple Chance')" >Generate</button></th>
+          <th scope="row">{{limeGameDrawData.game1}}</th>
+        </tr>
+        <tr>
+          <th>12 card</th>
+          <th><button mat-raised-button color="primary" [disabled]="gameGenerateButtonDisable[2]" (click)="generateResult(2, '12 Card')">Generate</button></th>
+          <th scope="row">{{limeGameDrawData.game2}}</th>
+        </tr>
+        <tr>
+          <th>16 card</th>
+          <th><button mat-raised-button color="primary" [disabled]="gameGenerateButtonDisable[3]" (click)="generateResult(3, '16 Card')">Generate</button></th>
+          <th scope="row">{{limeGameDrawData.game3}}</th>   </tr> -->
+        <tr>
+          <th>Single</th>
+          <th><button mat-raised-button color="primary" [disabled]="gameGenerateButtonDisable[4]" (click)="generateResult(1, 'Single')">Generate</button></th>
+          <th scope="row">{{limeGameDrawData.game1}}</th>
+          <!-- {{limeGameDrawData | json}} -->
+        </tr>
+        <!-- <tr>
+          <th>Double</th>
+          <th><button mat-raised-button color="primary" [disabled]="gameGenerateButtonDisable[5]" (click)="generateResult(5, 'Double')">Generate</button></th>
+          <th scope="row">{{limeGameDrawData.game5}}</th>
+        </tr>
+        <tr>
+          <th>Rollet</th>
+          <th><button mat-raised-button color="primary" [disabled]="gameGenerateButtonDisable[6]" (click)="generateResult(6, 'Rollet')">Generate</button></th>
+          <th scope="row">{{limeGameDrawData.game6}}</th>
+        </tr> -->
+        </thead>
+      </table>
+
+    </div>
+  </div>
+</div>

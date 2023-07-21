@@ -1,0 +1,74 @@
+.triple-number-button:hover{
+  background-color: rgb(103, 108, 103) !important;
+}
+
+.mobile{
+  .coder-fab {
+    width: 35px;
+    height: 35px;
+    line-height: 14px;
+    font-size: 14px;
+
+    &::ng-deep .mat-button-wrapper{
+      line-height: 14px;
+      padding: 0;
+
+      .mat-icon {
+        font-size: 12px;
+        padding-right: 4px;
+        padding-top: 4px;
+      }
+    }
+  }
+}
+
+.zoom {
+  transition: transform .2s;
+}
+
+.zoom:hover {
+  transform: scale(1.2);
+}
+
+
+
+
+.scroll-arrow{
+  border-radius: 50%;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.green {
+  // background-color: rgb(247, 102, 203);
+  // height: 55px;
+  width: 55px;
+  // border-radius: 30px;
+  color: white;
+ }
+
+
+
+ 
+
+ /* Hide scrollbar for Chrome, Safari and Opera */
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+

@@ -1,0 +1,79 @@
+<div class="pl-2 pt-5">
+
+
+
+
+  <table [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}" class="table table-bordered table-sm col-5" style="border: none !important; background-color: blanchedalmond; border-radius: 5px;">
+    <thead>
+      <tr>
+        <th scope="colgroup" colspan="6" class="text-center">Set Payout</th>
+      </tr>
+      <tr>
+        <th>Sl. No.</th>
+        <th mat-sort-header="terminalName">Game name</th>
+
+        <th mat-sort-header="stockistName">Payout</th>
+        <th mat-sort-header="stockistName">Bonus</th>
+        <!-- <th mat-sort-header="stockistName">Auto Multiplexer</th> -->
+        <th mat-sort-header="stockistName">Active</th>
+        <th mat-sort-header="stockistName">Reset Payout After :-</th>
+<!--        <th mat-sort-header="stockistName">Save</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let gametype of gameTypes;let indexOfElement=index">
+        <td>{{(indexOfElement+1)}}</td>
+        <!-- <td>{{gametype.gameTypeId!=1? (gametype.gameTypeId!=2? (gametype.gameTypeId!=5? gametype.gameTypeName : 'Double
+          (Triple Chance)'): 'Triple (Triple Chance)'): 'Triple Chance'}}</td> -->
+
+          <td>Single</td>
+        <!-- <td>{{gametype.gameTypeId!=1? (gametype.gameTypeId!=2? (gametype.gameTypeId!=5? gametype.gameTypeName : 'Double (Triple Chance)'): 'Triple (Triple Chance)'): 'Triple Chance'}}</td> -->
+
+        <td>
+          <!-- <mat-form-field  class="col-6"> -->
+          <input class="" matInput
+            [disabled]="gametype.gameTypeId == 2 || gametype.gameTypeId == 5 || gametype.gameTypeId == 8 || gametype.gameTypeId == 9"
+            type="number" name="payout" placeholder="payout" [value]="gametype.payout" [(ngModel)]="gametype.payout"
+            required>
+          <!-- </mat-form-field> -->
+        </td>
+
+        <!-- <td >
+          <mat-form-field  class="col-7">
+            <mat-select [(ngModel)]="gametype.multiplexer">
+              <mat-option *ngFor="let m of multiplexer" [value]="m">
+                {{m}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </td> -->
+        <td scope="col"><input type="checkbox" [checked]="gametype.random_multiplexer == 'yes'"
+                               (click)="updateAutoMultiplexer(gametype.gameTypeId, gametype.random_multiplexer == 'yes'? 'no' : 'yes', gametype.game_active)"></td>
+        <td scope="col"><input type="checkbox" [checked]="gametype.game_active == 'yes'"
+                               (click)="updateAutoMultiplexer(gametype.gameTypeId, gametype.random_multiplexer, gametype.game_active == 'yes'? 'no' : 'yes')"></td>
+
+        <td>
+<!--          <div><input matInput [(ngModel)]="gametype.counter"></div>-->
+          <mat-form-field class="example-full-width" >
+<!--            <mat-label>First name</mat-label>-->
+            <input matInput [(ngModel)]="gametype.counter">
+          </mat-form-field>
+        </td>
+
+<!--        <td>-->
+<!--          <div><button mat-raised-button color="primary" mat-stroked-button-->
+<!--                       (click)="updatePayout(gametype.gameTypeId, gametype.payout, gametype.multiplexer)">Save</button></div>-->
+<!--        </td>-->
+      </tr>
+    </tbody>
+
+  </table>
+
+  <div style="text-align: end;"><button mat-raised-button color="primary" (click)="updateAllPayout()" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">All
+      Update</button></div>
+
+
+
+
+</div>

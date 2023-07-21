@@ -1,0 +1,281 @@
+<div [ngClass]="deviceXs?'mobile':'desktop'">
+  <!--   <div id="title-1-div">-->
+  <!--    <span style="">Kolkata 1st Fatafat Today Result ✔ Sabse Pahle Yaha Par Milta Hai ♛ Live कोलकाता Fatafat Chart Dekho ♤♦♣ Patti Aur Single Ke Sath.</span>-->
+  <!--  </div>-->
+
+  <!--  <div id="title-2-div">-->
+  <!--    <span>Lucky Number 1st Chart  Kya Result Aayega.</span>-->
+  <!--  </div>-->
+
+  <div id="title-3-div">
+    <!--    <div id="title-3-div-child-1">Kolkata 1st Today Result Sabse Pahle Dekho</div>-->
+    <div id="title-3-div-child-2">{{currentDate}}</div>
+    <div id="title-3-div-child-2">
+
+      <div class="d-flex" style="text-align: end; padding-left: 24%;">
+        <div id="title-3-div-child-2" style="text-align: center; color: white;"
+          *ngFor="let x of games, let idx = index">
+          <!--          <button type="button" [disabled]="x.id == 3 || x.id == 4" (click)="setActiveGame(games[idx])" [ngStyle]="{'background-color': buttonColour[idx]}" (click)="varResult(x.id)" class="btn  glow ml-1" style="font-size: x-large;border: 5px solid rgb(255, 230, 0); border-style: double; border-radius: 10px; background-color: rgb(4, 13, 136); color: white;">{{x.game_name}}</button></div>-->
+          <button type="button" [disabled]="x.active === 'no'" (click)="setActiveGame(games[idx])"
+            [ngStyle]="{'background-color': buttonColour[idx]}" class="btn  glow ml-1"
+            style="font-size: x-large;border: 5px solid rgb(255, 230, 0); border-style: double; border-radius: 10px; background-color: rgb(4, 13, 136); color: white;">{{x.game_name}}</button>
+        </div>
+      </div>
+
+      <!--      <mat-form-field  appearance="fill">-->
+      <!--        <mat-label>Game</mat-label>-->
+      <!--        <mat-select class="btn btn-warning" [(ngModel)]="selectedGame" (selectionChange)="test()" name="Game">-->
+      <!--          <mat-option *ngFor="let x of games" [value]="x.id">-->
+      <!--            {{x.game_name}}-->
+      <!--          </mat-option>-->
+      <!--        </mat-select>-->
+      <!--      </mat-form-field>-->
+
+    </div>
+  </div>
+
+  <div id="title-4-div">
+    <div>*No Fake Result* | हम #Fake Result Update नहीं करते</div>
+  </div>
+
+  <div style="text-align: end; padding-left: 50px;">
+    <div id="title-3-div-child-2" style="text-align: center; color: white;"><button type="button"
+        class="btn btn-danger glow" [routerLink]="['/power']"
+        style="font-size: x-large;border: 5px solid yellow; border-style: double; border-radius: 10px;">Play
+        Online</button></div>
+  </div>
+
+  <div class="col-md-4 text-right">
+    <button class="btn btn-success btn-block" (click)="openPDF()" *ngIf="!isProduction">Download PDF</button>
+  </div>
+  <!--  <pre>{{todayResult}}</pre>-->
+  <!--  <div id="table-div" >-->
+  <div class="col-12">
+
+    <!--    <div  *ngFor="let tableData of todayResult; let i = index">-->
+    <!--    <div  *ngFor="let tableData of resultList; let i = index">-->
+    <!--          {{tableData}}-->
+    <!--      <table class="table" >-->
+    <!--          <thead>-->
+    <!--            <tr><td style="background-color: #85592e;" colspan="10">{{tableData.draw_time}}</td></tr>-->
+    <!--          </thead>-->
+    <!--          <tbody>-->
+    <!--            <tr *ngFor="let row of tableData.slice(0, tableData.result.length % columnNumber  === 0 ?-->
+    <!--               tableData.length / columnNumber : tableData.length / columnNumber + 1); let idx = index">-->
+    <!--              <td scope="row" *ngFor="let result of tableData.slice(idx * columnNumber, idx * columnNumber + columnNumber); let col=index">-->
+    <!--               -->
+
+    <!--                <div class="result-heading" [ngStyle]="{'background-color': buttonColours}" >{{col+1}}</div>-->
+    <!--                <div class="bd-highlight">{{result.visible_triple_number || '***'}}</div>-->
+    <!--                <div class="bd-highlight">{{(result.single_number!=null && result.single_number>=0) ?  result.single_number : '*'}}</div>-->
+    <!--              </td>-->
+    <!--            </tr>-->
+    <!--          </tbody>-->
+    <!--      </table>-->
+    <!--    </div>-->
+
+
+    <div>
+      <table class="table table-bordered" id="table-div" *ngIf="selectedGame==1">
+        <thead>
+          <tr>
+            <div class="" *ngFor="let tableData of todayResult.slice(0, todayResult.length % columnNumber  === 0 ?
+                  todayResult.length / columnNumber : todayResult.length / columnNumber + 1); let idx = index">
+
+              <td class="p-3"
+                *ngFor="let x of todayResult.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+                scope="row">
+
+                <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
+
+                <div *ngIf="x.single_number==null">{{ '*'}}</div>
+                <div *ngIf="x.single_number!=null">{{x.single_number}}</div>
+
+                <div *ngIf="x.double_number==null">{{'**'}}</div>
+                <div *ngIf="x.double_number!=null">{{x.double_number}}</div>
+
+                <div *ngIf="x.triple_number==null">{{'***'}}</div>
+                <div *ngIf="x.triple_number!=null">{{x.triple_number}}</div>
+
+                <div *ngIf="x.multiplexer==null">{{ '*'}}</div>
+                <div *ngIf="x.multiplexer!=null">{{x.multiplexer}}</div>
+              </td>
+            </div>
+
+          </tr>
+        </thead>
+      </table>
+
+      <table class="table table-bordered" id="table-div" *ngIf="selectedGame==2">
+        <thead>
+          <tr>
+            <div class="" *ngFor="let tableData of todayResult.slice(0, todayResult.length % columnNumber  === 0 ?
+                    todayResult.length / columnNumber : todayResult.length / columnNumber + 1); let idx = index">
+
+              <td class="p-3"
+                *ngFor="let x of todayResult.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+                scope="row">
+
+                <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
+                <div>{{x.rank_initial || '*'}}</div>
+                <div>{{x.rank_name || '**'}}</div>
+                <div>{{x.suit_name || '***'}}</div>
+              </td>
+            </div>
+
+          </tr>
+        </thead>
+      </table>
+
+      <table class="table table-bordered" id="table-div" *ngIf="selectedGame==3">
+        <thead>
+          <tr>
+            <div class="" *ngFor="let tableData of todayResult.slice(0, todayResult.length % columnNumber  === 0 ?
+                    todayResult.length / columnNumber : todayResult.length / columnNumber + 1); let idx = index">
+
+              <td class="p-3"
+                *ngFor="let x of todayResult.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+                scope="row">
+
+                <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
+                <div>{{x.rank_initial || '*'}}</div>
+                <div>{{x.rank_name || '**'}}</div>
+                <div>{{x.suit_name || '***'}}</div>
+              </td>
+            </div>
+
+          </tr>
+        </thead>
+      </table>
+
+      <table class="table table-bordered" id="table-div" *ngIf="selectedGame==4">
+        <thead>
+          <tr>
+            <div class="" *ngFor="let tableData of todayResult.slice(0, todayResult.length % columnNumber  === 0 ?
+                    todayResult.length / columnNumber : todayResult.length / columnNumber + 1); let idx = index">
+
+              <td class="p-3"
+                *ngFor="let x of todayResult.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+                scope="row">
+
+                <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
+                <div>{{x.single_number || '*'}}</div>
+                <!--              <div>{{x.rank_name || '**'}}</div>-->
+                <!--              <div>{{x.suit_name || '***'}}</div>-->
+              </td>
+            </div>
+
+          </tr>
+        </thead>
+      </table>
+
+      <table class="table table-bordered" id="table-div" *ngIf="selectedGame==5">
+        <thead>
+          <tr>
+            <div class="" *ngFor="let tableData of todayResult.slice(0, todayResult.length % columnNumber  === 0 ?
+                    todayResult.length / columnNumber : todayResult.length / columnNumber + 1); let idx = index">
+
+              <td class="p-3"
+                *ngFor="let x of todayResult.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+                scope="row">
+
+                <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
+                <div>{{x.double_number || '*'}}</div>
+                <div>{{x.andar_number || '**'}}</div>
+                <div>{{x.bahar_number || '***'}}</div>
+              </td>
+            </div>
+
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+  <!-- <div id="table-div" >
+    <div>
+      <pre>{{resultList | json}}</pre>
+      <div class="d-flex">
+        <div class="col-2"></div>
+        <div class="col-4">1</div>
+        <div class="col-4">10:30</div>
+        <div class="col-2"></div>
+      </div>
+    </div>
+  </div> -->
+  <!--  <div style="font-size: xx-large; color: white; background-color: rgb(202, 156, 95); text-align: center;">-->
+  <!--    Result Time Table ?-->
+  <!--  </div>-->
+  <!--  <div class=" text-center text-dark d-flex" style="font-size: xx-large; background-color: yellow;">-->
+
+  <!--    <div class="col-2"></div>-->
+
+  <!--    <div class="col-4">-->
+  <!--      <div class="" style="font-size: x-large; color: red; text-align: left">😍✔NEW TIME✔😍</div>-->
+  <!--      <div class="" style="font-size: x-large; color: rgb(5, 5, 5); font-weight: bold; text-align: center; padding-right: 292px;">KFATAFAT</div>-->
+
+  <!--      <table class=""  style="font-weight: bold;">-->
+  <!--        <thead style="font-size: large !important;">-->
+  <!--          <tr >-->
+  <!--            <th scope="col">Index</th>-->
+  <!--            <th></th>-->
+  <!--            <th scope="col">Draw Time</th>-->
+  <!--          </tr>-->
+  <!--        </thead>-->
+  <!--        <tbody>-->
+  <!--          <tr *ngFor="let time of drawTimesFatafat; let i = index">-->
+  <!--            <td>{{i+1}}</td>-->
+  <!--            <td></td>-->
+  <!--            <td>{{time.visibleTime}}</td>-->
+  <!--          </tr>-->
+  <!--        </tbody>-->
+  <!--      </table>-->
+  <!--    </div>-->
+
+  <!--    <div class="col-4">-->
+  <!--      <div class="" style="font-size: x-large; color: red; text-align: left; padding-right: 22px;">😍✔NEW TIME✔😍</div>-->
+  <!--      <div class="" style="font-size: x-large; color: rgb(5, 5, 5); font-weight: bold; text-align: center; padding-right: 292px;">SHIRDI</div>-->
+  <!--      <table class=""  style="font-weight: bold;">-->
+  <!--        <thead style="font-size: large !important;">-->
+  <!--          <tr >-->
+  <!--            <th scope="col">Index</th>-->
+  <!--            <th></th>-->
+  <!--            <th scope="col">Draw Time</th>-->
+  <!--          </tr>-->
+  <!--        </thead>-->
+  <!--        <tbody>-->
+  <!--          <tr *ngFor="let time of drawTimesShirdi; let i = index">-->
+  <!--            <td>{{i+1}}</td>-->
+  <!--            <td></td>-->
+  <!--            <td>{{time.visibleTime}}</td>-->
+  <!--          </tr>-->
+  <!--        </tbody>-->
+  <!--      </table>-->
+  <!--    </div>-->
+
+  <!--    <div class="col-2"></div>-->
+
+  <!--  </div>-->
+  <!--</div>-->
+
+  <div class="d-flex" *ngIf="!isProduction">
+    <div class="col-3">
+      <mat-slide-toggle (change)="showDevArea=!showDevArea">{{showDevArea?"Hide Developer Area":"Show Developer Area"}}
+      </mat-slide-toggle>
+    </div>
+  </div>
+
+  <div class="d-flex" *ngIf="!isProduction && showDevArea">
+    <div class="col-3">
+      <pre>
+          {{resultList | json}}
+      </pre>
+    </div>
+    <div class="col-6">
+      <pre>
+
+      </pre>
+    </div>
+    <div class="col-3">
+      <pre></pre>
+    </div>
+  </div>

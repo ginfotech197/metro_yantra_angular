@@ -1,0 +1,339 @@
+<!--<mat-tab-group>-->
+<!--  <mat-tab label="play">-->
+
+
+
+    <div class="">
+      <div style="text-align: center; "><span class="mt-2 ml-1 mr-1"  style="font-size: x-large;">Next draw: {{activeDrawTime.visibleTime}}</span></div>
+      <div class="" style=" border-radius: 10px; padding-top: 20px;padding-left: 0px;">
+        <div class=" d-flex mt-2" style="height: 40px; border-radius: 10px;text-align: center; padding-right: 100px;">
+          <button (click)="resultButton(1); setActiveGame(games[0])" style="font-size: 100%; width: 50%;text-align: center; border: 8px solid rgb(255, 255, 255);height: 145%;border-style: double;" class="zoom btn btn-lg  btn-responsive btn-primary" >{{games[0].game_name}}</button>
+          <button (click)="resultButton(2); setActiveGame(games[1])" style="font-size: 100%;  width: 50%;  border: 8px solid rgb(253, 253, 253);height: 145%; border-style: double;" class="zoom btn btn-success ml-1 btn-responsive" >{{games[1].game_name}}</button>
+        </div>
+        <div class=" d-flex" style="height: 60px; border-radius: 10px;padding-top: 20px; padding-right: 100px;">
+          <button  (click)="resultButton(3); setActiveGame(games[2])" style="font-size: 100%;   width: 50%;height: 170%;  border: 8px solid rgb(255, 255, 255); border-style: double;" class="zoom btn btn-danger ml-1 btn-responsive" >{{games[2].game_name}}</button>
+          <button  (click)="resultButton(4); setActiveGame(games[3])" class="zoom btn btn-info ml-1 btn-responsive" id="print-button" style="font-size: 100%;   width: 50%;height: 170%;  border: 8px solid rgb(255, 255, 255); border-style: double;" >{{games[3].game_name}}</button>
+        </div>
+        <div class=" d-flex" style="height: 60px; border-radius: 10px;padding-top: 20px; padding-right: 100px;">
+          <button  (click)="resultButton(5); setActiveGame(games[4])" style="font-size: 100%;   width: 50%;height: 170%;  border: 8px solid rgb(255, 255, 255); border-style: double;" class="zoom btn btn-danger ml-1 btn-responsive" >{{games[4].game_name}}</button>
+        </div>
+
+      </div>
+
+    <!--  <span class="mt-2 ml-1 mr-1" *ngIf="drawHour<=9" style="font-size: large;">Next draw: {{activeDrawTime.visibleTime}}</span>-->
+
+
+
+    </div>
+
+    <div class="pt-5"><button class="btn btn-info" (click)="saveGame()">save game</button></div>
+    <div class="pt-5">
+      <div class="d-flex">
+        <div class="col-5"></div>
+        <div class="col-2" style="background-color: #a6e0ff; border: 3px solid red; border-radius: 7px; text-align: center; width: 20px!important;">Total: {{totalTicketPurchased}}</div>
+        <div class="col-5"></div>
+      </div>
+      <div *ngIf="changeGame===1" class="d-flex">
+
+
+
+        <div class="d-flex p-1" >
+
+          <div class="col-4 m-0 p-3" style="border: 2px solid yellow; border-radius: 20px; background-color: rgb(71, 73, 75); background-position: center">
+            <div style="text-align: center; color: white; font-size: large;">Single</div>
+            <div class="d-flex flex-row bd-highlight">
+                <div class="d-flex flex-row"    >
+
+                  <div class="p-1"  *ngFor="let tableData of copySingleNumber.slice(0, copySingleNumber.length % columnNumber  === 0 ?
+                  copySingleNumber.length / columnNumber : copySingleNumber.length / columnNumber + 1); let idx = index">
+
+
+                    <button  mat-raised-button matBadge="{{x.quantity}}"  (click)="addQuantity(x,1,1)" *ngFor="let x of copySingleNumber.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index" class="single-number-button btn  btn-primary m-3"   >
+    <!--                <button  mat-raised-button matBadge="8"  (click)="addQuantity(x,1,1)" *ngFor="let x of copySingleNumber.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index" class="single-number-button btn  btn-primary m-3"   >-->
+                      {{x.singleNumber}}
+                    </button>
+                  </div>
+
+                </div>
+            </div>
+            <!-- <pre>{{singleNumber | json}}</pre> -->
+          </div>
+          <div class="col-4 m-0 p-5" style="border: 2px solid blue; border-radius: 20px; background-color: rgb(71, 73, 75); background-position: center">
+            <div style="text-align: center; color: white; font-size: large;">Double</div>
+            <div class="d-flex flex-row bd-highlight scroll" style="max-width: 400px; overflow-x: hidden; max-height: 500px; overflow-y: scroll; ">
+              <div class="d-flex flex-row"    >
+
+                <div class=""  *ngFor="let tableData of copyDoubleNumber.slice(0, copyDoubleNumber.length % columnNumber2  === 0 ?
+                copyDoubleNumber.length / columnNumber2 : copyDoubleNumber.length / columnNumber2 + 1); let idx = index" >
+
+
+                  <button mat-raised-button matBadge="{{x.quantity}}"  (click)="addQuantity(x,1,5)" *ngFor="let x of copyDoubleNumber.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index" class="single-number-button btn btn-warning  m-1"  >
+                    {{x.visibleDoubleNumber}}
+                  </button>
+                </div>
+
+              </div>
+          </div>
+
+            <!-- <pre>{{doubleNumber | json}}</pre> -->
+          </div>
+          <div class="col-4 m-0 p-5" style="border: 2px solid green; border-radius: 10px; background-color: rgb(71, 73, 75); background-position: center">
+            <div style="text-align: center; color: white; font-size: large;">Triple</div>
+            <div class="d-flex flex-row bd-highlight scroll" style="max-width: 400px; overflow-x: hidden; max-height: 500px; overflow-y: scroll;">
+              <div class="d-flex flex-row"    >
+
+                <div class="p-1" *ngFor="let tableData of numberCombinationMatrix.slice(0, numberCombinationMatrix.length % columnNumber3  === 0 ?
+                numberCombinationMatrix.length / columnNumber3 : numberCombinationMatrix.length / columnNumber3 + 1); let idx = index" >
+
+
+                  <button mat-raised-button matBadge="{{x.quantity}}"  (click)="addQuantity(x,1,2)"  *ngFor="let x of numberCombinationMatrix.slice( idx * columnNumber3, idx * columnNumber3 + columnNumber3); let col=index" class="single-number-button  m-1 btn btn-success"  >
+                    {{x.visibleTripleNumber}}
+                  </button>
+                </div>
+
+              </div>
+          </div>
+
+            <!-- <pre>{{numberCombinationMatrix | json}}</pre> -->
+          </div>
+        </div>
+
+
+        <!-- <pre>{{doubleNumber | json}}</pre>
+        <pre>{{numberCombinationMatrix | json}}</pre> -->
+      </div>
+      <div *ngIf="changeGame===2">
+        <div style="background-image: url('/assets/images/twelve-card.background4.jpg'); background-size: cover;border: 30px solid red; margin-top: 30px; height: 710px;">
+
+          <div class="d-flex">
+
+            <div class="col-12" style="padding-top: 50px;">
+
+              <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/clubs.png" width="50" alt=""></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/diamond.png" width="60" alt=""></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/spade.png" width="60"  alt=""></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/heart.png" width="80" alt=""></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr >
+                  <th scope="row" style="text-align: center;"><img src="assets/images/jack.png" width="50" alt=""></th>
+
+                  <td><div class="zoom" matBadge="{{twelveCard[0].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img  (click)="addQuantity(twelveCard[0],2,3)"  class="p-2"  src="assets/images/1.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[1].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[1],2,3)" class="p-2"  src="assets/images/2.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[3].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[3],2,3)" class="p-2"  src="assets/images/4.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[2].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[2],2,3)" class="p-2"  src="assets/images/3.jpg" width="100px" alt=""></div></td>
+                </tr>
+
+                <tr>
+                  <th scope="row"><img src="assets/images/queen.png" width="50" alt=""></th>
+                  <td><div class="zoom" matBadge="{{twelveCard[4].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[4],2,3)" class="p-2"  src="assets/images/5.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[5].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[5],2,3)" class="p-2"  src="assets/images/6.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[7].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[7],2,3)" class="p-2"  src="assets/images/8.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[6].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[6],2,3)" class="p-2"  src="assets/images/7.jpg" width="100px" alt=""></div></td>
+                </tr>
+
+                <tr>
+                  <th scope="row"><img src="assets/images/king.png" width="50" alt=""></th>
+                  <td><div class="zoom" matBadge="{{twelveCard[8].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[8],2,3)" class="p-2"  src="assets/images/9.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[9].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[9],2,3)" class="p-2"  src="assets/images/10.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[11].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[11],2,3)" class="p-2"  src="assets/images/12.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{twelveCard[10].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(twelveCard[10],2,3)" class="p-2"  src="assets/images/11.jpg" width="100px" alt=""></div></td>
+                </tr>
+
+              </tbody>
+              </table>
+
+            </div>
+    <!--        <div class="col-6 " style="text-align: center; align-content: center;">-->
+    <!--          <div><h3>Selected Card</h3></div>-->
+    <!--          &lt;!&ndash; <div style="width: 110px!important; height: 400px!important; text-align: center;"> <img height="100%"  [src]="twelveSelectedCard"> </div> &ndash;&gt;-->
+    <!--          <div > <img width="50%"  [src]="twelveSelectedCard"> </div>-->
+    <!--        </div>-->
+
+          </div>
+
+        </div>
+      </div>
+      <div *ngIf="changeGame===3">
+        <div style="background-image: url('/assets/images/twelve-card.background4.jpg'); background-size: cover;border: 30px solid red; margin-top: 30px; height: 869px;">
+
+          <div class="d-flex">
+
+            <div class="col-12" style="padding-top: 50px;">
+
+              <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/clubs.png" width="50" alt=""></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/diamond.png" width="60" alt=""></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/spade.png" width="60"  alt=""></th>
+                  <th scope="col" style="padding-left: 35px;"><img src="assets/images/heart.png" width="80" alt=""></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr >
+                  <th scope="row" style="text-align: center;"><img src="assets/images/jack.png" width="50" alt=""></th>
+
+                  <td><div class="zoom" matBadge="{{sixteenCard[0].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[0],3,4)" class="p-2"  src="assets/images/1.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[1].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[1],3,4)" class="p-2"  src="assets/images/2.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[3].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[3],3,4)" class="p-2"  src="assets/images/4.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[2].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[2],3,4)" class="p-2"  src="assets/images/3.jpg" width="100px" alt=""></div></td>
+                </tr>
+
+                <tr>
+                  <th scope="row"><img src="assets/images/queen.png" width="50" alt=""></th>
+                  <td><div class="zoom" matBadge="{{sixteenCard[4].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[4],3,4)" class="p-2"  src="assets/images/5.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[5].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[5],3,4)" class="p-2"  src="assets/images/6.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[7].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[7],3,4)" class="p-2"  src="assets/images/8.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[6].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[6],3,4)" class="p-2"  src="assets/images/7.jpg" width="100px" alt=""></div></td>
+                </tr>
+
+                <tr>
+                  <th scope="row"><img src="assets/images/king.png" width="50" alt=""></th>
+                  <td><div class="zoom" matBadge="{{sixteenCard[8].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[8],3,4)" class="p-2"  src="assets/images/9.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[9].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[9],3,4)" class="p-2"  src="assets/images/10.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[11].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[11],3,4)" class="p-2"  src="assets/images/12.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[10].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[10],3,4)" class="p-2"  src="assets/images/11.jpg" width="100px" alt=""></div></td>
+                </tr>
+
+                <tr>
+                  <th scope="row"><img src="assets/images/ace.png" width="50" alt=""></th>
+
+                  <td><div class="zoom" matBadge="{{sixteenCard[12].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[12],3,4)" class="p-2"  src="assets/images/13.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[13].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[13],3,4)" class="p-2"  src="assets/images/14.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[15].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[15],3,4)" class="p-2"  src="assets/images/16.jpg" width="100px" alt=""></div></td>
+                  <td><div class="zoom" matBadge="{{sixteenCard[14].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img (click)="addQuantity(sixteenCard[14],3,4)" class="p-2"  src="assets/images/15.jpg" width="100px" alt=""></div></td>
+                </tr>
+              </tbody>
+              </table>
+
+            </div>
+    <!--        <div class="col-6 " style="text-align: center; align-content: center;">-->
+    <!--          <div><h3>Selected Card</h3></div>-->
+    <!--          &lt;!&ndash; <div style="width: 110px!important; height: 400px!important; text-align: center;"> <img height="100%"  [src]="twelveSelectedCard"> </div> &ndash;&gt;-->
+    <!--          <div > <img width="50%"  [src]="twelveSelectedCard"> </div>-->
+    <!--        </div>-->
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <div *ngIf="changeGame===4">
+        <div class="d-flex p-1" style="text-align: center;">
+
+          <div class=" m-0 p-3" style="border: 2px solid yellow; border-radius: 20px; background-color: rgb(71, 73, 75); background-position: center; text-align: center;">
+            <div style="text-align: center; color: white; font-size: large;">Single</div>
+            <div class="d-flex flex-row bd-highlight">
+                <div class="d-flex flex-row">
+
+                  <div class="p-1"  *ngFor="let tableData of copySingleNumberIndividual.slice(0, copySingleNumberIndividual.length % columnNumber  === 0 ?
+                  copySingleNumberIndividual.length / columnNumber : copySingleNumberIndividual.length / columnNumber + 1); let idx = index">
+
+
+                    <button mat-raised-button matBadge="{{x.quantity}}" (click)="addQuantity(x,4,6)" *ngFor="let x of copySingleNumberIndividual.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"  class="single-number-button btn  btn-primary m-3"   >
+                      {{x.singleNumber}}
+                    </button>
+                  </div>
+
+                </div>
+            </div>
+            <!-- <pre>{{singleNumber | json}}</pre> -->
+          </div>
+
+
+            <!-- <pre>{{numberCombinationMatrix | json}}</pre> -->
+
+        </div>
+      </div>
+      <div *ngIf="changeGame===5">
+        <div class=" m-0 p-5" style="border: 2px solid blue; border-radius: 20px; background-color: rgb(71, 73, 75); background-position: center">
+          <div style="text-align: center; color: white; font-size: large;">Double</div>
+          <div class="d-flex flex-row bd-highlight scroll" style=" overflow-x: hidden; max-height: 500px; overflow-y: scroll; text-align: center;">
+            <div class="d-flex flex-row"   style="text-align: center;" >
+
+              <div class="" style="text-align: center;"  *ngFor="let tableData of copyDoubleNumberIndividual.slice(0, copyDoubleNumberIndividual.length % columnNumber2  === 0 ?
+              copyDoubleNumberIndividual.length / columnNumber2 : copyDoubleNumberIndividual.length / columnNumber2 + 1); let idx = index" >
+
+
+                <button (click)="addQuantity(x,5,7)" matBadge="{{x.quantity}}" *ngFor="let x of copyDoubleNumberIndividual.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index" class="single-number-button btn btn-warning  m-1"  >
+                  {{x.visibleDoubleNumber}}
+                </button>
+              </div>
+
+            </div>
+        </div>
+
+
+
+          <!-- <pre>{{doubleNumber | json}}</pre> -->
+        </div>
+        <div>
+
+        </div>
+        <div>
+          <table class="table table-bordered table-dark" style="border-radius: 15px">
+            <thead>
+              <tr>
+                <th style="text-align: center; font-size: xx-large; ">Andaar Number</th>
+                <th style="text-align: center; font-size: x-large; color: white"  *ngFor="let x of andaarNumber"><button (click)="addQuantity(x,5,8)" mat-raised-button matBadge="{{x.quantity}}">{{x.andarNumber}}</button></th>
+      <!--          <pre>{{andaarNumber | json}}</pre>-->
+              </tr>
+            </thead>
+            <thead>
+            <tr>
+              <th style="text-align: center; font-size: xx-large; ">Bahar Number</th>
+              <th style="text-align: center; font-size: x-large; color: white"  *ngFor="let x of baharNumber"><button (click)="addQuantity(x,5,9)" mat-raised-button matBadge="{{x.quantity}}">{{x.baharNumber}}</button></th>
+              <!--          <pre>{{andaarNumber | json}}</pre>-->
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+<!--  </mat-tab>-->
+
+<!--  <mat-tab label="2nd tab">-->
+<!--    <table class="table table-bordered">-->
+<!--      <thead>-->
+<!--        <tr>-->
+<!--          <th scope="col">Sl. no.</th>-->
+<!--          <th scope="col">Terminal Name</th>-->
+<!--          <th scope="col">Tripple Chance</th>-->
+<!--          <th scope="col">12 Card</th>-->
+<!--          <th scope="col">16 Card</th>-->
+<!--          <th scope="col">Single</th>-->
+<!--          <th scope="col">Double</th>-->
+<!--        </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--        <tr>-->
+<!--          <td scope="col">Sl. no.</td>-->
+<!--          <td scope="col">Terminal Name</td>-->
+<!--          <td scope="col">Tripple Chance</td>-->
+<!--          <td scope="col">12 Card</td>-->
+<!--          <td scope="col">16 Card</td>-->
+<!--          <td scope="col">Single</td>-->
+<!--          <td scope="col">Double</td>-->
+<!--        </tr>        -->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </mat-tab>-->
+
+
+<!--</mat-tab-group>-->
+
+
+
+<!-- <pre>{{changeGame | json}}</pre> -->
+

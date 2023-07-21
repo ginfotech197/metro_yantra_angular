@@ -1,0 +1,538 @@
+<!--  <div class="" style="text-align: center; font-weight: bolder;color: white;background-color: blueviolet; min-width: 1122px;" *ngIf="!isAuthenticated">-->
+<!--    <span class="h1" style="font-size: 4vw; text-align: center;">Kolkata 1st Fatafat Today Result 🏆 Sabse Pahle ✔️</span>-->
+<!--  </div>-->
+
+
+
+
+<!--<div class="" *ngIf="isAuthenticated">-->
+<div class="navbar" *ngIf="isAuthenticated">
+  <!--For Public-->
+
+
+
+  <!-- <mat-toolbar color="white"  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '20px' : '25px'}" [ngStyle]="myStyle()" *ngIf="false" -->
+  <mat-toolbar color="white"   [ngStyle]="myStyle()" *ngIf="false"
+    style="background-color: #3c434c !important; overflow: scroll">
+    <!-- for desktop view -->
+
+
+
+    <mat-nav-list class="list-horizontal" *ngIf="!deviceXs">
+
+      <mat-list-item>
+        <button mat-button [routerLink]="['/']" routerLinkActive="MyActiveMenu"
+          [routerLinkActiveOptions]="{exact: true}">Home</button>
+      </mat-list-item>
+
+
+      <mat-list-item>
+        <button mat-button mat-raised-button [routerLink]="['/auth']" routerLinkActive="MyActiveMenu">Login</button>
+        <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout</button>
+      </mat-list-item>
+    </mat-nav-list>
+
+
+    <mat-nav-list class="list-horizontal" *ngIf="!deviceXs">
+
+      <mat-list-item>
+        <button mat-button [routerLink]="['/']" routerLinkActive="MyActiveMenu"
+          [routerLinkActiveOptions]="{exact: true}">Home</button>
+      </mat-list-item>
+
+
+      <mat-list-item>
+        <button mat-button mat-raised-button [routerLink]="['/auth']" routerLinkActive="MyActiveMenu">Login</button>
+        <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout</button>
+      </mat-list-item>
+    </mat-nav-list>
+
+
+    for mobile view
+    <mat-toolbar-row *ngIf="deviceXs" fxLayoutAlign="space-between end">
+      <button mat-button [matMenuTriggerFor]="menu"
+        style="line-height: 18px !important; font-size: small; padding-top: 15px;"><i
+          class="ri-menu-line"></i>Menu</button>
+      <mat-menu #menu="matMenu" style="width: 20px !important;">
+        <button mat-menu-item [routerLink]="['/']" routerLinkActive="MyActiveMenu"
+          [routerLinkActiveOptions]="{exact: true}"
+          style="height: 28px ; font-size: small; line-height: 18px !important;">Home</button>
+        <!-- <button mat-button
+         [routerLink]="['/']"
+         routerLinkActive="MyActiveMenu"
+         [routerLinkActiveOptions]="{exact: true}">Home</button> -->
+        <!-- <button mat-button *ngIf="isAuthenticated" (click)="logout()" style="font-size: small; line-height: 18px !important;">Logout<i class="ri-logout-circle-r-line ri-1x"></i></button> -->
+        <button mat-button mat-raised-button [routerLink]="['/auth']" routerLinkActive="MyActiveMenu"
+          style="font-size: small; line-height: 18px !important;">Login</button>
+      </mat-menu>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+
+  <!--For admin-->
+  <mat-toolbar [ngStyle]="{'padding-bottom': (screenWidth>=1280 ) ? '200px' : '1100px', 'font-size': (screenWidth>=1280 ) ? '15px' : '45px' }" color="accent" *ngIf="isAuthenticated && isAdmin">
+
+
+
+
+    <mat-nav-list>
+
+      <div class="logo py-4" style="color: #ff8c00;">
+        <a  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '33px' }" class="logo">Balance: <span class="ml-3">{{user.balance}}</span></a>
+      </div>
+
+
+      <div class="logo py-4">
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" class="logo" [routerLink]="['cPanel']"><i class="bi bi-geo-alt"
+            style="color: #2fff00 !important;"></i><span class="ml-3">Admin</span></a>
+      </div>
+
+
+      <mat-divider></mat-divider>
+      <!-- <h2 matSubheader class="mt-2" class="header-text">APPLICATIONS</h2> -->
+
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLinkActive="list-item-active">
+        <div class="header-text" [routerLink]="['/']" routerLinkActive="MyActiveMenu"
+          [routerLinkActiveOptions]="{exact: true}"><i class="bi bi-shop"
+            style="color: yellow !important; font-size: x-large"></i> <span class="ml-3">Home</span> </div>
+      </a>
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLink="/dashboard" routerLinkActive="list-item-active" (click)="toggleMaster()">
+        <div class="header-text"><i class="bi bi-person" style="color: #26ff00 !important; font-size: x-large"></i><span
+            class="ml-3">Master</span> </div>
+      </a>
+      <div *ngIf="displayMaster">
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/superStockistCPanel']" routerLinkActive="list-item-active"
+          class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Super Stockist</span>
+        </a>
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/masterStockist']" routerLinkActive="list-item-active" class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Stockist</span>
+        </a>
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/masterTerminal']" routerLinkActive="list-item-active" class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Terminal</span>
+        </a>
+      </div>
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLink="/dashboard" routerLinkActive="list-item-active" (click)="toggleGameSettings()"
+        class="header-text">
+        <div><i class="bi bi-gear-wide-connected" style="color: #ff0000 !important; font-size: x-large"></i><span
+            class="ml-3">Game settings</span> </div>
+      </a>
+      <div *ngIf="displayGameSettings">
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }"  mat-list-item [routerLink]="['/payoutSettings']" routerLinkActive="list-item-active" class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Payout setting</span>
+        </a>
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/manual']" routerLinkActive="list-item-active" class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Manual result</span>
+        </a>
+        <a  [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/message']" routerLinkActive="list-item-active" class="header-text">
+          <i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Message</span>
+        </a>
+      </div>
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLink="/dashboard" routerLinkActive="list-item-active" (click)="toggleReport()">
+        <div class="header-text"><i class="bi bi-award-fill" style="color: #ff8c00 !important; font-size: x-large"></i>
+          <span class="ml-3">Report View</span>
+        </div>
+      </a>
+      <div *ngIf="displayReport">
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/cPanelReports']" routerLinkActive="list-item-active" class="header-text">
+          <i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Reports</span>
+        </a>
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/cPanelTurnOverReport']" routerLinkActive="list-item-active"
+          class="header-text">
+          <i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Turn Over Report</span>
+        </a>
+        <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item [routerLink]="['/load']" routerLinkActive="list-item-active" class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Load</span>
+        </a>
+      </div>
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLinkActive="list-item-active">
+        <div [routerLink]="['/resultCPanel']" routerLinkActive="MyActiveMenu" [routerLinkActiveOptions]="{exact: true}"
+          class="header-text"><i class="bi bi-gem" style="color: #00ffb7 !important; font-size: x-large"></i> <span
+            class="ml-3">Result</span></div>
+      </a>
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLinkActive="list-item-active">
+        <div [routerLink]="['/cPanelResetPassword']" routerLinkActive="MyActiveMenu"
+          [routerLinkActiveOptions]="{exact: true}" class="header-text"><i class="bi bi-gem"
+            style="color: #00ffb7 !important; font-size: x-large"></i> <span class="ml-3">Reset Password</span></div>
+      </a>
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLinkActive="list-item-active">
+        <div [routerLink]="['/cPanelSettings']" routerLinkActive="MyActiveMenu"
+          [routerLinkActiveOptions]="{exact: true}" class="header-text"><i class="bi bi-gear-wide"
+            style="color: #ff00fb !important; font-size: x-large"></i><span class="ml-3">Settings</span></div>
+      </a>
+
+      <!--      <a mat-list-item  routerLinkActive="list-item-active">-->
+      <!--        <div [routerLink]="['/transactionReport']" routerLinkActive="MyActiveMenu" [routerLinkActiveOptions]="{exact: true}" class="header-text"><i class="bi bi-gear-wide" style="color: #ff00fb !important; font-size: x-large"></i><span class="ml-3">Transaction Report</span></div>-->
+      <!--      </a>-->
+
+      <a [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px' }" mat-list-item routerLinkActive="list-item-active">
+        <div *ngIf="isAuthenticated" (click)="logout()" class="header-text"> <i class="ri-logout-circle-r-line ri-1x"
+            style="color: #00d9ff !important; font-size: x-large"></i><span class="ml-3">LogOut</span></div>
+      </a>
+
+    </mat-nav-list>
+  </mat-toolbar>
+  <!--  header for admin is completed-->
+
+
+  <!--For Developer-->
+  <mat-toolbar style="background-color: #7E7E7E;" *ngIf="isAuthenticated && isDeveloper">
+    <!-- for desktop view -->
+    <mat-toolbar-row fxLayoutAlign="space-between center" *ngIf="!deviceXs">
+      <div fxLayout="row">
+        <button mat-button style="background-color: rgba(255,215,0,0.05)" [routerLink]="['developer']">
+          <i class="bi bi-gear-wide-connected" style="font-size: 25px;"></i>
+          <span class="logo">Developer</span>
+        </button>
+        <div class="clock-container clock2" *ngIf="alwaysTime">
+          <div class="time">{{alwaysTime}}</div>
+        </div>
+        <div *ngIf="!deviceXs">
+          <button mat-button [routerLink]="['/']" routerLinkActive="MyActiveMenu"
+            [routerLinkActiveOptions]="{exact: true}">Home</button>
+
+        </div>
+      </div>
+      <div>
+
+        <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout<i
+            class="ri-logout-circle-r-line ri-2x"></i></button>
+      </div>
+    </mat-toolbar-row>
+    <!-- for mobile view -->
+    <mat-toolbar-row *ngIf="deviceXs" fxLayoutAlign="space-between end">
+      <button mat-button [matMenuTriggerFor]="menu"
+        style="line-height: 18px !important; font-size: small; padding-top: 15px;"><i
+          class="ri-menu-line"></i>Menu</button>
+      <span class="logo" style="padding-right: 120px; font-size: small; line-height: 18px !important;"><i
+          class="ri-smartphone-line"></i>Developer</span>
+      <mat-menu #menu="matMenu" style="width: 20px !important;">
+        <button mat-menu-item [routerLink]="['developer']" routerLinkActive="MyActiveMenu"
+          style="height: 28px ; font-size: small; line-height: 18px !important;">Home</button>
+        <button mat-button *ngIf="isAuthenticated" (click)="logout()"
+          style="font-size: small; line-height: 18px !important;">Logout<i
+            class="ri-logout-circle-r-line ri-1x"></i></button>
+      </mat-menu>
+    </mat-toolbar-row>
+
+  </mat-toolbar>
+
+  <!--  For Super Stockist-->
+  <mat-toolbar color="accent" *ngIf="isAuthenticated && isSuperStockist">
+
+
+
+    <mat-nav-list>
+
+      <div class="logo py-4" style="color: #ff8c00;">
+        <a class="logo">Balance: <span class="ml-3">{{user.balance}}</span></a>
+      </div>
+
+
+      <div class="logo py-4">
+        <a class="logo" [routerLink]="['superStockistCPanel']"><i class="bi bi-geo-alt"
+            style="color: #2fff00 !important; font-size: x-large"></i><span class="ml-3">SuperStockist</span></a>
+      </div>
+      <mat-divider></mat-divider>
+      <!--      <h2 matSubheader class="mt-2" class="header-text">APPLICATIONS</h2>-->
+
+
+      <a mat-list-item routerLinkActive="list-item-active">
+        <div [routerLink]="['/']" routerLinkActive="MyActiveMenu" [routerLinkActiveOptions]="{exact: true}"
+          class="header-text">Home</div>
+      </a>
+
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="list-item-active"
+        (click)="toggleISuperStockistMaster()">
+        <div class="header-text"><i class="bi bi-person" style="color: #26ff00 !important; font-size: x-large"></i><span
+            class="ml-3">Master</span></div>
+      </a>
+      <div *ngIf="displaySuperStockistMaster">
+        <!--        <a mat-list-item [routerLink]="['/superStockistCPanel']"  routerLinkActive="list-item-active">-->
+        <!--          &nbsp;Super Stockist-->
+        <!--        </a>-->
+        <a mat-list-item [routerLink]="['/superStockistMasterStockist']" routerLinkActive="list-item-active"
+          class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Stockist</span>
+        </a>
+        <a mat-list-item [routerLink]="['/superStockistTerminal']" routerLinkActive="list-item-active"
+          class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Terminal</span>
+        </a>
+      </div>
+
+
+
+      <a mat-list-item [routerLink]="['/superStockistReport']" routerLinkActive="list-item-active"
+        (click)="toggleSuperStockistReport()">
+        <div class="header-text"><i class="bi bi-award-fill" style="color: #ff8c00 !important; font-size: x-large"></i>
+          <span class="ml-3">Reports</span>
+        </div>
+      </a>
+
+      <a mat-list-item [routerLink]="['/superStockistTurnOverReport']" routerLinkActive="list-item-active"
+        (click)="toggleSuperStockistReport()">
+        <div class="header-text"><i class="bi bi-award-fill" style="color: #ff8c00 !important; font-size: x-large"></i>
+          <span class="ml-3">Turn Over Reports</span>
+        </div>
+      </a>
+
+      <a mat-list-item [routerLink]="['/superStockistResetPassword']" routerLinkActive="list-item-active">
+        <div class="header-text"><i class="bi bi-award-fill" style="color: #ff8c00 !important; font-size: x-large"></i>
+          <span class="ml-3">Reset Password</span>
+        </div>
+      </a>
+
+
+
+      <!-- <div *ngIf="displaySuperStockistReport">
+        <a mat-list-item [routerLink]="['/superStockistReport']" routerLinkActive="list-item-active"
+          class="header-text">
+          &nbsp;<i class="bi bi-arrow-bar-right" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">Reports</span>
+        </a>
+      </div> -->
+
+
+
+      <a mat-list-item routerLinkActive="list-item-active">
+        <div [routerLink]="['/resultCPanel']" routerLinkActive="MyActiveMenu" [routerLinkActiveOptions]="{exact: true}"
+          class="header-text"><i class="bi bi-gem" style="color: #00ffb7 !important; font-size: x-large"></i> <span
+            class="ml-3">Result</span></div>
+      </a>
+
+      <a mat-list-item routerLinkActive="list-item-active">
+        <div *ngIf="isAuthenticated" (click)="logout()" class="header-text"><i class="ri-logout-circle-r-line ri-1x"
+            style="color: #ff0077 !important; font-size: x-large"></i><span class="ml-3">LogOut</span></div>
+      </a>
+
+    </mat-nav-list>
+  </mat-toolbar>
+
+  <!--For Stockist-->
+  <mat-toolbar color="accent" *ngIf="isAuthenticated && isStockist">
+
+
+    <mat-nav-list>
+
+      <div class="logo py-4" style="color: #ff8c00;">
+        <a class="logo">Balance: <span class="ml-3">{{user.balance}}</span></a>
+      </div>
+
+
+      <div class="logo py-4">
+        <a class="logo" class="header-text" class="header-text"><i class="bi bi-geo-alt"
+            style="color: #2fff00 !important; font-size: x-large"></i><span class="ml-3">Stockist</span></a>
+      </div>
+      <mat-divider></mat-divider>
+      <!-- <h2 matSubheader class="mt-2" class="header-text">APPLICATIONS</h2> -->
+
+
+      <a mat-list-item routerLinkActive="list-item-active">
+        <div [routerLink]="['/']" routerLinkActive="MyActiveMenu" [routerLinkActiveOptions]="{exact: true}"
+          class="header-text" class="header-text"><i class="bi bi-shop"
+            style="color: yellow !important; font-size: x-large"></i> <span class="ml-3">Home</span></div>
+      </a>
+
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="list-item-active" (click)="toggleStockistMaster()">
+        <div class="header-text" class="header-text"><i class="bi bi-person"
+            style="color: #26ff00 !important; font-size: x-large"></i><span class="ml-3">Master</span></div>
+      </a>
+      <div *ngIf="displayStockistMaster">
+        <!--        <a mat-list-item [routerLink]="['/superStockistCPanel']"  routerLinkActive="list-item-active">-->
+        <!--          &nbsp;Super Stockist-->
+        <!--        </a>-->
+        <!--        <a mat-list-item [routerLink]="['/superStockistMasterStockist']"  routerLinkActive="list-item-active">-->
+        <!--          &nbsp;Stockist-->
+        <!--        </a>-->
+        <a mat-list-item [routerLink]="['/stockiestMasterTerminal']" routerLinkActive="list-item-active"
+          class="header-text" class="header-text">
+          &nbsp;Terminal
+        </a>
+      </div>
+
+
+
+      <a mat-list-item routerLink="/dashboard" [routerLink]="['/stockiestReport']" routerLinkActive="list-item-active">
+        <div class="header-text" class="header-text"><i class="bi bi-award-fill"
+            style="color: #ff8c00 !important; font-size: x-large"></i><span class="ml-3">Report</span></div>
+      </a>
+      <a mat-list-item [routerLink]="['/stockistTurnOverReport']" routerLinkActive="list-item-active">
+        <div class="header-text" class="header-text"><i class="bi bi-award-fill"
+            style="color: #ff8c00 !important; font-size: x-large"></i><span class="ml-3">Turn Over Report</span></div>
+      </a>
+      <!--      <div *ngIf="displaySuperStockistReport">-->
+      <!--        <a mat-list-item [routerLink]="['/superStockistReport']"  routerLinkActive="list-item-active">-->
+      <!--          &nbsp;Reports-->
+      <!--        </a>-->
+      <!--        &lt;!&ndash;        <a mat-list-item [routerLink]="['/load']"  routerLinkActive="list-item-active">&ndash;&gt;-->
+      <!--        &lt;!&ndash;          &nbsp;Load&ndash;&gt;-->
+      <!--        &lt;!&ndash;        </a>&ndash;&gt;-->
+      <!--      </div>-->
+
+      <a mat-list-item [routerLink]="['/stockistResetPassword']" routerLinkActive="list-item-active">
+        <div class="header-text" class="header-text"><i class="bi bi-gem"
+            style="color: #00ffb7 !important; font-size: x-large"></i> <span class="ml-3">Reset Password</span></div>
+      </a>
+
+      <a mat-list-item [routerLink]="['/resultCPanel']" routerLinkActive="list-item-active">
+        <div class="header-text" class="header-text"><i class="bi bi-gem"
+            style="color: #00ffb7 !important; font-size: x-large"></i> <span class="ml-3">Result</span></div>
+      </a>
+
+
+
+      <a mat-list-item routerLinkActive="list-item-active">
+        <div *ngIf="isAuthenticated" (click)="logout()" class="header-text" class="header-text"><i
+            class="ri-logout-circle-r-line ri-1x" style="color: #ff0077 !important; font-size: x-large"></i><span
+            class="ml-3">LogOut</span></div>
+      </a>
+
+    </mat-nav-list>
+
+  </mat-toolbar>
+
+
+
+
+
+  <!--For Terminal-->
+  <mat-toolbar color="golden"
+    style="background-color: #21d190;  background-image: linear-gradient(315deg, #093028 0%, #237A57 74%); color: rgb(255, 255, 255);"
+    *ngIf="isAuthenticated && isTerminal">
+    <!--    for desktop view-->
+    <!--    <mat-toolbar-row fxLayoutAlign="space-between center" *ngIf="!deviceXs">-->
+    <!--      <div fxLayout="row">-->
+    <!--        <button mat-button [routerLink]="['terminal']">-->
+
+    <!--          <i class="bi bi-bookmark-star-fill" style="font-size: 25px;"></i>-->
+    <!--          <span class="logo">{{user.userName}}</span>-->
+    <!--        </button>-->
+
+    <!--        <div *ngIf="!deviceXs">-->
+    <!--          <button class=" mt-2 ml-1 mr-1" style="font-size: large;" mat-button-->
+    <!--                  [routerLink]="['/']"-->
+    <!--                  routerLinkActive="MyActiveMenu"-->
+    <!--                  [routerLinkActiveOptions]="{exact: true}">Home</button>-->
+    <!--          &lt;!&ndash; <mat-slider min="1" max="5" step="1" value="1" (input)="onMatSliderInputChange($event)"></mat-slider> &ndash;&gt;-->
+    <!--        </div>-->
+    <!--        <div class=" mt-2 ml-1 mr-1" style="font-size: large;">Balc:{{user.balance}}</div>-->
+
+
+    <!--        <span class="mt-2 ml-1 mr-1" *ngIf="drawHour>9" style="font-size: large;">Next draw: </span>-->
+    <!--        <span class="mt-2 ml-1 mr-1" *ngIf="drawHour<=9" style="font-size: large;">Next draw:{{activeDrawTime.visibleTime}}</span>-->
+
+    <!--        <div style="margin-left: 50px; margin-top: 10px;">{{currentDate}}&nbsp;-->
+    <!--        </div>-->
+
+    <!--        &lt;!&ndash; <div class="clock-container clock2 ml-1 mt-0 pt-1" *ngIf="alwaysTime" style="font-size: large; width: 150px;">-->
+    <!--          <div class="time">{{alwaysTime}}</div>-->
+    <!--        </div> &ndash;&gt;-->
+
+    <!--      </div>-->
+
+    <!--      <div fxLayout="row">-->
+
+    <!--        <div class="clock-container clock2 ml-1 mt-0 pt-1 " *ngIf="remainingTime" style="font-size: large; width: 150px;">-->
+    <!--          <div class="time bg-danger" *ngIf="value>=0">{{remainingTime}}</div>-->
+    <!--          <div class="time bg-danger" *ngIf="value<0">00:00:00</div>-->
+
+    <!--         &lt;!&ndash; <div class="time bg-danger" >{{remainingTime}}</div> &ndash;&gt;-->
+    <!--        </div>-->
+    <!--        <div class="clock-container clock2 ml-1 mt-0 pt-1" *ngIf="alwaysTime" style="font-size: large; width: 150px;">-->
+    <!--          <div class="time bg-success">{{alwaysTime}}</div>-->
+    <!--        </div>-->
+    <!--          <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout<i class="ri-logout-circle-r-line ri-2x"></i></button>-->
+    <!--      </div>-->
+    <!--    </mat-toolbar-row>-->
+    <!--&lt;!&ndash;    for mobile view&ndash;&gt;-->
+    <!--    <mat-toolbar-row *ngIf="deviceXs" fxLayoutAlign="space-between end">-->
+    <!--      <button mat-button [matMenuTriggerFor]="menu" style="line-height: 18px !important; font-size: small; padding-top: 15px;"><i class="ri-menu-line"></i>Menu</button>-->
+
+    <!--        <span class="logo" style="padding-right: 120px; font-size: small; line-height: 18px !important;"><i class="ri-smartphone-line"></i>Terminal</span>-->
+
+    <!--       <mat-menu #menu="matMenu" style="width: 20px !important;">-->
+    <!--         <button mat-menu-item [routerLink]="['terminal']" routerLinkActive="MyActiveMenu" style="height: 28px ; font-size: small; line-height: 18px !important;" >Home</button>-->
+    <!--         <button mat-button *ngIf="isAuthenticated" (click)="logout()" style="font-size: small; line-height: 18px !important;">Logout<i class="ri-logout-circle-r-line ri-1x"></i></button>-->
+    <!--       </mat-menu>-->
+    <!--    </mat-toolbar-row>-->
+
+    <mat-nav-list>
+
+      <div class="logo py-4">
+        <a class="logo" class="header-text text-center">{{user.userName}}</a>
+      </div>
+      <mat-divider></mat-divider>
+
+      <!--      <span class="mt-2 ml-1 mr-1" *ngIf="drawHour<=9" style="font-size: large;">Next draw: {{activeDrawTime.visibleTime}}</span>-->
+      <!--      <mat-divider></mat-divider>-->
+      <!-- <h2 matSubheader class="mt-2" class="header-text">APPLICATIONS</h2> -->
+
+
+      <a mat-list-item routerLinkActive="list-item-active">
+        <div [routerLink]="['/']" routerLinkActive="MyActiveMenu" [routerLinkActiveOptions]="{exact: true}"
+          class="header-text">Home</div>
+      </a>
+
+      <!--      <a mat-list-item routerLink="/dashboard" routerLinkActive="list-item-active" (click)="toggleStockistMaster()">-->
+      <!--        <div >Master</div>-->
+      <!--      </a>-->
+      <!--      <div *ngIf="displayStockistMaster">-->
+      <!--        &lt;!&ndash;        <a mat-list-item [routerLink]="['/superStockistCPanel']"  routerLinkActive="list-item-active">&ndash;&gt;-->
+      <!--        &lt;!&ndash;          &nbsp;Super Stockist&ndash;&gt;-->
+      <!--        &lt;!&ndash;        </a>&ndash;&gt;-->
+      <!--        &lt;!&ndash;        <a mat-list-item [routerLink]="['/superStockistMasterStockist']"  routerLinkActive="list-item-active">&ndash;&gt;-->
+      <!--        &lt;!&ndash;          &nbsp;Stockist&ndash;&gt;-->
+      <!--        &lt;!&ndash;        </a>&ndash;&gt;-->
+      <!--        <a mat-list-item [routerLink]="['/stockiestMasterTerminal']"  routerLinkActive="list-item-active">-->
+      <!--          &nbsp;Terminal-->
+      <!--        </a>-->
+      <!--      </div>-->
+
+
+
+      <!--      <a mat-list-item routerLink="/dashboard" [routerLink]="['/stockiestReport']"  routerLinkActive="list-item-active" >-->
+      <!--        <div >Report</div>-->
+      <!--      </a>-->
+      <!--      &lt;!&ndash;      <div *ngIf="displaySuperStockistReport">&ndash;&gt;-->
+      <!--      &lt;!&ndash;        <a mat-list-item [routerLink]="['/superStockistReport']"  routerLinkActive="list-item-active">&ndash;&gt;-->
+      <!--      &lt;!&ndash;          &nbsp;Reports&ndash;&gt;-->
+      <!--      &lt;!&ndash;        </a>&ndash;&gt;-->
+      <!--      &lt;!&ndash;        &lt;!&ndash;        <a mat-list-item [routerLink]="['/load']"  routerLinkActive="list-item-active">&ndash;&gt;&ndash;&gt;-->
+      <!--      &lt;!&ndash;        &lt;!&ndash;          &nbsp;Load&ndash;&gt;&ndash;&gt;-->
+      <!--      &lt;!&ndash;        &lt;!&ndash;        </a>&ndash;&gt;&ndash;&gt;-->
+      <!--      &lt;!&ndash;      </div>&ndash;&gt;-->
+
+      <!--      <a mat-list-item routerLink="/dashboard" [routerLink]="['/stockiestResult']"  routerLinkActive="list-item-active" >-->
+      <!--        <div >Result</div>-->
+      <!--      </a>-->
+
+
+
+      <a mat-list-item routerLinkActive="list-item-active">
+        <div *ngIf="isAuthenticated" (click)="logout()" class="header-text">LogOut<i
+            class="ri-logout-circle-r-line ri-1x"></i></div>
+      </a>
+
+    </mat-nav-list>
+  </mat-toolbar>
+  <!--  header for terminal is completed-->
+</div>

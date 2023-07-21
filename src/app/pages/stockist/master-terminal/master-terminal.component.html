@@ -1,0 +1,753 @@
+<div style="text-align: center;"><h1>Terminal</h1></div>
+
+<mat-tab-group [selectedIndex]="selectedTab">
+  <mat-tab label="Create">
+    <!--    first tab-->
+
+    <div class=" flex-row mt-2">
+      <div class="col">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>New Terminal Form</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100">
+                <form [formGroup]="terminalMasterForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Terminal Name</mat-label>
+                      <input type="text" matInput formControlName="terminalName" placeholder="Enter name" (change)="checkPinValidation()">
+
+                      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="!terminalMasterForm.get('terminalName').valid && terminalMasterForm.get('terminalName').touched">
+                        <mat-error *ngIf="terminalMasterForm.get('terminalName').errors['required']">This field is Required</mat-error>
+                        <mat-error *ngIf="terminalMasterForm.get('terminalName').errors['minlength']">Minimum length of name is {{terminalMasterForm.get('terminalName').errors.minlength.requiredLength}}</mat-error>
+                      </div>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="100">
+                      <mat-label>PIN</mat-label>
+                      <input type="text" matInput formControlName="pin" placeholder="Enter name">
+                    </mat-form-field>
+
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Stockist</mat-label>
+                      <mat-select formControlName="stockistId" disabled>
+                        <mat-option *ngFor="let stockist of stockists" [value]="stockist.userId">
+                          {{stockist.userName}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Payout Slab</mat-label>
+                      <mat-select formControlName="payoutSlabId">
+                        <mat-option *ngFor="let payoutSlab of payoutSlabs" [value]="payoutSlab.id">
+                          {{payoutSlab.slab_status}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="100">
+                      <mat-label>Super Stockist</mat-label>
+                      <mat-select formControlName="superStockistId" disabled>
+                        <mat-option *ngFor="let superStockist of superStockists" [value]="superStockist.userId">
+                          {{superStockist.userName}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <div class=" m-1 p-0">
+                      <mat-form-field >
+                        <mat-label>Commission</mat-label>
+                        <input type="text" matInput formControlName="commission" placeholder="Commission">
+                      </mat-form-field>
+                      <label style="color: red">(Max: {{user.commission}})</label>
+                    </div>
+
+                    <div class="col-8 m-0 p-0">
+
+                      <div fxFlex="100" class="d-flex " *ngIf="!isTerminalUpdatAble">
+                        <!-- <div fxFlex="30" class="m-2">
+                          <mat-label>Tripple Chance </mat-label>
+                          <input type="checkbox" [checked]="game1 == 1" (click)="enableGameCreateTerminal(1)">
+                        </div>
+                        <div fxFlex="15" class="m-2">
+                          <mat-label>12 Card </mat-label>
+                          <input type="checkbox" [checked]="game2 == 1" (click)="enableGameCreateTerminal(2)">
+                        </div>
+                        <div fxFlex="15" class="m-2">
+                          <mat-label>16 Card </mat-label>
+                          <input type="checkbox" [checked]="game3 == 1" (click)="enableGameCreateTerminal(3)">
+                        </div> -->
+                        <div fxFlex="15" class="m-2">
+                          <mat-label>Single </mat-label>
+                          <input type="checkbox" [checked]="game4 == 1" (click)="enableGameCreateTerminal(4)">
+                        </div>
+                        <!-- <div fxFlex="15" class="m-2">
+                          <mat-label>Double </mat-label>
+                          <input type="checkbox" [checked]="game5 == 1" (click)="enableGameCreateTerminal(5)">
+                        </div> -->
+                      </div>
+
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <button class="pull-right" mat-raised-button color="primary"mat-stroked-button (click)="createNewTerminal()" >Create</button>
+              <!-- <button class="pull-right" mat-raised-button color="primary"mat-stroked-button (click)="createNewTerminal()" [disabled]="!terminalMasterForm.valid || isTerminalUpdatAble || pinCheckValidator">Create</button> -->
+              <button class="pull-right" mat-raised-button color="primary"mat-stroked-button (click)="updateTerminal()" [disabled]="!isTerminalUpdatAble">Update</button>
+              <button class="pull-right" mat-raised-button color="warn" mat-stroked-button (click)="clearMasterTerminalForm()">clear</button>
+            </div>
+
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+
+      <div class="mt-2" style="background-color: #6c757d5e">
+        <!--        <div class="d-flex flex-row-reverse"><button class="pt-3" style="border: 2px black solid" mat-button color="primary"> Refresh <span class="material-icons">refresh</span> </button></div>-->
+
+        <table matSort (matSortChange)="sortData($event)" class="table table-bordered table-sm"
+          style="border: none !important; color: white;">
+          <thead>
+            <tr>
+              <th scope="colgroup" colspan="6" class="text-center">Terminal List</th>
+              <th scope="colgroup" colspan="2" class="text-center">
+                <label>Search</label>
+                <input class="col-12" [(ngModel)]="searchItem" placeholder="Search">
+              </th>
+              <th scope="colgroup" colspan="2" class="text-center">
+                <label>No. of items</label>
+                <input class="col-12" [(ngModel)]="itemsOnEveryPage" placeholder="Items">
+              </th>
+              <th scope="colgroup" colspan="2" class="text-center"><button mat-button color="primary"
+                  (click)="refreshTerminalList()"> Refresh <span class="material-icons">refresh</span> </button></th>
+            </tr>
+            <tr>
+              <th>Id</th>
+              <th mat-sort-header="terminalName">T name</th>
+              <th mat-sort-header="pin">Pass</th>
+              <th mat-sort-header="balance">Comm</th>
+              <th mat-sort-header="balance">Balance</th>
+              <th mat-sort-header="stockistName">SS Name</th>
+              <th mat-sort-header="stockistName">S Name</th>
+              <th>Login Approve</th>
+<!--              <th>Status</th>-->
+              <th>Action</th>
+              <th mat-sort-header="stockistName">Blocked</th>
+              <th mat-sort-header="stockistName">Auto Claim</th>
+              <th mat-sort-header="edit">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr [ngStyle]="getBackgroundColor(indexOfElement, terminal)"
+              *ngFor="let terminal of sortedTerminalList| filter: searchItem | paginate: { itemsPerPage: itemsOnEveryPage, currentPage: p1 };let indexOfElement=index">
+              <td>{{(indexOfElement+1)}}</td>
+              <td class="d-flex">
+                {{terminal.terminalName}}
+                <div *ngIf="terminal.platform=='exe' && terminal.version == 'P'"><img loading="lazy" decoding="async" height="20" src="assets/images/pc_print.png"></div>
+                <div *ngIf="terminal.platform=='exe' && terminal.version == 'NP'"><i class="bi bi-pc-display-horizontal"></i></div>
+                <div *ngIf="terminal.platform=='apk' && terminal.version == 'P'"><img loading="lazy" decoding="async" height="20" src="assets/images/mobile_print.png"></div>
+                <div *ngIf="terminal.platform=='apk' && terminal.version == 'NP'"><i class="bi bi-phone"></i></div>
+              </td>
+              <td>{{terminal.password}}</td>
+              <td>{{terminal.commission}}</td>
+              <td>{{terminal.balance}}</td>
+              <td>{{terminal.superStockist.userName}}</td>
+              <td>{{terminal.stockist.userName}}</td>
+              <td>
+                <button *ngIf="terminal.loginActivate == 1" mat-button color="primary" (click)="approveLogin(terminal)"
+                  style="border: black solid 1px">Approve</button>
+                <label *ngIf="terminal.loginActivate == 2">Approved</label>
+              </td>
+              <td>
+                <a style="cursor: pointer"><img src="assets/images/transfer_point.png" (click)="onTerminalSelectTransferPoint(terminal.terminalId); selectedTab = 1"></a>
+                <a style="cursor: pointer"><img src="assets/images/adjust_point.png" (click)="onTerminalSelect(terminal.terminalId); selectedTab = 2"></a>
+              </td>
+<!--              <td>-->
+<!--                <div *ngIf="terminal.status=='Offline'" class="d-flex"> {{terminal.status}} <span-->
+<!--                    class="bi bi-dot red-color"> </span></div>-->
+<!--                <div *ngIf="terminal.status=='Online'" class="d-flex"> {{terminal.status}} <span-->
+<!--                    class="bi bi-dot green-color"> </span></div>-->
+<!--              </td>-->
+              <td><input type="checkbox" [checked]="terminal.blocked == 1" (click)="updateBlock(terminal.terminalId)">
+              </td>
+              <td><input type="checkbox" [checked]="terminal.autoClaim == 1"
+                  (click)="updateAutoClaim(terminal.terminalId)"></td>
+              <td><i class="bi bi-pencil-square" (click)="editTerminal(terminal)"></i></td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p1 = $event"></pagination-controls>
+
+
+      </div>
+    </div>
+
+  </mat-tab>
+
+  <!--second tab-->
+  <mat-tab label="Transfer Point">
+
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Recharge Terminal</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100">
+                <form [formGroup]="terminalLimitForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="25">
+                      <mat-label>Terminal</mat-label>
+                      <mat-select (selectionChange)="onTerminalSelectTransferPoint($event)" formControlName="beneficiaryUid">
+                        <mat-option *ngFor="let terminal of sortedTerminalList" [value]="terminal.terminalId">
+                          {{terminal.pin}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminalTransferPoint">
+                      <mat-label>Name</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [value]="selectedTerminalTransferPoint.terminalName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminalTransferPoint">
+                      <mat-label>Current balance</mat-label>
+                      <input type="text" readonly matInput [value]="selectedTerminalTransferPoint.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="selectedTerminalTransferPoint">
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminalTransferPoint">
+                      <mat-label>Stockist owner</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [value]="selectedTerminalTransferPoint.stockist.userName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminalTransferPoint">
+                      <mat-label>Stockist balance</mat-label>
+                      <input type="text" readonly matInput [value]="selectedTerminalTransferPoint.stockist.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="selectedTerminalTransferPoint">
+                    <mat-form-field class="d-flex" fxFlex="100" *ngIf="selectedTerminalTransferPoint">
+                      <mat-label>Recharge amount</mat-label>
+                      <input type="number" min="1" matInput formControlName="amount"  placeholder="Enter amount">
+                      <mat-icon matSuffix> money</mat-icon>
+                      <!-- <mat-error *ngIf="terminalLimitForm.get('amount').hasError('max')">
+                        Amount should not exceed {{terminalLimitForm.controls.amount.errors.max.max}}
+                      </mat-error> -->
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <!-- <button class="pull-right" mat-raised-button color="warn" mat-stroked-button [disabled]="!terminalLimitForm.valid"
+                            (click)="rechargeToTerminal()">Save</button> -->
+
+                            <button class="pull-right" mat-raised-button color="warn" mat-stroked-button (click)="rechargeToTerminal()">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+
+  </mat-tab>
+
+  <mat-tab label="Adjust Point">
+
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Recharge Terminal</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100">
+                <form [formGroup]="terminalAdjustLimitForm">
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <mat-form-field fxFlex="25">
+                      <mat-label>Terminal</mat-label>
+                      <mat-select (selectionChange)="onTerminalSelect($event)" formControlName="beneficiaryUid">
+                        <mat-option *ngFor="let terminal of sortedTerminalList" [value]="terminal.terminalId">
+                          {{terminal.pin}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminal">
+                      <mat-label>Name</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [value]="selectedTerminal.terminalName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminal">
+                      <mat-label>Current balance</mat-label>
+                      <input type="text" readonly matInput [value]="selectedTerminal.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="selectedTerminal">
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminal">
+                      <mat-label>Stockist owner</mat-label>
+                      <input type="text" matInput readonly  placeholder="Stockist" [value]="selectedTerminal.stockist.userName">
+                      <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="legacy" *ngIf="selectedTerminal">
+                      <mat-label>Stockist balance</mat-label>
+                      <input type="text" readonly matInput [value]="selectedTerminal.stockist.balance"  placeholder="Current balance">
+                      <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0" *ngIf="selectedTerminal">
+                    <mat-form-field class="d-flex" fxFlex="100" *ngIf="selectedTerminal">
+                      <mat-label>Recharge amount</mat-label>
+                      <input type="number" min="1" matInput formControlName="amount"  placeholder="Enter amount">
+                      <mat-icon matSuffix> money</mat-icon>
+                      <!-- <mat-error *ngIf="terminalAdjustLimitForm.get('amount').hasError('max')">
+                        Amount should not exceed {{terminalAdjustLimitForm.controls.amount.errors.max.max}}
+                      </mat-error> -->
+                    </mat-form-field>
+                  </div>
+
+                  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+                    <button class="pull-right" mat-raised-button color="warn" mat-stroked-button (click)="adjustPointToTerminal()">Save</button>
+                            <!-- [disabled]="!terminalAdjustLimitForm.valid" -->
+                  </div>
+                </form>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div>
+    <!-- <div><pre>{{terminalAdjustLimitForm.value | json}}</pre></div> -->
+
+  </mat-tab>
+
+  <mat-tab label="Full Transaction">
+    <!-- <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Terminal Transaction Report</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100">
+
+                  <div fxFlex="45">
+                    <ng-select [items]="sortedTerminalList"
+                               bindLabel="pin"
+                               bindValue="terminalId"
+                               [(ngModel)]="transactionId">
+                    </ng-select>
+                    <button class="ml-4" mat-raised-button color="warn" (click)="getTransactionDetails()">Get Transaction</button>
+                  </div>
+
+                <div class="ml-5" fxFlex="50">
+                  <div class="d-flex" >
+                    <div class="d-flex col-7">
+                      <form class="example-form">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>Email</mat-label>
+                          <input type="email" matInput [formControl]="emailFormControl"
+                                 placeholder="Ex. pat@example.com">
+                        </mat-form-field>
+
+                        <label style="color: red">NOTE: Only 30 days transaction will be mailed</label>
+                      </form>
+                    </div>
+                    <div class="d-flex mt-2">
+                      <button *ngIf='mailStatus === 0' style="max-height: 40px" mat-raised-button color="warn" [disabled]="!emailFormControl.valid || emailFormControl.value == null" (click)="sendMailTransaction()">Send Mail</button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-2"></div>
+    </div> -->
+
+
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Terminal Transaction Report</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px"
+              fxLayoutGap.xs="0">
+              <div fxFlex="100">
+
+                <div fxFlex="45">
+                  <!-- <ng-select [items]="sortedTerminalList" bindLabel="pin" bindValue="terminalId"
+                    [(ngModel)]="transactionId">
+                  </ng-select> -->
+                  <mat-form-field fxFlex="row">
+
+                    <mat-label>Terminal</mat-label>
+
+                    <mat-select (selectionChange)="onTerminalSelect($event)" formControlName="beneficiaryUid">
+                      <mat-option *ngFor="let terminal of sortedTerminalList" [(ngModel)]="transactionId"
+                        [value]="terminal.terminalId">
+                        {{terminal.pin}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+
+
+                <div class="ml-5" fxFlex="50">
+                  <div class="">
+                    <div class="d-flex col-7">
+                      <form class="example-form">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>Email</mat-label>
+                          <input type="email" matInput [formControl]="emailFormControl"
+                            placeholder="Ex. pat@example.com">
+                        </mat-form-field>
+
+                        <label style="color: red">NOTE: Only 30 days transaction will be mailed</label>
+                      </form>
+                    </div>
+                    <div class="d-flex mt-2">
+                      <button *ngIf='mailStatus === 0' style="max-height: 40px" mat-raised-button color="warn"
+                        [disabled]="!emailFormControl.valid || emailFormControl.value == null"
+                        (click)="sendMailTransaction()">Send Mail</button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+          <div class="d-flex">
+            <button class="ml-4" mat-raised-button color="warn" (click)="getTransactionDetails()">Get
+              Transaction</button>
+
+
+          </div>
+
+        </mat-card>
+
+      </div>
+      <div class="col-2"></div>
+    </div>
+
+    <div class="mt-2" style="background-color: #6c757d5e">
+
+      <table matSort (matSortChange)="sortData($event)" class="table table-bordered table-sm" style="border: none !important; color: white;">
+        <thead>
+        <tr>
+          <th scope="colgroup" colspan="4" class="text-center">Terminal List</th>
+          <th scope="colgroup" colspan="2" class="text-center">
+            <label>Search</label>
+            <input class="col-12" [(ngModel)]="searchItem" placeholder="Search">
+          </th>
+          <th scope="colgroup" colspan="2" class="text-center">
+            <label>No. of items</label>
+            <input class="col-12" [(ngModel)]="itemsOnEveryPage" placeholder="Items">
+          </th>
+        </tr>
+        <tr>
+          <th >SL No.</th>
+          <th>Description</th>
+          <th>Date and Time</th>
+          <th>Game Name</th>
+          <th>Barcode</th>
+          <th>Opening balance</th>
+          <th>Recharged</th>
+          <th>Played</th>
+          <th>Prize</th>
+          <th>Closing Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of transactionDetails; let i = index ">
+            <td >{{i+1}}</td>
+            <td >{{data.description}}</td>
+            <td >{{data.date}} ({{data.time}})</td>
+            <td >{{data.game_name}}</td>
+            <td >{{data.barcode_number}}</td>
+            <td >{{data.old_amount}}</td>
+            <td >{{data.recharged_amount}}</td>
+            <td >{{data.played_amount}}</td>
+            <td >{{data.prize_amount}}</td>
+            <td >{{data.new_amount}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+      <pagination-controls (pageChange)="p1 = $event"></pagination-controls>
+
+
+
+    </div>
+  </mat-tab>
+
+  <!-- <mat-tab label="Tranaction">
+
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Terminal Transaction Report</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100">
+
+                <div fxFlex="60">
+                  <ng-select [items]="sortedTerminalList"
+                             bindLabel="pin"
+                             bindValue="terminalId"
+                             [(ngModel)]="rechargedToID">
+                  </ng-select>
+                </div>
+
+
+              </div>
+            </div>
+            <button class="ml-4" mat-raised-button color="warn" (click)="getTransaction()">Search</button>
+
+          </mat-card-content>
+        </mat-card>
+
+
+      </div>
+
+      <div class="col-2"></div>
+    </div>
+    <div class="mt-2" style="background-color: #6c757d5e">
+
+      <table matSort (matSortChange)="sortData($event)" class="table table-bordered table-sm" style="border: none !important;">
+        <thead>
+        <tr>
+          <th scope="colgroup" colspan="4" class="text-center">Terminal List</th>
+        </tr>
+        <tr>
+          <th >Id</th>
+          <th mat-sort-header="terminalName">Recharge To</th>
+          <th mat-sort-header="pin">Recharge By</th>
+          <th mat-sort-header="balance">Old Amount</th>
+          <th mat-sort-header="balance">Recharged Amount</th>
+          <th mat-sort-header="stockistName">New Amount</th>
+          <th mat-sort-header="stockistName">Date and Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of transactionData; let i = index ">
+          <td >{{i+1}}</td>
+          <td >{{data.rechargedTo.userName}}</td>
+          <td >{{data.rechargedby.userName}}</td>
+          <td >{{data.oldAmount}}</td>
+          <td >{{data.rechargedAmount}}</td>
+          <td >{{data.newAmount}}</td>
+          <td >{{data.dateAndTime}}</td>
+        </tr>
+        </tbody>
+
+      </table>
+
+
+    </div>
+
+  </mat-tab> -->
+
+  <mat-tab label="Terminal Tranaction">
+
+    <div class="d-flex flex-row mt-2">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Terminal Transaction Report</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100">
+
+                <div fxFlex="60">
+                  <ng-select [items]="sortedTerminalList"
+                             bindLabel="pin"
+                             bindValue="terminalId"
+                             [(ngModel)]="rechargedToID">
+                  </ng-select>
+                </div>
+
+
+              </div>
+            </div>
+            <button class="ml-4" mat-raised-button color="warn" (click)="getTransaction()">Search</button>
+
+          </mat-card-content>
+        </mat-card>
+
+
+      </div>
+
+      <div class="col-2"></div>
+    </div>
+    <div class="mt-2" style="background-color: #6c757d5e">
+
+      <table matSort (matSortChange)="sortData($event)" class="table table-bordered table-sm" style="border: none !important; color: white;">
+        <thead>
+          <tr>
+            <th scope="colgroup" colspan="4" class="text-center">Terminal List</th>
+          </tr>
+          <tr>
+            <th >Id</th>
+            <th mat-sort-header="terminalName">Recharge To</th>
+            <th mat-sort-header="pin">Recharge By</th>
+            <th mat-sort-header="balance">Old Amount</th>
+            <th mat-sort-header="balance">Recharged Amount</th>
+            <th mat-sort-header="stockistName">New Amount</th>
+            <th mat-sort-header="stockistName">Date and Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of transactionData; let i = index ">
+            <td >{{i+1}}</td>
+            <td >{{data.rechargedTo.userName}}</td>
+            <td >{{data.rechargedby.userName}}</td>
+            <td >{{data.oldAmount}}</td>
+            <td >{{data.rechargedAmount}}</td>
+            <td >{{data.newAmount}}</td>
+            <td >{{data.dateAndTime}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+      <pagination-controls (pageChange)="p1 = $event"></pagination-controls>
+
+
+
+    </div>
+
+  </mat-tab>
+
+  <mat-tab label="Game Allocation">
+
+    <mat-form-field class="example-full-width col-5" appearance="fill">
+      <mat-label>Terminal Name</mat-label>
+      <input matInput placeholder="Terminal Name" [(ngModel)]="terminalFilter">
+    </mat-form-field>
+
+    <table class="table table-bordered col-8" style="color: white;">
+      <thead>
+        <tr>
+          <th scope="colgroup" colspan="2" class="text-center">Game Allocation</th>
+          <th scope="colgroup" colspan="3" class="text-center">
+            <label>Search</label>
+            <input class="col-12" [(ngModel)]="searchItem" placeholder="Search">
+          </th>
+          <th scope="colgroup" colspan="2" class="text-center">
+            <label>No. of items</label>
+            <input class="col-12" [(ngModel)]="itemsOnEveryPage" placeholder="Items">
+          </th>
+          <!-- <th scope="colgroup" colspan="2" class="text-center"><button mat-button color="primary" (click)="refreshTerminalList()"> Refresh <span class="material-icons">refresh</span> </button></th> -->
+        </tr>
+      <tr>
+        <th scope="col">Sl. no.</th>
+        <th scope="col">Terminal Name</th>
+        <!-- <th scope="col">Triple Chance</th> -->
+        <!-- <th scope="col">12 Card</th> -->
+        <!-- <th scope="col">16 Card</th> -->
+        <th scope="col">Single</th>
+        <!-- <th scope="col">Double</th> -->
+        <!-- <th scope="col">Rollet</th> -->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let terminal of sortedTerminalList | filter: terminalFilter;let indexOfElement=index">
+        <td scope="col">{{indexOfElement+1}}</td>
+        <td scope="col">{{terminal.terminalName}}</td>
+        <td scope="col"><input type="checkbox" [checked]="terminal.gamePermission.game1 == 1" (click)="gamePermissionUpdate(1,terminal.terminalId)"></td>
+        <!-- <td scope="col"><input type="checkbox" [checked]="terminal.gamePermission.game2 == 1" (click)="gamePermissionUpdate(2,terminal.terminalId)"></td>
+        <td scope="col"><input type="checkbox" [checked]="terminal.gamePermission.game3 == 1" (click)="gamePermissionUpdate(3,terminal.terminalId)"></td>
+        <td scope="col"><input type="checkbox" [checked]="terminal.gamePermission.game4 == 1" (click)="gamePermissionUpdate(4,terminal.terminalId)"></td>
+        <td scope="col"><input type="checkbox" [checked]="terminal.gamePermission.game5 == 1" (click)="gamePermissionUpdate(5,terminal.terminalId)"></td>
+        <td scope="col"><input type="checkbox" [checked]="terminal.gamePermission.game6 == 1" (click)="gamePermissionUpdate(6,terminal.terminalId)"></td> -->
+      </tr>
+
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p1 = $event"></pagination-controls>
+
+  </mat-tab>
+
+</mat-tab-group>
+
+
+
+<div class="d-flex" *ngIf="!isProduction">
+  <div class="col-3">
+    <mat-slide-toggle (change)="showDevArea=!showDevArea">{{showDevArea?"Hide Developer Area":"Show Developer Area"}}</mat-slide-toggle>
+  </div>
+</div>
+
+<div class="d-flex" *ngIf="!isProduction && showDevArea">
+  <div class="col-6">
+    <pre>
+        {{terminalLimitForm.valid}}
+      <!-- terminalLimitForm = {{terminalLimitForm.controls.amount.errors | json}} -->
+        terminalForm = {{terminalMasterForm.value}}
+      <!--      terminals = {{terminals | json}}-->
+      </pre>
+  </div>
+  <!--  <div class="col-3"><pre>sortedTerminalList = {{sortedTerminalList | json}}</pre></div>-->
+  <div class="col-3"></div>
+</div>

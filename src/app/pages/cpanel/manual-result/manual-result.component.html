@@ -1,0 +1,1215 @@
+<!-- <pre>{{manualResultForm.value}}</pre> -->
+<div [ngClass]="deviceXs?'mobile':'desktop'">
+  <mat-tab-group class="ml-5" >
+    <mat-tab label="Today">
+      <div class="d-flex">
+
+        <div class="d-flex">
+
+          <form [formGroup]="manualResultForm" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">
+            <div class="d-flex flex-column bd-highlight">
+              <div class="p-2 bd-highlight">
+                <div #targetDiv class="row">
+                  <mat-form-field class="col-4">
+                    <mat-label >Draw time</mat-label>
+                    <mat-select formControlName="drawMasterId" placeholder="Category" (selectionChange)="changeTime()">
+                      <mat-option *ngFor="let time of drawTimes" [value]="time.drawId">
+                        {{time.endTime}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class=" d-flex col-2"
+                    style="height: 0px; border-radius: 10px; padding-top: 0px;padding-left: 10px;">
+                    <mat-form-field>
+                      <mat-label>Game</mat-label>
+                      <input type="text" matInput value="Single">
+                      <!-- <mat-select formControlName="gameId" placeholder="Category" (selectionChange)="changeDraw()">
+                        <mat-option *ngFor="let x of games" [value]="x.id">
+                          {{x.game_name}}
+                        </mat-option>
+                      </mat-select> -->
+                    </mat-form-field>
+
+                  </div>
+
+                  <!-- <pre>{{games | json}}</pre> -->
+                </div>
+                <div class="col-8 d-flex">
+                  <!-- <div>
+                    <mat-label>Terminal</mat-label>
+                    <ng-select [items]="sortedTerminalList" bindLabel="pin" bindValue="terminalId"
+                      [(ngModel)]="terminalId">
+                    </ng-select>
+                  </div> -->
+
+                  <!-- <div><button mat-button class="ml-5" (click)="onSearch()">Search Load<i class="bi bi-search pl-2"></i></button></div> -->
+                </div>
+                <!-- <div><button (click)="getGameInputLoad()">view load</button></div> -->
+
+                <div>
+                  <!-- <div class="container">
+                    <button type="button" class="btn btn-primary mt-2" (click)="saveManualResult()">Save</button>
+                    <button  type="button" class="btn btn-primary ml-5 mt-2"   (click)="onSearch()">Search Load<i class="bi bi-search pl-2"></i></button>
+                  </div> -->
+                  <div class="card mt-2" style="width: 18rem;">
+                    <div class="card-header">
+                      Upcoming result
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">{{manualResultForm.value.triple}}</li>
+                      <li class="list-group-item">{{manualResultForm.value.single}}</li>
+                    </ul>
+                  </div>
+                  <!-- <button type="button" class="btn btn-primary mt-2" (click)="saveManualResult()">Save</button> -->
+                  <div class="container">
+                    <button [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}" type="button" class="btn btn-primary mt-2" (click)="saveManualResult()">Save</button>
+                    <button [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}" type="button" class="btn btn-primary ml-2 mt-2" (click)="onSearch()">Search Load<i
+                        class="bi bi-search pl-2"></i></button>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+          </form>
+          <div >
+            <div class="scroll"
+              style="max-width: 600px; overflow-x: scroll; max-height: 300px; min-height: 300px; overflow-y: scroll;">
+<!--              <div class="ml-5" *ngIf="singleNumber.length>0">-->
+              <div class="ml-5" *ngIf="manualResultForm.value.gameId == 1">
+
+                <div >
+                  <h4 [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">Single</h4>
+                  <table  class="table table-bodered" >
+                    <tr>
+                      <td  *ngFor="let tableData of singleNumber.slice(0, singleNumber.length % columnNumber  === 0 ?
+                      singleNumber.length / columnNumber : singleNumber.length / columnNumber + 1); let idx = index">
+                        <div [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '55px'}"
+                          *ngFor="let x of singleNumber.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index">
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+
+                        </div>
+                      </td>
+
+
+                    </tr>
+                  </table>
+                </div>
+
+                <!-- <div>
+                  <h4 [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">Double</h4>
+                  <table [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}" class="table table-bodered">
+                    <tr>
+                      <td *ngFor="let tableData of doubleNumber.slice(0, doubleNumber.length % columnNumber2  === 0 ?
+                      doubleNumber.length / columnNumber2 : doubleNumber.length / columnNumber2 + 1); let idx = index">
+                        <div
+                          *ngFor="let x of doubleNumber.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index">
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div> -->
+
+                <!-- <div>
+                  <h4 [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">Tripple</h4>
+                  <table [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}" class="table table-bodered">
+                    <tr>
+                      <td
+                        *ngFor="let tableData of numberCombinationMatrix.slice(0, numberCombinationMatrix.length % columnNumber2  === 0 ?
+                      numberCombinationMatrix.length / columnNumber2 : numberCombinationMatrix.length / columnNumber2 + 1); let idx = index">
+                        <div
+                          *ngFor="let x of numberCombinationMatrix.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index">
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div> -->
+
+
+              </div>
+
+<!--              <div class="ml-5" *ngIf="singleNumberIndividual.length>0">-->
+              <div class="ml-5" *ngIf="manualResultForm.value.gameId == 4">
+
+                <div>
+                  <h2>Single</h2>
+                  <table class="table table-bodered">
+                    <tr>
+                      <td
+                        *ngFor="let tableData of singleNumberIndividual.slice(0, singleNumberIndividual.length % columnNumber  === 0 ?
+                      singleNumberIndividual.length / columnNumber : singleNumberIndividual.length / columnNumber + 1); let idx = index">
+                        <div
+                          *ngFor="let x of singleNumberIndividual.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index">
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+
+                        </div>
+                      </td>
+
+
+                    </tr>
+                  </table>
+                </div>
+
+              </div>
+
+<!--              <div class="ml-5" *ngIf="doubleNumberIndividual.length>0">-->
+              <!-- <div class="ml-5" *ngIf="manualResultForm.value.gameId == 5">
+
+
+                <div>
+                  <h2>Double</h2>
+                  <table class="table table-bodered">
+                    <tr>
+                      <td
+                        *ngFor="let tableData of doubleNumberIndividual.slice(0, doubleNumberIndividual.length % columnNumber2  === 0 ?
+                        doubleNumberIndividual.length / columnNumber2 : doubleNumberIndividual.length / columnNumber2 + 1); let idx = index">
+                        <div
+                          *ngFor="let x of doubleNumberIndividual.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index">
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div>
+                  <h2>Andar Number</h2>
+                  <table class="table table-bodered">
+                    <tr>
+                      <td
+                        *ngFor="let tableData of andaarNumber.slice(0, andaarNumber.length % columnNumber2  === 0 ?
+                        andaarNumber.length / columnNumber2 : andaarNumber.length / columnNumber2 + 1); let idx = index">
+                        <div
+                          *ngFor="let x of andaarNumber.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index">
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div>
+                  <h2>Bahar Number</h2>
+                  <table class="table table-bodered">
+                    <tr>
+                      <td *ngFor="let tableData of baharNumber.slice(0, baharNumber.length % columnNumber2  === 0 ?
+                        baharNumber.length / columnNumber2 : baharNumber.length / columnNumber2 + 1); let idx = index">
+                        <div
+                          *ngFor="let x of baharNumber.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index">
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+              </div> -->
+              <!-- <div class="ml-5" *ngIf="manualResultForm.value.gameId == 2">
+
+                <div class="lazy" style=" margin-top: 30px; height: 710px;">
+
+                  <div class="d-flex">
+
+                    <div class="col-12" style="padding-top: 50px;">
+
+                      <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/clubs.png" width="25" alt=""></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/diamond.png" width="30" alt=""></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/spade.png" width="25" alt=""></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/heart.png" width="30" alt=""></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row" style="text-align: center;"><img src="assets/images/jack.png" width="50"
+                                alt=""></th>
+
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[0].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/1.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[1].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/2.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[3].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/4.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[2].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/3.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th scope="row"><img src="assets/images/queen.png" width="50" alt=""></th>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[4].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/5.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[5].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/6.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[7].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/8.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[6].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/7.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th scope="row"><img src="assets/images/king.png" width="50" alt=""></th>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[8].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/9.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[9].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/10.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[11].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/12.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{twelveCard[10].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/11.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+              </div> -->
+              <!-- <div class="ml-5" *ngIf="manualResultForm.value.gameId == 3">
+
+                <div class="lazy" style=" margin-top: 30px; height: 869px;">
+
+                  <div class="d-flex">
+
+                    <div class="col-12" style="padding-top: 50px;">
+
+                      <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/clubs.png" width="25" alt=""></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/diamond.png" width="30" alt=""></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/spade.png" width="25" alt=""></th>
+                            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                                src="assets/images/heart.png" width="30" alt=""></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row" style="text-align: center;"><img loading="lazy" decoding="async"
+                                src="assets/images/jack.png" width="50" alt=""></th>
+
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[0].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/1.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[1].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/2.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[3].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/4.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[2].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/3.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th scope="row"><img src="assets/images/queen.png" width="50" alt=""></th>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[4].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/5.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[5].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/6.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[7].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/8.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[6].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/7.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th scope="row"><img src="assets/images/king.png" width="50" alt=""></th>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[8].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/9.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[9].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/10.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[11].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/12.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[10].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/11.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th scope="row"><img src="assets/images/ace.png" width="50" alt=""></th>
+
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[12].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/13.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[13].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/14.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[15].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/16.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                            <td>
+                              <div class="zoom" matBadge="{{sixteenCard[14].quantity}}"
+                                style="width: 60px; height: 80px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 5px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 30px;">
+                                <img loading="lazy" decoding="async" class="p-2" src="assets/images/15.jpg" width="60px"
+                                  alt=""></div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="ml-3">
+          <table class="table-bordered text-center" *ngIf="inputLoad">
+            <thead>
+              <tr>
+                <th scope="col">Single</th>
+                <th scope="col">Triple</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+
+      </div>
+
+      <!-- <div class="p-1" *ngIf="manualResultForm.value.gameId===1">
+
+        <div class="d-flex" style="height: 45px">
+          <div class="col-4" style="text-align: center; align-items: center;">
+            <label class="m-1"
+              style="border: 2px solid black; height: 90%!important ;width: 20%; text-align: center; border-radius: 5px; background: linear-gradient(to left, rgb(203, 203, 228), rgb(102, 101, 101)); color: rgb(0, 0, 0); font-size: x-large;">{{singleNumberVisible}}</label>
+            <label class="m-1"
+              style="border: 2px solid black; height: 90%!important; width: 20%; text-align: center; border-radius: 5px; background-image: radial-gradient( white, rgb(71, 73, 73)); color: rgb(0, 0, 0); font-size: x-large;">{{doubleNumberVisible}}</label>
+            <label class="m-1"
+              style="border: 2px solid black; height: 90%!important; width: 20%; text-align: center; border-radius: 5px;  background: linear-gradient(to right, rgb(203, 203, 228), rgb(102, 101, 101));color: rgb(0, 0, 0); font-size: x-large;">{{tripleNumberVisible}}</label>
+          </div>
+
+        </div>
+
+        <div class="d-flex p-1">
+
+          <div class="col-5 m-0 p-0"
+            style="border: 2px solid green; border-radius: 10px; background-color: rgb(184, 244, 224); background-position: center; color: black;">
+
+            <div class="d-flex flex-row bd-highlight scroll"
+              style="max-width: 400px; overflow-x: hidden; max-height: 500px; overflow-y: scroll;">
+              <div class="d-flex flex-row">
+
+                <div class="p-1"
+                  *ngFor="let tableData of numberCombinationMatrix.slice(0, numberCombinationMatrix.length % columnNumber3  === 0 ?
+                  numberCombinationMatrix.length / columnNumber3 : numberCombinationMatrix.length / columnNumber3 + 1); let idx = index">
+
+
+                  <div
+                    *ngFor="let x of numberCombinationMatrix.slice( idx * columnNumber3, idx * columnNumber3 + columnNumber3); let col=index"
+                    class="single-number-button coder-fab p-1 text-center" style="border: 1px solid rgb(0, 0, 0); margin: 5px; color: black;" [class.green]="isDisabledSingleHeaderButton"
+                    (click)="selectedNumber(2, x.numberCombinationId, x.visibleTripleNumber)">
+                    {{x.visibleTripleNumber}}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+          </div>
+
+
+          
+          <div class="col">
+            <div>
+
+              <table class="table table-bordered table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Game Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Mrp</th>
+                    <th scope="col">Winning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of totalSale">
+                    <td>
+                      {{data.game_type_name}}
+                    </td>
+                    <td>{{data.quantity}}</td>
+                    <td>{{data.mrp}}</td>
+                    <td>{{data.winning}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+
+      <!-- <div class="p-1" *ngIf="manualResultForm.value.gameId===2">
+
+        <div
+          style="background-image: url('/assets/images/twelve-card.background4.jpg'); background-size: cover;border: 30px solid red; margin-top: 30px; height: 710px;">
+
+          <div class="d-flex">
+
+            <div class="col-6" style="padding-top: 50px;">
+
+              <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/clubs.png" width="50" alt=""></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/diamond.png" width="60" alt=""></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/spade.png" width="60" alt=""></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/heart.png" width="80" alt=""></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" style="text-align: center;"><img loading="lazy" decoding="async"
+                        src="assets/images/jack.png" width="50" alt=""></th>
+
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/1.jpg'); selectedNumber(3,1,1)" class="p-2"
+                          src="assets/images/1.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/2.jpg'); selectedNumber(3,2,1)" class="p-2"
+                          src="assets/images/2.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/4.jpg'); selectedNumber(3,4,1)" class="p-2"
+                          src="assets/images/4.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/3.jpg'); selectedNumber(3,3,1)" class="p-2"
+                          src="assets/images/3.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"><img loading="lazy" decoding="async" src="assets/images/queen.png" width="50"
+                        alt=""></th>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/5.jpg'); selectedNumber(3,5,1)" class="p-2"
+                          src="assets/images/5.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/6.jpg'); selectedNumber(3,6,1)" class="p-2"
+                          src="assets/images/6.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/8.jpg'); selectedNumber(3,8,1)" class="p-2"
+                          src="assets/images/8.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/7.jpg'); selectedNumber(3,7,1)" class="p-2"
+                          src="assets/images/7.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"><img loading="lazy" decoding="async" src="assets/images/king.png" width="50" alt="">
+                    </th>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/9.jpg'); selectedNumber(3,9,1)" class="p-2"
+                          src="assets/images/9.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/10.jpg'); selectedNumber(3,10,1)" class="p-2"
+                          src="assets/images/10.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/12.jpg'); selectedNumber(3,12,1)" class="p-2"
+                          src="assets/images/12.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="twelveCardInput('assets/images/11.jpg'); selectedNumber(3,11,1)" class="p-2"
+                          src="assets/images/11.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="col-6 " style="text-align: center; align-content: center;">
+              <div>
+                <h3>Selected Card</h3>
+              </div>
+              <div> <img loading="lazy" decoding="async" width="50%" [src]="twelveSelectedCard"> </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col">
+          <div>
+
+            <table class="table table-bordered table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Game Name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Mrp</th>
+                  <th scope="col">Winning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of totalSale">
+                  <td>
+                    {{data.game_type_name}}
+                  </td>
+                  <td>{{data.quantity}}</td>
+                  <td>{{data.mrp}}</td>
+                  <td>{{data.winning}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="p-1" *ngIf="manualResultForm.value.gameId===3">
+
+        <div
+          style="background-image: url('/assets/images/twelve-card.background4.jpg'); background-size: cover;border: 30px solid red; margin-top: 30px; height: 869px;">
+
+          <div class="d-flex">
+
+            <div class="col-6" style="padding-top: 50px;">
+
+              <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/clubs.png" width="50" alt=""></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/diamond.png" width="60" alt=""></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/spade.png" width="60" alt=""></th>
+                    <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async"
+                        src="assets/images/heart.png" width="80" alt=""></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" style="text-align: center;"><img loading="lazy" decoding="async"
+                        src="assets/images/jack.png" width="50" alt=""></th>
+
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/1.jpg'); selectedNumber(4,1,1)" class="p-2"
+                          src="assets/images/1.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/2.jpg'); selectedNumber(4,2,1)" class="p-2"
+                          src="assets/images/2.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/4.jpg'); selectedNumber(4,4,1)" class="p-2"
+                          src="assets/images/4.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/3.jpg'); selectedNumber(4,3,1)" class="p-2"
+                          src="assets/images/3.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"><img loading="lazy" decoding="async" src="assets/images/queen.png" width="50"
+                        alt=""></th>
+
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/5.jpg'); selectedNumber(4,5,1)" class="p-2"
+                          src="assets/images/5.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/6.jpg'); selectedNumber(4,6,1)" class="p-2"
+                          src="assets/images/6.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/8.jpg'); selectedNumber(4,8,1)" class="p-2"
+                          src="assets/images/8.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/7.jpg'); selectedNumber(4,7,1)" class="p-2"
+                          src="assets/images/7.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"><img loading="lazy" decoding="async" src="assets/images/king.png" width="50" alt="">
+                    </th>
+
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/9.jpg'); selectedNumber(4,9,1)" class="p-2"
+                          src="assets/images/9.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/10.jpg'); selectedNumber(4,10,1)" class="p-2"
+                          src="assets/images/10.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/12.jpg'); selectedNumber(4,12,1)" class="p-2"
+                          src="assets/images/12.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/11.jpg'); selectedNumber(4,11,1)" class="p-2"
+                          src="assets/images/11.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"><img loading="lazy" decoding="async" src="assets/images/ace.png" width="50" alt="">
+                    </th>
+
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/13.jpg'); selectedNumber(4,13,1)" class="p-2"
+                          src="assets/images/13.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/14.jpg'); selectedNumber(4,14,1)" class="p-2"
+                          src="assets/images/14.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/16.jpg'); selectedNumber(4,16,1)" class="p-2"
+                          src="assets/images/16.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="zoom"
+                        style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;">
+                        <img loading="lazy" decoding="async"
+                          (click)="sixteenCardInput('assets/images/15.jpg'); selectedNumber(4,15,1)" class="p-2"
+                          src="assets/images/15.jpg" width="100px" alt="">
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="col-6" style="text-align: center; align-content: center;">
+              <div>
+                <h3>Selected Card</h3>
+              </div>
+              <div> <img loading="lazy" decoding="async" width="50%" [src]="sixteenSelectedCard"> </div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="col">
+          <div>
+
+            <table class="table table-bordered table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Game Name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Mrp</th>
+                  <th scope="col">Winning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of totalSale">
+                  <td>
+                    {{data.game_type_name}}
+                  </td>
+                  <td>{{data.quantity}}</td>
+                  <td>{{data.mrp}}</td>
+                  <td>{{data.winning}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div> -->
+
+
+      <div class="p-1" *ngIf="manualResultForm.value.gameId===1">
+
+        <!-- <div class="d-flex">
+          <div class="col-6 p-5 container" style="height: 101px; ">
+            <label
+              style="border: 2px solid black; height: 1000%!important; width: 20%; text-align: center; border-radius: 5px; background: linear-gradient(to left, rgb(203, 203, 228), rgb(102, 101, 101)); color: rgb(0, 0, 0); font-size: x-large;">{{singleIndividualNumberVisible}}</label>
+          </div>
+        </div> -->
+
+        <div class="d-flex p-1" style="text-align: center; align-items: center;">
+
+          <div class="col-6 p-5 container"
+            style="border: 2px solid black; border-radius: 10px; text-align: center; align-items: center;">
+            <div class="d-flex flex-row bd-highlight">
+              <div class="d-flex flex-row">
+
+                <div class="p-1" *ngFor="let tableData of singleNumber.slice(0, singleNumber.length % columnNumber  === 0 ?
+                  singleNumber.length / columnNumber : singleNumber.length / columnNumber + 1); let idx = index"
+                  style=" align-items: center;">
+
+
+                  <button 
+                    *ngFor="let x of singleNumber.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+                    class="single-number-button coder-fab" [class.green]="isDisabledSingleHeaderButton" class="p-1 btn btn-warning m-2"
+                    (click)="selectedNumber(1, x.singleNumberId, x.singleNumber)">
+                    {{x.singleNumber}}
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col">
+            <div>
+
+              <table class="table table-bordered table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Game Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Mrp</th>
+                    <th scope="col">Winning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of totalSale">
+                    <td>
+                      {{data.game_type_name}}
+                    </td>
+                    <td>{{data.quantity}}</td>
+                    <td>{{data.mrp}}</td>
+                    <td>{{data.winning}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="p-5" *ngIf="manualResultForm.value.gameId===5">
+
+        <div class="d-flex">
+          <div class="col-11" style="text-align: center; align-items: center;">
+            <label
+              style="border: 2px solid black; width: 20%; text-align: center; border-radius: 5px; background: linear-gradient(to left, rgb(203, 203, 228), rgb(102, 101, 101)); color: rgb(0, 0, 0); font-size: x-large;">{{doubleIndividualNumberVisible}}</label>
+          </div>
+        </div>
+
+        <div class="col-11 container m-0 p-0"
+          style="border: 2px solid black; border-radius: 10px; text-align: center; align-items: center;">
+          <div class="d-flex flex-row bd-highlight scroll" style="  max-height: 570px; overflow-y: scroll;">
+            <div class="d-flex flex-row">
+
+              <div class="p-1" *ngFor="let tableData of doubleNumber.slice(0, doubleNumber.length % columnNumber  === 0 ?
+              doubleNumber.length / columnNumber : doubleNumber.length / columnNumber + 1); let idx = index">
+
+
+                <button
+                  *ngFor="let x of doubleNumber.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+                  class="single-number-button coder-fab p-1" [class.green]="isDisabledSingleHeaderButton"
+                  (click)="selectedNumber(7, x.doubleNumberCombinationId, x.visibleDoubleNumber)">
+                  {{x.visibleDoubleNumber}}
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+
+
+        </div>
+        <div class="col">
+          <div>
+
+            <table class="table table-bordered table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Game Name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Mrp</th>
+                  <th scope="col">Winning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of totalSale">
+                  <td>
+                    {{data.game_type_name}}
+                  </td>
+                  <td>{{data.quantity}}</td>
+                  <td>{{data.mrp}}</td>
+                  <td>{{data.winning}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div> -->
+
+      <button class="coder-fab" mat-fab (click)="scroll(targetDiv)">
+        <i class="bi bi-arrow-up-circle"></i>
+      </button>
+    </mat-tab>
+    <mat-tab label="Old Day">
+      <div>
+        <form [formGroup]="oldDateResultForm">
+          <div class="d-flex flex-column bd-highlight">
+            <div class="p-2 bd-highlight">
+              <div #targetDiv class="row">
+                <div class="pt-1 d-flex">
+                  <div class="col-3">
+                    <mat-form-field appearance="fill" formControlName="gameDate">
+                      <mat-label>Start date</mat-label>
+                      <input (dateChange)="getDrawTimeForOldResult($event)" matInput [matDatepicker]="picker"
+                        [(ngModel)]="newDateFilter" [ngModelOptions]="{standalone: true}">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker [(ngModel)]="newDateFilter" [ngModelOptions]="{standalone: true}">
+                      </mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <mat-form-field class="col-2">
+                  <mat-label>Draw time</mat-label>
+                  <mat-select formControlName="drawMasterId" placeholder="Category">
+                    <mat-option *ngFor="let time of oldDateReultDrawTime" [value]="time.drawId">
+                      {{time.endTime}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class=" d-flex col-2"
+                  style="height: 0px; border-radius: 10px; padding-top: 0px;padding-left: 10px;">
+                  <mat-form-field>
+                    <mat-label>Game</mat-label>
+                    <input type="text" matInput value="Single">
+                    <!-- <mat-select formControlName="gameId" placeholder="Category">
+                      <mat-option *ngFor="let x of games" [value]="x.id">
+                        {{x.game_name}}
+                      </mat-option>
+                    </mat-select> -->
+                  </mat-form-field>
+
+                </div>
+              </div>
+
+
+              <div>
+                <div class="d-flex">
+                  <div class="col-1"></div>
+                  <div class="card mt-2"
+                    style="width: 18rem; border: 4px solid rgb(217, 255, 2); color: rgb(4, 0, 255);">
+                    <div class="card-header text-center">
+                      Upcoming result
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item text-center">{{oldDateResultForm.value.triple}}</li>
+
+
+                      <li class="list-group-item text-center">{{oldDateResultForm.value.single}}</li>
+                    </ul>
+                  </div>
+                </div>
+                <div style="padding-left: 120px;"><button type="button" class="btn btn-primary mt-2"
+                    (click)="saveOldDateResult()" [disabled]="oldDateResultForm.invalid">Save</button></div>
+
+
+              </div>
+            </div>
+
+            <div class="d-flex flex-row bd-highlight">
+              <div class="d-flex flex-column" id="triple-flex-column-{{idxSingle}}"
+                *ngFor="let tableData of numberCombinationMatrix; let idxSingle = index">
+                <div class="p-1">
+                  <button class="single-number-button coder-fab" [class.green]="isDisabledSingleHeaderButton"
+                    [disabled]="isDisabledSingleHeaderButton">
+                    {{tableData.singleNumber}}
+
+                  </button>
+                </div>
+                <div class="p-1" *ngFor="let numberCombination of tableData.numberCombinations">
+                  <button class="coder-fab" mat-fab matBadge="{{tableData.singleNumber}}"
+                    [matBadgeHidden]="currentCombinationMatrixSelectedId != numberCombination.numberCombinationId"
+                    [ngStyle]="{'background-color':(currentCombinationMatrixSelectedId === numberCombination.numberCombinationId) ? 'rgb(30,64,30)' : '#858b8b' }"
+                    aria-label=""
+                    (click)="setOldDateResultInForm(tableData.singleNumber, numberCombination);scroll(targetDiv)">
+                    {{numberCombination.visibleTripleNumber}}
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <button class="coder-fab" mat-fab (click)="scroll(targetDiv)">
+          <i class="bi bi-arrow-up-circle"></i>
+        </button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+
+
+
+
+
+<div class="d-flex" *ngIf="!isProduction">
+  <div class="col-3">
+    <mat-slide-toggle (change)="showDevArea=!showDevArea">{{showDevArea?"Hide Developer Area":"Show Developer Area"}}
+    </mat-slide-toggle>
+  </div>
+</div>
+
+<div class="d-flex" *ngIf="!isProduction && showDevArea">
+  <div class="col-3">
+    <pre>
+        numberCombinationMatrix = {{numberCombinationMatrix | json}}
+      </pre>
+  </div>
+  <div class="col-6">
+    <pre>
+       manualResultForm = {{manualResultForm.value | json}}
+
+      </pre>
+  </div>
+  <div class="col-3">
+    <pre></pre>
+  </div>
+</div>

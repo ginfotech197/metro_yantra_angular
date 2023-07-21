@@ -1,0 +1,88 @@
+<div style="background-color: rgb(6, 7, 82);">
+  <div class="text-center text-warning"><h1>-: Metro Yantra Online :-</h1></div>
+<div>
+  <div style="background-color: orange; border:2px solid black; height: 80px;">
+    <div class="d-flex col-4 m-3" style="border: 1px solid black; padding: 8px;">
+      <div style="text-align: center; color: white;" >Result Date:</div>
+      <span style="background-color: white; border: 2px solid black; color: black;" class="">{{today}}</span>
+    </div> 
+    
+  </div>
+</div>
+<div style="border: 2px solid yellow;">
+  <div class="d-flex m-1 p-1" *ngFor="let x of todayResult" style="border: 1px solid black;  background-color: rgba(199, 0, 0, 0.33);">
+    <span>{{x.draw_time}}</span>
+    <span style="padding-left: 150px;">{{x.single_number}}</span>
+  </div>
+</div>
+</div>
+
+
+<!-- <div class="d-flex ml-5" style="text-align: end; padding-left: 4%;">
+  
+  <div id="title-3-div-child-2" style="text-align: center; color: white;" *ngFor="let x of games, let idx = index">
+    
+    
+    <button type="button" [disabled]="x.active === 'no'" (click)="setActiveGame(games[idx])"
+      [ngStyle]="{'background-color': buttonColour[idx]}" class="btn  glow ml-1"
+      style="font-size: x-large;border: 5px solid rgb(255, 230, 0); border-style: double; border-radius: 10px; background-color: rgb(4, 13, 136); color: white;">{{x.game_name}}</button>
+  </div>
+</div>
+<div class="pt-3">
+  <table class="table table-bordered ml-5" id="table-div" *ngIf="selectedGame==1">
+    <thead>
+      <tr>
+        <div class="" *ngFor="let tableData of todayResult.slice(0, todayResult.length % columnNumber  === 0 ?
+                  todayResult.length / columnNumber : todayResult.length / columnNumber + 1); let idx = index">
+
+          <td class="p-3"
+            *ngFor="let x of todayResult.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
+            scope="row">
+
+            <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
+
+            
+
+            <div *ngIf="x.single_number==null" class="text-center">{{'*'}}</div>
+            <div *ngIf="x.single_number!=null" class="text-center">{{x.single_number}}</div>
+
+            <div *ngIf="x.multiplexer==1" class="text-center" style="color: red;">{{'N'}}</div>
+            <div *ngIf="x.multiplexer>1" class="text-center" style="color: red;">{{x.multiplexer}}X</div>
+          </td>
+        </div>
+
+      </tr>
+    </thead>
+  </table>
+
+  
+</div> -->
+<!--  <div class="pl-3 pr-3 pt-5">-->
+<!--    <table class="table table-hover"  style="margin-bottom: 48px; border: 2px solid rgb(255, 208, 0); background-color: rgba(255, 127, 80, 0.719);">-->
+
+<!--      <tbody >-->
+<!--          <ng-container *ngIf="currentDateResult">-->
+<!--            <tr *ngFor="let row of currentDateResult.result; let idx = index">-->
+<!--              <td scope="row" class="current-result" colspan="2" *ngFor="let result of currentDateResult.result.slice(idx * columnNumber2, idx * columnNumber2 + columnNumber2); " class="text-center align-middle" style="border: 1px solid rgb(255, 217, 2);">-->
+<!--                <div class=" result-heading current-result" style="background-color: rgb(80, 255, 188);">{{result.end_time.slice(0,5)}}</div>-->
+<!--                <div class="bd-highlight current-result" style="background-color: rgb(250, 248, 248);">{{result.visible_triple_number || '***'}}</div>-->
+<!--                <div class="bd-highlight current-result" style="background-color: rgb(80, 200, 255);">-->
+<!--                  <span *ngIf="result.single_number!=null"></span>{{result.single_number}}-->
+<!--                  <span *ngIf="result.single_number==null"><img src="assets/images/singleStar3.gif" height="20px" alt=""></span>-->
+<!--                </div>-->
+<!--                 &lt;!&ndash; <div class="bd-highlight current-result" style="background-color: rgb(28, 35, 253);"><img src="assets/images/singleStar.gif" height="10px" alt=""></div> &ndash;&gt;-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </ng-container>-->
+
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+
+<!--<div>-->
+<!--  <pre> {{currentDateResult | json}}</pre>-->
+<!--</div>-->
+
+<!--<div>-->
+
+<!--</div>-->

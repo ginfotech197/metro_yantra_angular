@@ -1,0 +1,54 @@
+
+<!--<div class="d-flex align-items flex-column bd-highlight mb-3" class="scroll">-->
+<!--  <div class="p-2 bd-highlight" style="background-color: transparent; width: 100vw;">-->
+<!--    <app-header [deviceXs]="deviceXs"></app-header>-->
+<!--  </div>-->
+<!--  <div class="bd-highlight" style="min-height: 50px; margin-top: 30px;  background-repeat: no-repeat;">-->
+<!--    <router-outlet></router-outlet>-->
+<!--  </div>-->
+<!--  -->
+<!--&lt;!&ndash;  <div class="mt-auto p-2 bd-highlight" style="background-color: #34503700; width: 100vw;">&ndash;&gt;-->
+<!--&lt;!&ndash;    <ng-marquee>&ndash;&gt;-->
+<!--&lt;!&ndash;      <div style="color: white;">Let's play</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </ng-marquee>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--</div>-->
+
+<div *ngIf="!isAuthenticated">
+
+  <div class="d-flex align-items flex-column bd-highlight mb-3" class="scroll">
+    <div class="p-2 bd-highlight" style="background-color: transparent; width: 100vw;">
+      <app-header [deviceXs]="deviceXs"></app-header>
+    </div>
+    <div class="bd-highlight" style="min-height: 50px; margin-top: 30px; ">
+      <router-outlet></router-outlet>
+    </div>
+
+  <!--  <div class="mt-auto p-2 bd-highlight" style="background-color: #34503700; width: 100vw;">-->
+  <!--    <ng-marquee>-->
+  <!--      <div style="color: white;">Let's play</div>-->
+  <!--    </ng-marquee>-->
+  <!--  </div>-->
+  </div>
+</div>
+
+
+<div class="d-flex align-items flex-column bd-highlight mb-3" class="scroll" *ngIf="isAuthenticated">
+
+  <div class="d-flex bd-highlight" style="min-height: 50px; margin-top: 30px;  background-repeat: no-repeat;">
+    <div class="col-3" style="padding-left: 0px !important; max-width: 21% !important;">
+      <app-header [deviceXs]="deviceXs" style="min-height: 1000% !important;"></app-header>
+    </div>
+    <!-- <div class="col-1"></div> -->
+<!--    <div class="col-6"><app-header [deviceXs]="deviceXs"></app-header></div>-->
+    <div class="col-9 scroll" style="padding-left: 0px !important;">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <!--  <div class="mt-auto p-2 bd-highlight" style="background-color: #34503700; width: 100vw;">-->
+  <!--    <ng-marquee>-->
+  <!--      <div style="color: white;">Let's play</div>-->
+  <!--    </ng-marquee>-->
+  <!--  </div>-->
+</div>

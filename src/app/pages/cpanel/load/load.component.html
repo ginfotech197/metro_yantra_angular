@@ -1,0 +1,265 @@
+<div class="d-flex ml-5">
+  <!-- <div class="col-4">
+    <mat-label>Terminal</mat-label>
+    <ng-select [items]="sortedTerminalList"
+               bindLabel="pin"
+               bindValue="terminalId"
+               [(ngModel)]="terminalId">
+    </ng-select>
+  </div> -->
+
+  <div class="col-4">
+    <mat-label>Game</mat-label>
+    <!-- <input  matInput value="Single"> -->
+    <mat-select  [(ngModel)]="gameId" (selectionChange)="fetchDrawTime()">
+      <mat-option *ngFor="let game of games" [value]="game.id">
+        {{game.game_name}}
+      </mat-option>
+    </mat-select>
+  </div>
+
+  <div class="col-4">
+    <mat-label>Draw Time</mat-label>
+    <mat-select   [(ngModel)]="drawId">
+      <mat-option *ngFor="let time of allDrawTimes" [value]="time.drawId">
+        {{time.visibleTime}}
+      </mat-option>
+    </mat-select>
+  </div>
+</div>
+
+<button class="ml-5" (click)="onSearch()">Search</button>
+
+<div class="ml-5" *ngIf="singleNumber.length>0">
+
+  <div   >
+    <h2>Single</h2>
+    <table class="table table-bodered">
+      <tr>
+        <td *ngFor="let tableData of singleNumber.slice(0, singleNumber.length % columnNumber  === 0 ?
+        singleNumber.length / columnNumber : singleNumber.length / columnNumber + 1); let idx = index">
+          <div    *ngFor="let x of singleNumber.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"    >
+            <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+
+          </div>
+        </td>
+
+
+      </tr>
+    </table>
+  </div>
+
+  <!-- <div   >
+    <h2>Double</h2>
+    <table class="table table-bodered">
+      <tr>
+        <td *ngFor="let tableData of doubleNumber.slice(0, doubleNumber.length % columnNumber2  === 0 ?
+        doubleNumber.length / columnNumber2 : doubleNumber.length / columnNumber2 + 1); let idx = index" >
+          <div    *ngFor="let x of doubleNumber.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index"    >
+            <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div> -->
+
+  <!-- <div   >
+    <h2>Tripple</h2>
+    <table class="table table-bodered">
+      <tr>
+        <td *ngFor="let tableData of numberCombinationMatrix.slice(0, numberCombinationMatrix.length % columnNumber2  === 0 ?
+        numberCombinationMatrix.length / columnNumber2 : numberCombinationMatrix.length / columnNumber2 + 1); let idx = index" >
+          <div    *ngFor="let x of numberCombinationMatrix.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index"    >
+            <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div> -->
+
+
+</div>
+<!-- <div class="ml-5" *ngIf="twelveCard.length>0">
+
+  <div class="lazy" style="background-image: url('/assets/images/twelve-card.background4.jpg'); background-size: cover;border: 30px solid red; margin-top: 30px; height: 710px;">
+
+    <div class="d-flex">
+
+      <div class="col-12" style="padding-top: 50px;">
+
+        <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/clubs.png" width="50" alt=""></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/diamond.png" width="60" alt=""></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/spade.png" width="60"  alt=""></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/heart.png" width="80" alt=""></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr >
+            <th scope="row" style="text-align: center;"><img src="assets/images/jack.png" width="50" alt=""></th>
+
+            <td><div class="zoom" matBadge="{{twelveCard[0].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/1.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[1].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/2.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[3].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/4.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[2].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/3.jpg" width="100px" alt=""></div></td>
+          </tr>
+
+          <tr>
+            <th scope="row"><img src="assets/images/queen.png" width="50" alt=""></th>
+            <td><div class="zoom" matBadge="{{twelveCard[4].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/5.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[5].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/6.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[7].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/8.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[6].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/7.jpg" width="100px" alt=""></div></td>
+          </tr>
+
+          <tr>
+            <th scope="row"><img src="assets/images/king.png" width="50" alt=""></th>
+            <td><div class="zoom" matBadge="{{twelveCard[8].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/9.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[9].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/10.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[11].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/12.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{twelveCard[10].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/11.jpg" width="100px" alt=""></div></td>
+          </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div> -->
+<!-- <div class="ml-5" *ngIf="sixteenCard.length>0">
+
+  <div class="lazy" style="background-image: url('/assets/images/twelve-card.background4.jpg'); background-size: cover;border: 30px solid red; margin-top: 30px; height: 869px;">
+
+    <div class="d-flex">
+
+      <div class="col-12" style="padding-top: 50px;">
+
+        <table class="table table-striped table-hover container" style="max-width: 200px; height: 450px;">
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/clubs.png" width="50" alt=""></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/diamond.png" width="60" alt=""></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/spade.png" width="60"  alt=""></th>
+            <th scope="col" style="padding-left: 35px;"><img loading="lazy" decoding="async" src="assets/images/heart.png" width="80" alt=""></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr >
+            <th scope="row" style="text-align: center;"><img loading="lazy" decoding="async" src="assets/images/jack.png" width="50" alt=""></th>
+
+            <td><div class="zoom" matBadge="{{sixteenCard[0].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/1.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[1].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/2.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[3].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/4.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[2].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/3.jpg" width="100px" alt=""></div></td>
+          </tr>
+
+          <tr>
+            <th scope="row"><img src="assets/images/queen.png" width="50" alt=""></th>
+            <td><div class="zoom" matBadge="{{sixteenCard[4].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/5.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[5].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/6.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[7].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/8.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[6].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/7.jpg" width="100px" alt=""></div></td>
+          </tr>
+
+          <tr>
+            <th scope="row"><img src="assets/images/king.png" width="50" alt=""></th>
+            <td><div class="zoom" matBadge="{{sixteenCard[8].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/9.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[9].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/10.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[11].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/12.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[10].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/11.jpg" width="100px" alt=""></div></td>
+          </tr>
+
+          <tr>
+            <th scope="row"><img src="assets/images/ace.png" width="50" alt=""></th>
+
+            <td><div class="zoom" matBadge="{{sixteenCard[12].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/13.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[13].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/14.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[15].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/16.jpg" width="100px" alt=""></div></td>
+            <td><div class="zoom" matBadge="{{sixteenCard[14].quantity}}" style="width: 110px; height: 140px; background-color: rgba(241, 143, 203, 0.199); border: 2px solid gold; border-radius: 15px;  box-shadow: 5px 10px rgba(0, 128, 0, 0.295); font-size: 50px;" ><img loading="lazy" decoding="async" class="p-2"  src="assets/images/15.jpg" width="100px" alt=""></div></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div> -->
+<!-- <div class="ml-5" *ngIf="singleNumberIndividual.length>0">
+
+  <div   >
+    <h2>Single</h2>
+    <table class="table table-bodered">
+      <tr>
+        <td *ngFor="let tableData of singleNumberIndividual.slice(0, singleNumberIndividual.length % columnNumber  === 0 ?
+        singleNumberIndividual.length / columnNumber : singleNumberIndividual.length / columnNumber + 1); let idx = index">
+          <div    *ngFor="let x of singleNumberIndividual.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"    >
+            <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+
+          </div>
+        </td>
+
+
+      </tr>
+    </table>
+  </div>
+
+</div> -->
+
+<!-- <div class="ml-5" *ngIf="doubleNumberIndividual.length>0">
+
+
+    <div>
+      <h2>Double</h2>
+      <table class="table table-bodered">
+        <tr>
+          <td *ngFor="let tableData of doubleNumberIndividual.slice(0, doubleNumberIndividual.length % columnNumber2  === 0 ?
+          doubleNumberIndividual.length / columnNumber2 : doubleNumberIndividual.length / columnNumber2 + 1); let idx = index" >
+            <div    *ngFor="let x of doubleNumberIndividual.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index"    >
+              <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  <div>
+    <h2>Andar Number</h2>
+    <table class="table table-bodered">
+      <tr>
+        <td *ngFor="let tableData of andaarNumber.slice(0, andaarNumber.length % columnNumber2  === 0 ?
+          andaarNumber.length / columnNumber2 : andaarNumber.length / columnNumber2 + 1); let idx = index" >
+          <div    *ngFor="let x of andaarNumber.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index"    >
+            <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div>
+    <h2>Bahar Number</h2>
+    <table class="table table-bodered">
+      <tr>
+        <td *ngFor="let tableData of baharNumber.slice(0, baharNumber.length % columnNumber2  === 0 ?
+          baharNumber.length / columnNumber2 : baharNumber.length / columnNumber2 + 1); let idx = index" >
+          <div    *ngFor="let x of baharNumber.slice( idx * columnNumber2, idx * columnNumber2 + columnNumber2); let col=index"    >
+            <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div> -->

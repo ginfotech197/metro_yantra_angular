@@ -1,0 +1,425 @@
+<marquee behavior="" class="blink" direction="" style="color: red !important;">Reports available only for last 30 days</marquee>
+
+<mat-tab-group class="mt-2 mr-3 ml-5">
+  <mat-tab label="Customer sales report">
+
+    <div class="pt-1 d-flex">
+      <div class="col-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Start date</mat-label>
+          <input [max]="maxDate" [min]="minDate" matInput [matDatepicker]="picker" [(ngModel)]= "StartDateFilter">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker [(ngModel)]= "StartDateFilter"></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-4">
+        <mat-form-field appearance="fill">
+          <mat-label>End date</mat-label>
+          <input [max]="maxDate" [min]="minDate" matInput [matDatepicker]="picker1" [(ngModel)]= "EndDateFilter">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1 [(ngModel)]= "EndDateFilter"></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!--<button (click)="searchByDate()">test</button>-->
+      <button mat-button color="accent" style="font-size: 20px;" (click)="searchByDateTab1()">Search</button>
+    </div>
+    <!-- <marquee behavior="" class="blink" direction="" style="color: red !important;">Reports available only for last 30 days</marquee> -->
+
+    <div *ngIf="selectedReport=='0'?true:false">
+      <table matSort (matSortChange)="sortData($event)" class="table table-bordered table-sm" style="border: none !important; height: 50px;  overflow: scroll;">
+        <thead>
+        <tr>
+          <th mat-sort-header="terminal_pin">Name</th>
+          <th mat-sort-header="terminal_pin">Stokiest</th>
+          <th mat-sort-header="total">Total</th>
+          <th mat-sort-header="commission">Win</th>
+          <th mat-sort-header="commission">End</th>
+          <th mat-sort-header="prize_value">Claimed</th>
+          <th mat-sort-header="prize_value">UnClaimed</th>
+          <th mat-sort-header="prize_value">Commission</th>
+          <th mat-sort-header="ntp">NTP</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of customerSaleReportRecords;let indexOfElement=index">
+          <td>{{record.terminal_pin}}</td>
+          <td>{{record.stokiest_name}}</td>
+          <td>{{record.total}}</td>
+          <td>{{record.claimed_prize_value + record.unclaimed_prize_value}}</td>
+          <td>{{record.total - (record.claimed_prize_value + record.unclaimed_prize_value)}}</td>
+          <td>{{record.claimed_prize_value}}</td>
+          <td>{{record.unclaimed_prize_value}}</td>
+          <td>{{record.commission}}</td>
+          <td>{{(record.total-record.commission-record.claimed_prize_value).toFixed(2)}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Grand Total</td>
+          <td>{{totalAmount}}</td>
+          <td>{{totalWinPrizeValue}}</td>
+          <td>{{end_point}}</td>
+          <td>{{claimed_prize_value}}</td>
+          <td>{{unclaimed_prize_value}}</td>
+          <td>{{commission}}</td>
+          <td>{{ntp.toFixed(2)}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="text-center" *ngIf="customerSaleReportRecords.length==0">
+        <h1>No Data</h1>
+      </div>
+    </div>
+
+
+  </mat-tab>
+
+  <mat-tab label="Barcode report">
+    <!--    <popover-content #popoverCustomer title="abcd" placement="right" [animation]="true" [closeOnClickOutside]="true">-->
+    <!--      this areais for testing-->
+    <!--    </popover-content>-->
+    <!--    <button [popover]="popoverCustomer">test</button>-->
+
+    <div class="pt-1 d-flex">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Start date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]= "StartDateFilter">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker [(ngModel)]= "StartDateFilter"></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>End date</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]= "EndDateFilter">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1 [(ngModel)]= "EndDateFilter"></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!--<button (click)="searchByDate()">test</button>-->
+      <button mat-button color="accent" style="font-size: 20px;" (click)="searchByDateTab2()">Search</button>
+    </div>
+
+    <div class="text-center" style="align-content: center; align-items: center; text-align: center">
+
+      <div class="row">
+        <div class="col-3">
+              <ng-select [items]="terminals"
+                         bindLabel="pin"
+                         bindValue="pin"
+                         [(ngModel)]="terminalPin"
+                         (change)="sortByTerminal(terminalPin)">
+              </ng-select>
+        </div>
+        <div class="col-3">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Games</mat-label>
+            <mat-select [(ngModel)]="gameId" (selectionChange)="sortByGame()">
+              <mat-option *ngFor="let game of games" [value]="game.id">
+                {{game.game_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+
+        </div>
+      </div>
+      <!-- <marquee behavior="" class="blink" direction="" style="color: red !important;">Reports available only for last 30 days</marquee> -->
+
+      <table matSort (matSortChange)="sortData($event)" class=" ml-4 col-11 table table-bordered table-sm" style="border: none !important; height: 50px;  overflow: scroll;">
+        <thead>
+          <!-- <tr>
+            <th scope="colgroup" colspan="4" class="text-center">Terminal List</th>
+            <th scope="colgroup" colspan="2" class="text-center">
+              <label>Search</label>
+              <input class="col-12" [(ngModel)]="searchItem" placeholder="Search">
+            </th>
+            <th scope="colgroup" colspan="2" class="text-center">
+              <label>No. of items</label>
+              <input class="col-12" [(ngModel)]="itemsOnEveryPage" placeholder="Items">
+            </th>
+          </tr> -->
+        <tr>
+          <th mat-sort-header="barcode_number">Barcode</th>
+          <th mat-sort-header="draw_time">Draw time</th>
+          <th mat-sort-header="terminal_pin">Terminal</th>
+          <th mat-sort-header="terminal_pin">Game</th>
+          <th mat-sort-header="ticket_taken_time">Ticket take time</th>
+          <th mat-sort-header="total_quantity">Quantity</th>
+          <th mat-sort-header="amount">Amount</th>
+          <th mat-sort-header="prize_value">UnClaimed Amount</th>
+          <th mat-sort-header="prize_value">Claimed Amount</th>
+          <th mat-sort-header="prize_value">Cancelled</th>
+          <th mat-sort-header="result">Result</th>
+          <th mat-sort-header="result">Bonus</th>
+          <th ></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of barcodeReportRecords| filter: searchItem | paginate: { itemsPerPage: itemsOnEveryPage, currentPage: p1 };let indexOfElement=index">
+          <td><button style="color: blue !important;" class="btn" (click)="frame.show();openPopup(record.play_master_id, record.barcode_number)" mdbWavesEffect>{{record.barcode_number}}</button></td>
+          <td>{{record.draw_time}}</td>
+          <td>{{record.terminal_pin}}</td>
+          <td>{{(record.game_name == 'SINGLE DOUBLE TRIPLE')? 'Triple chance': record.game_name}}</td>
+          <td>{{record.ticket_taken_time}}</td>
+          <td>{{record.total_quantity}}</td>
+          <td>{{record.amount}}</td>
+<!--          <td>{{record.prize_value}}</td>-->
+<!--          <td><a color="info" class="waves-effect mb-4"(click)="frame.show();openPopup(record.play_master_id, record.barcode_number)"-->
+          <td>{{(record.prize_value > 0)? (record.is_claimed == 0)? (record.prize_value): '--' : '--' }}</td>
+          <td>{{(record.prize_value > 0)? (record.is_claimed == 1)? (record.prize_value): '--' : '--' }}</td>
+          <td>{{(record.is_cancelled == 1)? 'Yes' : 'No'}}</td>
+          <td>{{record.result}}</td>
+          <td>{{record.bonus == 1? 'N' : record.bonus+'X'}}</td>
+          <!-- <td><a color="info" class="waves-effect mb-4"
+                 mdbWavesEffect><i class="bi bi-info-square-fill" (click)="frame.show();openPopup(record.play_master_id, record.barcode_number)" mdbWavesEffect></i></a></td> -->
+        </tr>
+        </tbody>
+      </table>
+      <pagination-controls (pageChange)="p1 = $event"></pagination-controls>
+
+      <div class="text-center" *ngIf="barcodeReportRecords.length==0">
+        <h1>No Data</h1>
+      </div>
+
+    </div>
+  </mat-tab>
+
+<!--  <mat-tab label="Draw wise report"></mat-tab>-->
+</mat-tab-group>
+
+
+
+
+
+
+
+
+
+<!--Modal-->
+<div mdbModal #frame="mdbModal" class="modal fade top" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: auto">
+  <!--Dialog-->
+  <div class="modal-dialog modal-notify modal-info" role="document" *ngIf="barcodeDetails" style="min-width: 550px">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header text-center">
+        <h4 class="modal-title white-text font-weight-bold">
+          Ticket: {{barcodeDetails.barcode}}
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+
+
+
+
+
+
+      <!--Body-->
+      <div class="modal-body">
+        <!-- {{barcodeDetails | json}} -->
+        <!-- <div *ngFor="let x of barcodeDetails">{{x.singleIndividual | json}}</div> -->
+        <span *ngIf="barcodeDetails.single.length">Single</span>
+        <div class="d-flex flex-row mt-2">
+          <button matBadge="{{single.quantity}}" *ngFor="let single of barcodeDetails.single; let i=index"
+            class="mr-2">{{ single.single_number }}</button>
+        </div>
+
+        <span *ngIf="barcodeDetails.double.length">Double</span>
+
+
+        <div class="d-flex flex-row mt-2" *ngFor="let row of barcodeDetails.double.slice(0, barcodeDetails.double.length % 10  === 0 ?
+        barcodeDetails.double.length / 10 : barcodeDetails.double.length / 10 + 1); let idx = index">
+          <div colspan="2" *ngFor="let x of barcodeDetails.double.slice(idx * 10, idx * 10 + 10)"
+            class="text-center align-middle mr-3" style="max-width: 100% !important;">
+            <button mat-raised-button matBadge="{{x.quantity}}" [matBadgeHidden]="false" value="bold" name="fontStyle"
+              aria-label="Font Style"
+              style="font-size: larger; min-width: 97% !important; padding: 0px !important; min-height: 40px;">
+              {{ x.visible_double_number }}
+            </button>
+          </div>
+        </div>
+
+
+        <span *ngIf="barcodeDetails.triple.length">Triple</span>
+        <div class="d-flex flex-row mt-2" *ngFor="let row of barcodeDetails.triple.slice(0, barcodeDetails.triple.length % 10  === 0 ?
+        barcodeDetails.triple.length / 10 : barcodeDetails.triple.length / 10 + 1); let idx = index">
+          <div colspan="2" *ngFor="let x of barcodeDetails.triple.slice(idx * 10, idx * 10 + 10)"
+            class="text-center align-middle mr-3" style="max-width: 100% !important;">
+            <button mat-raised-button matBadge="{{x.quantity}}" [matBadgeHidden]="false" value="bold" name="fontStyle"
+              aria-label="Font Style"
+              style="font-size: larger; min-width: 97% !important; padding: 0px !important; min-height: 40px;">
+              {{ x.visible_triple_number }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="barcodeDetails.twelveCard.length">
+        <div >
+          <div class="modal-body">
+
+            <span *ngIf="barcodeDetails.twelveCard.length">Twelve Card</span>
+            <!-- <div class="d-flex flex-row mt-2">
+              <button matBadge="{{x.quantity}}" *ngFor="let x of barcodeDetails.twelveCard; let i=index"
+                class="mr-2">{{ x.rank_name }}: {{x.suit_name}}</button>
+            </div> -->
+
+
+            <div *ngFor="let tableData of barcodeDetails.twelveCard.slice(0, barcodeDetails.twelveCard.length % columnNumber1  === 0 ?
+            barcodeDetails.twelveCard.length / columnNumber1 : barcodeDetails.twelveCard.length / columnNumber1 + 1); let idx = index">
+                <button class="m-2" *ngFor="let x of barcodeDetails.twelveCard.slice( idx * columnNumber1, idx * columnNumber1 + columnNumber1); let col=index"  matBadge="{{x.quantity}}">
+                  {{x.rank_name }}: {{x.suit_name}}
+                </button>
+
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <div *ngIf="barcodeDetails.sixteenCard.length">
+        <div >
+          <div class="modal-body">
+
+            <span *ngIf="barcodeDetails.sixteenCard.length">Sixteen Card</span>
+            <!-- <div class="d-flex flex-row mt-2">
+              <button matBadge="{{x.quantity}}" *ngFor="let x of barcodeDetails.sixteenCard; let i=index"
+                class="mr-2">{{ x.rank_name }}: {{x.suit_name}}</button>
+            </div> -->
+
+
+            <div
+              *ngFor="let tableData of barcodeDetails.sixteenCard.slice(0, barcodeDetails.sixteenCard.length % columnNumber1  === 0 ?
+            barcodeDetails.sixteenCard.length / columnNumber1 : barcodeDetails.sixteenCard.length / columnNumber1 + 1); let idx = index">
+              <button class="m-2"
+                *ngFor="let x of barcodeDetails.sixteenCard.slice( idx * columnNumber1, idx * columnNumber1 + columnNumber1); let col=index"
+                matBadge="{{x.quantity}}">
+                {{x.rank_name }}: {{x.suit_name}}
+              </button>
+
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <div *ngIf="barcodeDetails.singleIndividual.length">
+        <div >
+          <div class="modal-body">
+            <!-- {{barcodeDetails | json}} -->
+            <!-- {{barcodeDetails | json}}
+            <div >test1</div> -->
+
+            <span *ngIf="barcodeDetails.singleIndividual.length">Single</span>
+            <div class="d-flex flex-row mt-2">
+              <button matBadge="{{single.quantity}}" *ngFor="let single of barcodeDetails.singleIndividual; let i=index"
+                class="mr-2">{{ single.single_number }}</button>
+            </div>
+
+
+          </div>
+          <!--/.Body-->
+        </div>
+      </div>
+
+      <div *ngIf="barcodeDetails.doubleIndividual.length">
+        <div >
+          <div class="modal-body">
+            <!-- {{barcodeDetails | json}} -->
+            <!-- {{barcodeDetails | json}} -->
+            <!-- <div >test1</div> -->
+            <span *ngIf="barcodeDetails.doubleIndividual.length">Double</span>
+
+
+            <div class="d-flex flex-row mt-2" *ngFor="let row of barcodeDetails.doubleIndividual.slice(0, barcodeDetails.doubleIndividual.length % 10  === 0 ?
+            barcodeDetails.doubleIndividual.length / 10 : barcodeDetails.doubleIndividual.length / 10 + 1); let idx = index">
+              <div colspan="2" *ngFor="let x of barcodeDetails.doubleIndividual.slice(idx * 10, idx * 10 + 10)"
+                class="text-center align-middle mr-3" style="max-width: 100% !important;">
+
+
+                <button mat-raised-button matBadge="{{x.quantity}}" [matBadgeHidden]="false" value="bold" name="fontStyle"
+                  aria-label="Font Style"
+                  style="font-size: larger; min-width: 97% !important; padding: 0px !important; min-height: 40px;">
+                  {{ x.visible_double_number }}
+                </button>
+
+
+              </div>
+            </div>
+            <span *ngIf="barcodeDetails.doubleIndividual.length">Andar Number</span>
+
+
+            <div class="d-flex flex-row mt-2"
+              *ngFor="let row of barcodeDetails.andarNumber.slice(0, barcodeDetails.andarNumber.length % 10  === 0 ?
+            barcodeDetails.andarNumber.length / 10 : barcodeDetails.andarNumber.length / 10 + 1); let idx = index">
+              <div colspan="2" *ngFor="let x of barcodeDetails.andarNumber.slice(idx * 10, idx * 10 + 10)"
+                class="text-center align-middle mr-3" style="max-width: 100% !important;">
+              <!-- {{x|json}} -->
+
+              <!-- <pre>{{barcodeDetails.doubleIndividual | json}}</pre> -->
+
+                <button mat-raised-button matBadge="{{x.quantity}}" [matBadgeHidden]="false" value="bold"
+                  name="fontStyle" aria-label="Font Style"
+                  style="font-size: larger; min-width: 97% !important; padding: 0px !important; min-height: 40px;">
+                  {{ x.andar_number }}
+                </button>
+              </div>
+            </div>
+
+
+            <span *ngIf="barcodeDetails.doubleIndividual.length">Bahar Number</span>
+
+
+            <div class="d-flex flex-row mt-2"
+              *ngFor="let row of barcodeDetails.baharNumber.slice(0, barcodeDetails.baharNumber.length % 10  === 0 ?
+            barcodeDetails.baharNumber.length / 10 : barcodeDetails.baharNumber.length / 10 + 1); let idx = index">
+              <div colspan="2" *ngFor="let x of barcodeDetails.baharNumber.slice(idx * 10, idx * 10 + 10)"
+                class="text-center align-middle mr-3" style="max-width: 100% !important;">
+              <!-- {{x|json}} -->
+
+              <!-- <pre>{{barcodeDetails.doubleIndividual | json}}</pre> -->
+
+                <button mat-raised-button matBadge="{{x.quantity}}" [matBadgeHidden]="false" value="bold"
+                  name="fontStyle" aria-label="Font Style"
+                  style="font-size: larger; min-width: 97% !important; padding: 0px !important; min-height: 40px;">
+                  {{ x.bahar_number }}
+                </button>
+              </div>
+            </div>
+
+
+
+
+
+          </div>
+          <!--/.Body-->
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center"></div>
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+  <!--/.Dialog-->
+</div>
+<!--/.Modal-->

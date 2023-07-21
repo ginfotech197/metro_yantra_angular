@@ -1,0 +1,70 @@
+<!-- <p>message works!</p> -->
+
+
+<div class="d-flex " >
+    <div class="col-5">
+        <form class="example-form" [formGroup]="messageForm">
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Message</mat-label>
+                <input matInput formControlName="message">
+            </mat-form-field>
+
+
+        </form>
+        <button mat-button color="accent" (click)="onSubmitMessage()">Submit</button>
+    </div>
+    <div class="col-5">
+        <mat-card style="background-color: peachpuff !important;">
+            <mat-card-content>{{messages? messages : "Empty"}}</mat-card-content>
+        </mat-card>
+
+    </div>
+</div>
+
+<div class="d-flex pb-5 pt-5" >
+  <div class="col">
+    <div class="col">Windows (Non Print Version)</div>
+    <div class="col"><input accept=".zip" ngf-accept="'.zip'" (change)="onChangeWNP($event)" type="file"></div>
+    <div class="col-8 m-2">
+      <div class="progress" *ngIf="progress">
+        <div class="progress-bar progress-bar-striped active" [style.width]="progress + '%'">{{progress}}%</div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="col">Android (Non Print Version)</div>
+    <div class="col"><input accept=".apk" ngf-accept="'.apk'" (change)="onChangeANP($event)" type="file"></div>
+    <div class="col-8 m-2">
+      <div class="progress" *ngIf="progress1">
+        <div class="progress-bar progress-bar-striped active" [style.width]="progress1 + '%'">{{progress1}}%</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-flex pt-5" >
+  <div class="col">
+    <div class="col">Windows (Print Version)</div>
+    <div class="col"><input accept=".zip" ngf-accept="'.zip'" (change)="onChangeWPV($event)" type="file"></div>
+    <div class="col-8 m-2">
+      <div class="progress" *ngIf="progress2">
+        <div class="progress-bar progress-bar-striped active" [style.width]="progress2 + '%'">{{progress2}}%</div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="col">Android (Print Version)</div>
+    <div class="col"><input accept=".apk" ngf-accept="'.apk'" (change)="onChangeAPV($event)" type="file"></div>
+    <div class="col-8 m-2">
+      <div class="progress" *ngIf="progress3">
+        <div class="progress-bar progress-bar-striped active" [style.width]="progress3 + '%'">{{progress3}}%</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<input (change)="upload($event.target.files[0])" type="file" >-->
+
+<!--<div class="progress" *ngIf="progress">-->
+<!--  <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>-->
+<!--</div>-->
