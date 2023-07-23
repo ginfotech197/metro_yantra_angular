@@ -111,6 +111,8 @@
               <th mat-sort-header="balance">SS Name</th>
               <th mat-sort-header="stockistName">Blocked</th>
               <th mat-sort-header="edit">Edit</th>
+              
+              <th mat-sort-header="edit">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -130,6 +132,8 @@
               <td>{{stockist.superStockistName}} ({{stockist.superStockistPin}})</td>
               <td><input type="checkbox" [checked]="stockist.blocked == 1" (click)="updateBlock(stockist.userId)"></td>
               <td><i class="bi bi-pencil-square" (click)="editStockist(stockist)"></i></td>
+              
+              <td><i class="bi bi-trash" (click)="deleteStockist(stockist.userId)"></i></td>
             </tr>
           </tbody>
 

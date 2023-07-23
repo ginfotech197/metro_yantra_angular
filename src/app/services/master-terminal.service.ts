@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Terminal} from '../models/Terminal.model';
-import {Subject} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {Subject, throwError} from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ErrorService} from './error.service';
 import {ServerResponse} from '../models/ServerResponse.model';
 import {StockistMaster} from '../models/StockistMaster.model';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, find, tap} from 'rxjs/operators';
 import {TerminalMaster} from '../models/TerminalMaster.model';
 import {PayoutSlab} from '../models/PayoutSlab.model';
 import Swal from 'sweetalert2';
@@ -61,6 +61,20 @@ export class MasterTerminalService {
       this.terminals = response.data;
       this.terminalSubject.next([...this.terminals]);
     });
+  }
+
+  deleteTerminalByAdmin(id){
+    
+
+    return this.http.get(this.BASE_API_URL + '/terminals/deleteTerminal/' + id).pipe(catchError(this.handleError),
+      tap(((response: ServerResponse) => {
+        // @ts-ignore
+        const findIndex = this.terminals.findIndex(x => x.terminalId == response.terminalId);
+        this.terminals = this.terminals.splice(findIndex,1);
+        this.terminalSubject.next([...this.terminals]);
+      })));
+    
+    
   }
 
   forceLogoutTerminal(id){
@@ -177,6 +191,15 @@ export class MasterTerminalService {
         this.terminals[x] = response.data;
         this.terminalSubject.next([...this.terminals]);
       }));
+  }
+
+
+  private handleError(errorResponse: HttpErrorResponse){
+    if (errorResponse.error.message.includes('1062')){
+      return throwError('Record already exists');
+    }else {
+      return throwError(errorResponse.error.message);
+    }
   }
 
 }

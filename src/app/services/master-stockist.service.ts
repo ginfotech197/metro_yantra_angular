@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { catchError, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorService } from './error.service';
 import { environment } from '../../environments/environment';
 import { StockistMaster } from '../models/StockistMaster.model';
 import { ServerResponse } from '../models/ServerResponse.model';
 import { Stockist } from '../models/Stockist.model';
-import { Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { User } from "../models/user.model";
 import { MasterTerminalService } from "./master-terminal.service";
 import { TerminalMaster } from "../models/TerminalMaster.model";
@@ -98,6 +98,28 @@ export class MasterStockistService {
         this.stockists[x] = response.data;
         this.stockistSubject.next([...this.stockists]);
       }));
+  }
+
+  deleteStokistByAdmin(id){
+    
+
+    return this.http.get(this.BASE_API_URL + '/stockists/deleteStockist/' + id).pipe(catchError(this.handleError),
+      tap(((response: ServerResponse) => {
+        // @ts-ignore
+        const findIndex = this.stockists.findIndex(x => x.userId == response.userId);
+        this.stockists = this.stockists.splice(findIndex,1);
+        this.stockistSubject.next([...this.stockists]);
+      })));
+    
+    
+  }
+
+  private handleError(errorResponse: HttpErrorResponse){
+    if (errorResponse.error.message.includes('1062')){
+      return throwError('Record already exists');
+    }else {
+      return throwError(errorResponse.error.message);
+    }
   }
 
   saveNewStockist(stockist) {

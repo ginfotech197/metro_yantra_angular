@@ -34,7 +34,9 @@
                     <mat-form-field fxFlex="100">
                       <mat-label [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}">Super
                         Stockist</mat-label>
-                      <mat-select [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}"
+                      
+                        <!-- <input formControlName="superStockistId" matInput disabled [value]="superStockist.userId" type="text" name="" id=""> -->
+                        <mat-select [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '25px'}"
                         formControlName="superStockistId" disabled>
                         <mat-option *ngFor="let superStockist of superStockists" [value]="superStockist.userId">
                           {{superStockist.userName}}
@@ -159,7 +161,7 @@
                 <label>No. of items</label>
                 <input class="col-12" [(ngModel)]="itemsOnEveryPage" (change)="p1 = 1" placeholder="Items">
               </th>
-              <th scope="colgroup" colspan="2" class="text-center"><button mat-button color="primary"
+              <th scope="colgroup" colspan="4" class="text-center"><button mat-button color="primary"
                   (click)="refreshTerminalList()"> Refresh <span class="material-icons">refresh</span> </button></th>
             </tr>
             <tr style="text-align: center">
@@ -178,6 +180,7 @@
               <th mat-sort-header="">Force Logout</th>
               <th mat-sort-header="stockistName">Auto Claim</th>
               <th mat-sort-header="edit">Edit</th>
+              <th mat-sort-header="edit">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -229,6 +232,7 @@
                   (click)="updateAutoClaim(terminal.terminalId)"></td>
 
               <td><i class="bi bi-pencil-square" (click)="editTerminal(terminal)"></i></td>
+              <td><i class="bi bi-trash" (click)="deleteTerminal(terminal.terminalId)"></i></td>
             </tr>
           </tbody>
         </table>

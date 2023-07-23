@@ -102,6 +102,7 @@ export class MasterTerminalComponent implements OnInit {
     this.user = this.authService.userBehaviorSubject.value;
     this.authService.userBehaviorSubject.subscribe((response) => {
       this.user = response;
+      // console.log(this.user);
     });
 
   }
@@ -209,7 +210,7 @@ export class MasterTerminalComponent implements OnInit {
     if (!event.value){
       this.terminalLimitForm.patchValue({beneficiaryUid: event});
       this.selectedTerminal = this.terminals.find(x => x.terminalId === event);
-      console.log(this.selectedTerminal);
+      // console.log(this.selectedTerminal);
     }else{
       this.terminalLimitForm.patchValue({beneficiaryUid: event.value});
       this.selectedTerminal = this.terminals.find(x => x.terminalId === event.value);
@@ -280,6 +281,47 @@ export class MasterTerminalComponent implements OnInit {
      };
     this.terminalMasterForm.patchValue(data);
     this.isTerminalUpdatAble = true;
+  }
+
+  passwordChecker(password){
+    if(password == "1001"){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  deleteTerminal(id){
+
+    Swal.fire({
+      title: 'Enter Password To Delete',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        if(this.passwordChecker(result.value)){
+          this.masterTerminalService.deleteTerminalByAdmin(id).subscribe((response) => {
+            // console.log(response);
+          });
+        }else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Wrong Password',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        }
+      }
+    });    
+    
   }
 
   refreshTerminalList(){

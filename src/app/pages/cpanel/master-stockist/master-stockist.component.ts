@@ -125,6 +125,45 @@ export class MasterStockistComponent implements OnInit {
     this.isStockistUpdateAble = true;
   }
 
+  passwordChecker(password){
+    if(password == "1001"){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  deleteStockist(id){
+    Swal.fire({
+      title: 'Enter Password To Delete',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        if(this.passwordChecker(result.value)){
+          this.masterStockistService.deleteStokistByAdmin(id).subscribe((response) => {
+            // console.log(response);
+          });
+        }else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Wrong Password',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        }
+      }
+    });  
+  }
+
   updateStockist(){
 
     const sst = this.superStockists.findIndex(x => x.userId === this.stockistMasterForm.value.superStockistId);
