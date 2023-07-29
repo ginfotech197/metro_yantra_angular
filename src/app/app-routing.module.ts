@@ -9,8 +9,8 @@ const routes: Routes = [
   // {path: '', component: HomeComponent},
   {
     path: '',
-    loadChildren: () => import('./modules/general/auth/auth.module')
-      .then(mod => mod.AuthModule),
+    loadChildren: () => import('./modules/general/cpanel/result/result.module')
+      .then(mod => mod.ResultModule),
     data: {
       loginType: 'Admin'
     }
@@ -32,7 +32,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'power',
+    path: 'cp',
     loadChildren: () => import('./modules/general/auth/auth.module')
       .then(mod => mod.AuthModule),
     data: {

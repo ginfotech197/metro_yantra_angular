@@ -9,6 +9,9 @@ import {GameService} from '../../../services/game.service';
 import { DatePipe } from '@angular/common';
 
 import {  VERSION } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user.model';
 
 
 @Component({
@@ -38,12 +41,49 @@ export class ResultComponent implements OnInit {
   today: String = new Date().toLocaleString();
   pipe = new DatePipe('en-US');
 
+  userSub: Subscription;
+  public user: User;
+  isAuthenticated = false;
+  isAdmin = false;
+  isDeveloper = false;
+  isStockist = false;
+  isSuperStockist = false;
+  isTerminal = false;
 
-  constructor(private resultService: ResultService, private gameResultService: GameResultService ,private gameService: GameService) {
+
+
+
+  constructor(private resultService: ResultService, private gameResultService: GameResultService ,private gameService: GameService, private authService: AuthService) {
    
    }
 
   ngOnInit(): void {
+
+
+
+    this.userSub = this.authService.userBehaviorSubject.subscribe(user => {
+      if (user){
+        this.user = user;
+        this.isAuthenticated = user.isAuthenticated;
+        this.isAdmin = user.isAdmin;
+        this.isDeveloper = user.isDeveloper;
+        this.isStockist = user.isStockist;
+        this.isTerminal = user.isTerminal;
+        this.isSuperStockist = user.isSuperStockist;
+      }else{
+        this.isAuthenticated = false;
+        this.isAdmin = false;
+        this.isDeveloper = false;
+        this.isStockist = false;
+        this.isTerminal = false;
+        this.isSuperStockist = false;
+      }
+    });
+    // console.log(this.isAuthenticated);
+
+
+
+
     this.currentDateResult = this.resultService.getCurrentDateResult();
     this.resultService.getCurrentDateResultListener().subscribe((response: CurrentGameResult) => {
       this.currentDateResult = response;
