@@ -82,6 +82,7 @@
 
             <th mat-sort-header="stockistName">Blocked</th>
             <th mat-sort-header="edit">Edit</th>
+            <th mat-sort-header="edit">Delete</th>
           </tr>
           </thead>
           <tbody>
@@ -99,6 +100,7 @@
             </td>
             <td><input type="checkbox" [checked]="superStockist.blocked == 1" (click)="updateBlock(superStockist.userId)"></td>
             <td><i class="bi bi-pencil-square" (click)="editStockist(superStockist)"></i></td>
+            <td><i class="bi bi-trash" (click)="deleteSuperStokist(superStockist.userId)"></i></td>
           </tr>
           </tbody>
 

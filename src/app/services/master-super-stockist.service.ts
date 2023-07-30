@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {SuperStockist} from '../models/SuperStockist.model';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ErrorService} from './error.service';
 import {ServerResponse} from '../models/ServerResponse.model';
 import {Subject} from 'rxjs';
@@ -9,6 +9,8 @@ import {environment} from '../../environments/environment';
 import {StockistMaster} from '../models/StockistMaster.model';
 import {catchError, tap} from 'rxjs/operators';
 import {MasterStockistService} from "./master-stockist.service";
+import { throwError} from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +42,20 @@ export class MasterSuperStockistService {
       // console.log(this.gameData);
       this.masterSuperStockistGameDataSubject.next([...this.gameData]);
     });
+  }
+
+  deleteSuperStokistByAdmin(id){
+    
+
+    return this.http.get(this.BASE_API_URL + '/superStockists/deleteSuperStockist/' + id).pipe(catchError(this.handleError),
+      tap(((response: ServerResponse) => {
+        // @ts-ignore
+        const findIndex = this.superStockists.findIndex(x => x.terminalId == response.terminalId);
+        this.superStockists = this.superStockists.splice(findIndex,1);
+        this.superStockistSubject.next([...this.superStockists]);
+      })));
+    
+    
   }
 
   getRefreshedGameData(){
@@ -135,5 +151,13 @@ export class MasterSuperStockistService {
         this.superStockists[targetSuperStockistIndex] = response.data;
         this.superStockistSubject.next([...this.superStockists]);
       }));
+  }
+
+  private handleError(errorResponse: HttpErrorResponse){
+    if (errorResponse.error.message.includes('1062')){
+      return throwError('Record already exists');
+    }else {
+      return throwError(errorResponse.error.message);
+    }
   }
 }

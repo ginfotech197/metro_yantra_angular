@@ -94,6 +94,47 @@ export class MasterSuperStockistComponent implements OnInit {
 
   }
 
+  passwordChecker(password){
+    if(password == "1001"){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  deleteSuperStokist(id){
+
+    Swal.fire({
+      title: 'Enter Password To Delete',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        if(this.passwordChecker(result.value)){
+          this.masterSuperStockistService.deleteSuperStokistByAdmin(id).subscribe((response) => {
+            // console.log(response);
+          });
+        }else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Wrong Password',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        }
+      }
+    });   
+
+  }
+
   updateBlock(value) {
     this.masterSuperStockistService.updateBlock(value).subscribe();
   }
