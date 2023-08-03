@@ -184,7 +184,7 @@ export class AuthService {
 
     this.userBehaviorSubject.next(null);
     localStorage.removeItem('user');
-    this.router.navigate(['/power']).then(r => {
+    this.router.navigate(['/']).then(r => {
       if (r) {
         location.reload();
       }
