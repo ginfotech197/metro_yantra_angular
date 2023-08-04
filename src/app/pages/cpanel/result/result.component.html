@@ -1,12 +1,13 @@
 
-<nav *ngIf="!isAuthenticated" class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(6, 7, 82);">
+<nav *ngIf="!isAuthenticated" class="navbar navbar-expand-lg navbar-dark"
+  style="background-color: rgb(6, 7, 82);">
   <!-- <a class="navbar-brand" href="#">Metro Yantra</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->
 
-  <div class="collapse navbar-collapse"  id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto" >
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Apk</button>
       </li>
@@ -19,31 +20,60 @@
       <li class="nav-item active">
         <button class="btn btn-outline-warning my-2 my-sm-0 m-2">32 bits</button>
       </li>
-      
+
     </ul>
-    
+
   </div>
 </nav>
 
 <div style="background-color: rgb(6, 7, 82);">
   <div class="text-center text-warning"><h1>-: Metro Yantra Online :-</h1></div>
-<div>
-  <div style="background-color: orange; border:2px solid black; height: 80px;">
-    <div class="d-flex col-4 m-3" style="border: 1px solid black; padding: 8px;">
-      <div style="text-align: center; color: white;" >Result Date:</div>
-      <span style="background-color: white; border: 2px solid black; color: black;" class="">{{today}}</span>
-    </div> 
-    
-  </div>
-</div>
-<div style="border: 2px solid yellow;">
-  <div class="d-flex m-1 p-1" *ngFor="let x of todayResult" style="border: 1px solid black;  background-color: rgba(199, 0, 0, 0.33);">
-    <span>{{x.draw_time}}</span>
-    <span style="padding-left: 150px;">{{x.single_number}}</span>
-  </div>
-</div>
-</div>
+  <div style=" text-align: center;">
+    <div style="background-color: orange; border:2px solid black; height: 80px;">
+      <div class="d-flex col-8 m-3"
+        style="border: 1px solid black; padding: 8px;">
+        <div style="text-align: center; color: white;">Current Date:</div>
+        <span
+          style="background-color: white; border: 2px solid black; color: black;"
+          class>{{today}}</span>
 
+      </div>
+      
+
+    </div>
+  </div>
+
+  <div
+        style="background-color: rgb(8, 4, 131); width: 30%; padding: 10px; margin-left: 34%;  text-align: center;">
+        <mat-form-field
+          style="border: 1px solid rgb(255, 255, 255); padding: 10px; text-align: center;">
+          <mat-label style="color: aliceblue;">Choose result date</mat-label>
+          <!-- #docregion toggle -->
+          <input [(ngModel)]="StartDateFilter" id="selectedDate"
+            style="color: aliceblue;" matInput [matDatepicker]="picker">
+          <mat-hint style="color: aliceblue; margin-left: 30%;">MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle 
+            style="color: rgb(255, 255, 255);" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker style="color: aliceblue;"
+            [(ngModel)]="StartDateFilter" #picker></mat-datepicker>
+          <!-- #enddocregion toggle -->
+        </mat-form-field>
+      </div>
+      <div style="text-align: center;">
+        <button mat-button color="accent"
+        style="font-size: 20px;"
+        (click)="searchResultByDate()">Search</button>
+      </div>
+      
+
+  <div style="border: 2px solid yellow;">
+    <div class="d-flex m-1 p-1" *ngFor="let x of todayResult"
+      style="border: 1px solid black;  background-color: rgba(199, 0, 0, 0.33);">
+      <span>{{x.draw_time}}</span>
+      <span style="padding-left: 150px;">{{x.single_number}}</span>
+    </div>
+  </div>
+</div>
 
 <!-- <div class="d-flex ml-5" style="text-align: end; padding-left: 4%;">
   

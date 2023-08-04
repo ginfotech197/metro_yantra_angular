@@ -12,6 +12,7 @@ import {  VERSION } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user.model';
+import { ServerResponse } from 'src/app/models/ServerResponse.model';
 
 
 @Component({
@@ -21,8 +22,20 @@ import { User } from 'src/app/models/user.model';
 })
 export class ResultComponent implements OnInit {
 
+  abcd : any;
+  date: any;
+
+  thisYear = new Date().getFullYear();
+  thisMonth = new Date().getMonth();
+  thisDay = new Date().getDate();
+  startDate = new Date(this.thisYear, this.thisMonth, this.thisDay);
+
+  StartDateFilter = this.startDate;
+  EndDateFilter = this.startDate;
+
   currentDateResult: CurrentGameResult;
   resultList: GameResult[] = [];
+  selectedDateResult: any;
 
 
   currentDate: string;
@@ -59,7 +72,7 @@ export class ResultComponent implements OnInit {
 
   ngOnInit(): void {
 
-
+    
 
     this.userSub = this.authService.userBehaviorSubject.subscribe(user => {
       if (user){
@@ -87,13 +100,11 @@ export class ResultComponent implements OnInit {
     this.currentDateResult = this.resultService.getCurrentDateResult();
     this.resultService.getCurrentDateResultListener().subscribe((response: CurrentGameResult) => {
       this.currentDateResult = response;
-      // console.log(this.currentDateResult);
     });
 
     this.selectedGame = 1;
 
     this.resultService.getTodayResultByGameId(this.selectedGame);
-    // this.resultService.getTodayResultByGameId(this.selectedGame);
     this.resultService.getTodayResultByGameIdListener().subscribe((response) => {
       this.todayResult = response;
     });
@@ -122,6 +133,8 @@ export class ResultComponent implements OnInit {
     return this.activeTripleContainerValue == idxSingle;
   }
 
+  
+
   setActiveGame(gameData) {
     // console.log(gameData);
     // this.gameResultService.getSelectedGamedResult(data);
@@ -131,6 +144,19 @@ export class ResultComponent implements OnInit {
     // this.gameResultService.getSelectedGamedResult(this.selectedGame);
     // this.bgColor = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
     this.buttonColours = this.buttonColour[gameData.id - 1];
+  }
+  searchResultByDate(){
+    
+    const startDate = this.pipe.transform(this.StartDateFilter, 'yyyy-MM-dd');
+    this.resultService.getTodayResultByGameId(startDate).subscribe((response) => {
+      // @ts-ignore
+      this.todayResult = response.data;
+      console.log(this.todayResult);
+    });
+    
+    
+    
+    
   }
 
 

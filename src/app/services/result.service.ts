@@ -42,13 +42,12 @@ export class ResultService {
 
 
   }
-  getTodayResultByGameId(gameId){
-    this.http.get(this.BASE_API_URL + '/dev/getTodayResultByGame').subscribe((response: {success: number, data: GameResult[]}) => {
-      // this.http.get(this.BASE_API_URL + '/dev/getTodayResultByGame/' + gameId).subscribe((response: {success: number, data: GameResult[]}) => {
-      this.todayResult = response.data;
-      this.resultSubject.next([...this.todayResult]);
-      // console.log(this.todayResult);
-    });
+  getTodayResultByGameId(gameDate){
+    // this.http.get(this.BASE_API_URL + '/dev/getTodayResultByGame').subscribe((response: {success: number, data: GameResult[]}) => {      
+    //   this.todayResult = response.data;
+    //   this.resultSubject.next([...this.todayResult]);
+    // });
+    return this.http.post(this.BASE_API_URL + '/dev/getTodayResultByGame', {date: gameDate});
   }
 
   getTodayResultByGameIdListener(){
@@ -66,11 +65,14 @@ export class ResultService {
     return this.http.post(this.BASE_API_URL + '/dev/getResultByDate', {date: resultDate}).pipe(catchError(this.handleError),
       tap(((response: {success: number, data: GameResult[]}) => {
         this.result = response.data;
-        // this.resultSubject.next([...this.result]);
-        //console.log(response);
+        this.resultSubject.next([...this.result]);
+        console.log(response);
       })));
   }
 
+  getResultByDateListener(){
+    return this.resultSubject.asObservable();
+  }
 
 
   getCurrentDateResult(){
@@ -88,9 +90,7 @@ export class ResultService {
     return this.resultByDateSubject.asObservable();
   }
 
-  getResultByDateListener(){
-    return this.resultByDateSubject.asObservable();
-  }
+  
 
   private handleError(errorResponse: HttpErrorResponse){
     if (errorResponse.error.message.includes('1062')){
