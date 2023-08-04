@@ -6,14 +6,25 @@
     <span class="navbar-toggler-icon"></span>
   </button> -->
 
+<<<<<<< HEAD
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+=======
+  <div class="collapse navbar-collapse"  id="navbarSupportedContent">
+    <label> Print version:   </label>
+    <ul class="navbar-nav mr-auto" >
+>>>>>>> 4098f1f721c2f25c74e5ae610587ecf43ac4c696
       <li class="nav-item active">
-        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Apk</button>
+        <a href="metro_yanta_api/storage/installer/Metro_Yantra_PrintVersion.apk">
+          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
+        </a>
       </li>
       <li class="nav-item active">
-        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
+        <a href="metro_yanta_api/storage/installer/Metro_Yantra_PrintVersion.zip">
+          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Windows</button>
+        </a>
       </li>
+<<<<<<< HEAD
       <li class="nav-item active">
         <button class="btn btn-outline-warning my-2 my-sm-0 m-2">64 bits</button>
       </li>
@@ -23,11 +34,31 @@
 
     </ul>
 
+=======
+
+    </ul>
+
+    <ul class="navbar-nav mr-auto" style="text-align: center">
+      <label> Non print version:   </label>
+      <li class="nav-item active">
+        <a href="metro_yanta_api/storage/installer/Metro_Yantra_NonPrintVersion.apk">
+          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a href="metro_yanta_api/storage/installer/Metro_Yantra_NonPrintVersion.zip">
+          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Windows</button>
+        </a>
+      </li>
+    </ul>
+
+>>>>>>> 4098f1f721c2f25c74e5ae610587ecf43ac4c696
   </div>
 </nav>
 
 <div style="background-color: rgb(6, 7, 82);">
   <div class="text-center text-warning"><h1>-: Metro Yantra Online :-</h1></div>
+<<<<<<< HEAD
   <div style=" text-align: center;">
     <div style="background-color: orange; border:2px solid black; height: 80px;">
       <div class="d-flex col-8 m-3"
@@ -36,6 +67,24 @@
         <span
           style="background-color: white; border: 2px solid black; color: black;"
           class>{{today}}</span>
+=======
+<div>
+  <div style="background-color: orange; border:2px solid black; height: 80px;">
+    <div class="d-flex col-4 m-3" style="border: 1px solid black; padding: 8px;">
+      <div style="text-align: center; color: white;" >Result Date:</div>
+      <span style="background-color: white; border: 2px solid black; color: black;" class="">{{today}}</span>
+    </div>
+
+  </div>
+</div>
+<div style="border: 2px solid yellow;">
+  <div class="d-flex m-1 p-1" *ngFor="let x of todayResult" style="border: 1px solid black;  background-color: rgba(199, 0, 0, 0.33);">
+    <span>{{x.draw_time}}</span>
+    <span style="padding-left: 150px;">{{x.single_number}}</span>
+  </div>
+</div>
+</div>
+>>>>>>> 4098f1f721c2f25c74e5ae610587ecf43ac4c696
 
       </div>
       
@@ -76,10 +125,10 @@
 </div>
 
 <!-- <div class="d-flex ml-5" style="text-align: end; padding-left: 4%;">
-  
+
   <div id="title-3-div-child-2" style="text-align: center; color: white;" *ngFor="let x of games, let idx = index">
-    
-    
+
+
     <button type="button" [disabled]="x.active === 'no'" (click)="setActiveGame(games[idx])"
       [ngStyle]="{'background-color': buttonColour[idx]}" class="btn  glow ml-1"
       style="font-size: x-large;border: 5px solid rgb(255, 230, 0); border-style: double; border-radius: 10px; background-color: rgb(4, 13, 136); color: white;">{{x.game_name}}</button>
@@ -98,7 +147,7 @@
 
             <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
 
-            
+
 
             <div *ngIf="x.single_number==null" class="text-center">{{'*'}}</div>
             <div *ngIf="x.single_number!=null" class="text-center">{{x.single_number}}</div>
@@ -112,7 +161,7 @@
     </thead>
   </table>
 
-  
+
 </div> -->
 <!--  <div class="pl-3 pr-3 pt-5">-->
 <!--    <table class="table table-hover"  style="margin-bottom: 48px; border: 2px solid rgb(255, 208, 0); background-color: rgba(255, 127, 80, 0.719);">-->

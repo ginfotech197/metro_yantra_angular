@@ -135,6 +135,10 @@
       }
     }
   },
+<<<<<<< HEAD
+=======
+  "defaultProject": "base-project",
+>>>>>>> 4098f1f721c2f25c74e5ae610587ecf43ac4c696
   "cli": {
     "analytics": "cfaa73ef-8b29-4bff-b212-a8c702d99a27"
   }
