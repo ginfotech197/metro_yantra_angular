@@ -138,6 +138,9 @@
 <<<<<<< HEAD
 =======
   "defaultProject": "base-project",
+  "cli": {
+    "analytics": "3546efb9-4054-4135-b5ef-4f82f2814d2d"
+  },
 >>>>>>> 4098f1f721c2f25c74e5ae610587ecf43ac4c696
   "cli": {
     "analytics": "cfaa73ef-8b29-4bff-b212-a8c702d99a27"
