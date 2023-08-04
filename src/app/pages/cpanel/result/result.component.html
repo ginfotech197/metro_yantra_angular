@@ -6,22 +6,40 @@
   </button> -->
 
   <div class="collapse navbar-collapse"  id="navbarSupportedContent">
+    <label> Print version:   </label>
     <ul class="navbar-nav mr-auto" >
       <li class="nav-item active">
         <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Apk</button>
       </li>
+<!--      <li class="nav-item active">-->
+<!--        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>-->
+<!--      </li>-->
       <li class="nav-item active">
-        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
+        <a href="metro_yanta_api/storage/installer/Metro_Yantra_NonPrintVersion.zip"><button class="btn btn-outline-warning my-2 my-sm-0 m-2">64 bits</button></a>
       </li>
+      <li class="nav-item active">
+        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">32 bits</button>
+      </li>
+
+    </ul>
+
+    <ul class="navbar-nav mr-auto" style="text-align: center">
+      <label> Non print version:   </label>
+      <li class="nav-item active">
+        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Apk</button>
+      </li>
+<!--      <li class="nav-item active">-->
+<!--        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>-->
+<!--      </li>-->
       <li class="nav-item active">
         <button class="btn btn-outline-warning my-2 my-sm-0 m-2">64 bits</button>
       </li>
       <li class="nav-item active">
         <button class="btn btn-outline-warning my-2 my-sm-0 m-2">32 bits</button>
       </li>
-      
+
     </ul>
-    
+
   </div>
 </nav>
 
@@ -32,8 +50,8 @@
     <div class="d-flex col-4 m-3" style="border: 1px solid black; padding: 8px;">
       <div style="text-align: center; color: white;" >Result Date:</div>
       <span style="background-color: white; border: 2px solid black; color: black;" class="">{{today}}</span>
-    </div> 
-    
+    </div>
+
   </div>
 </div>
 <div style="border: 2px solid yellow;">
@@ -46,10 +64,10 @@
 
 
 <!-- <div class="d-flex ml-5" style="text-align: end; padding-left: 4%;">
-  
+
   <div id="title-3-div-child-2" style="text-align: center; color: white;" *ngFor="let x of games, let idx = index">
-    
-    
+
+
     <button type="button" [disabled]="x.active === 'no'" (click)="setActiveGame(games[idx])"
       [ngStyle]="{'background-color': buttonColour[idx]}" class="btn  glow ml-1"
       style="font-size: x-large;border: 5px solid rgb(255, 230, 0); border-style: double; border-radius: 10px; background-color: rgb(4, 13, 136); color: white;">{{x.game_name}}</button>
@@ -68,7 +86,7 @@
 
             <div style="background-color: red; color: yellow">{{x.draw_time}}</div>
 
-            
+
 
             <div *ngIf="x.single_number==null" class="text-center">{{'*'}}</div>
             <div *ngIf="x.single_number!=null" class="text-center">{{x.single_number}}</div>
@@ -82,7 +100,7 @@
     </thead>
   </table>
 
-  
+
 </div> -->
 <!--  <div class="pl-3 pr-3 pt-5">-->
 <!--    <table class="table table-hover"  style="margin-bottom: 48px; border: 2px solid rgb(255, 208, 0); background-color: rgba(255, 127, 80, 0.719);">-->
