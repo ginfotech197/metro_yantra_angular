@@ -522,6 +522,7 @@ export class ManualResultComponent implements OnInit {
 
     this.adminReportService.getLoadReports(loadData).subscribe((response) => {
       this.loadReports = response.data;
+      console.log(this.loadReports);
     });
   }
 

@@ -1,19 +1,22 @@
 <!-- <pre>{{manualResultForm.value}}</pre> -->
 <div [ngClass]="deviceXs?'mobile':'desktop'">
-  <mat-tab-group class="ml-5" >
+  <mat-tab-group class="ml-5">
     <mat-tab label="Today">
       <div class="d-flex">
 
         <div class="d-flex">
 
-          <form [formGroup]="manualResultForm" [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">
+          <form [formGroup]="manualResultForm"
+            [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">
             <div class="d-flex flex-column bd-highlight">
               <div class="p-2 bd-highlight">
                 <div #targetDiv class="row">
                   <mat-form-field class="col-4">
-                    <mat-label >Draw time</mat-label>
-                    <mat-select formControlName="drawMasterId" placeholder="Category" (selectionChange)="changeTime()">
-                      <mat-option *ngFor="let time of drawTimes" [value]="time.drawId">
+                    <mat-label>Draw time</mat-label>
+                    <mat-select formControlName="drawMasterId"
+                      placeholder="Category" (selectionChange)="changeTime()">
+                      <mat-option *ngFor="let time of drawTimes"
+                        [value]="time.drawId">
                         {{time.endTime}}
                       </mat-option>
                     </mat-select>
@@ -62,36 +65,56 @@
                   </div>
                   <!-- <button type="button" class="btn btn-primary mt-2" (click)="saveManualResult()">Save</button> -->
                   <div class="container">
-                    <button [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}" type="button" class="btn btn-primary mt-2" (click)="saveManualResult()">Save</button>
-                    <button [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}" type="button" class="btn btn-primary ml-2 mt-2" (click)="onSearch()">Search Load<i
+                    <button
+                      [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}"
+                      type="button" class="btn btn-primary mt-2"
+                      (click)="saveManualResult()">Save</button>
+                    <button
+                      [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}"
+                      type="button" class="btn btn-primary ml-2 mt-2"
+                      (click)="onSearch()">Search Load<i
                         class="bi bi-search pl-2"></i></button>
                   </div>
                 </div>
               </div>
 
-
             </div>
 
           </form>
-          <div >
+          <div>
             <div class="scroll"
               style="max-width: 600px; overflow-x: scroll; max-height: 300px; min-height: 300px; overflow-y: scroll;">
-<!--              <div class="ml-5" *ngIf="singleNumber.length>0">-->
+              <!--              <div class="ml-5" *ngIf="singleNumber.length>0">-->
               <div class="ml-5" *ngIf="manualResultForm.value.gameId == 1">
 
-                <div >
-                  <h4 [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">Single</h4>
-                  <table  class="table table-bodered" >
+                <div>
+                  <h4
+                    [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '35px'}">Single</h4>
+                  <table class="table table-bodered">
                     <tr>
-                      <td  *ngFor="let tableData of loadReports.slice(0, loadReports.length % columnNumber  === 0 ?
+                      <!-- <td
+                        *ngFor="let tableData of loadReports.slice(0, loadReports.length % columnNumber  === 0 ?
                       loadReports.length / columnNumber : loadReports.length / columnNumber + 1); let idx = index">
-                        <div [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '55px'}"
+                        <div
+                          [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '55px'}"
                           *ngFor="let x of loadReports.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index">
-                          <div *ngIf="x.quantity!=null">{{x.visible_number}} => {{x.quantity}}</div>
+                          <div *ngIf="x.quantity!=null">{{x.visible_number}} =>
+                            {{x.quantity}}</div>
 
                         </div>
-                      </td>
+                      </td> -->
 
+                      
+
+                      <!-- {{loadReports | json}} -->
+                      <div style="display: flex;">
+                        <div style="border: 1px solid rgb(255, 255, 255); padding: 6px; color: white;"  *ngFor="let x of loadReports">
+                          {{x.visible_number}} => 
+                          <span *ngIf="x.quantity==null" class="text-center">{{'*'}}</span>
+                          <span *ngIf="x.quantity!=null" class="text-center">{{x.quantity}}</span>
+                        </div>
+                      </div>
+                      
 
                     </tr>
                   </table>
@@ -99,8 +122,7 @@
 
               </div>
 
-
-<!--              <div class="ml-5" *ngIf="doubleNumberIndividual.length>0">-->
+              <!--              <div class="ml-5" *ngIf="doubleNumberIndividual.length>0">-->
               <!-- <div class="ml-5" *ngIf="manualResultForm.value.gameId == 5">
 
 
@@ -434,7 +456,6 @@
           </table>
         </div>
 
-
       </div>
 
       <!-- <div class="p-1" *ngIf="manualResultForm.value.gameId===1">
@@ -509,7 +530,6 @@
           </div>
         </div>
       </div> -->
-
 
       <!-- <div class="p-1" *ngIf="manualResultForm.value.gameId===2">
 
@@ -906,7 +926,6 @@
         </div>
       </div> -->
 
-
       <div class="p-1" *ngIf="manualResultForm.value.gameId===1">
 
         <!-- <div class="d-flex">
@@ -923,14 +942,16 @@
             <div class="d-flex flex-row bd-highlight">
               <div class="d-flex flex-row">
 
-                <div class="p-1" *ngFor="let tableData of singleNumber.slice(0, singleNumber.length % columnNumber  === 0 ?
+                <div class="p-1"
+                  *ngFor="let tableData of singleNumber.slice(0, singleNumber.length % columnNumber  === 0 ?
                   singleNumber.length / columnNumber : singleNumber.length / columnNumber + 1); let idx = index"
                   style=" align-items: center;">
 
-
                   <button
                     *ngFor="let x of singleNumber.slice( idx * columnNumber, idx * columnNumber + columnNumber); let col=index"
-                    class="single-number-button coder-fab" [class.green]="isDisabledSingleHeaderButton" class="p-1 btn btn-warning m-2"
+                    class="single-number-button coder-fab"
+                    [class.green]="isDisabledSingleHeaderButton"
+                    class="p-1 btn btn-warning m-2"
                     (click)="selectedNumber(1, x.singleNumberId, x.singleNumber)">
                     {{x.singleNumber}}
                   </button>
@@ -1033,107 +1054,99 @@
         <i class="bi bi-arrow-up-circle"></i>
       </button>
     </mat-tab>
-<!--    <mat-tab label="Old Day">-->
-<!--      <div>-->
-<!--        <form [formGroup]="oldDateResultForm">-->
-<!--          <div class="d-flex flex-column bd-highlight">-->
-<!--            <div class="p-2 bd-highlight">-->
-<!--              <div #targetDiv class="row">-->
-<!--                <div class="pt-1 d-flex">-->
-<!--                  <div class="col-3">-->
-<!--                    <mat-form-field appearance="fill" formControlName="gameDate">-->
-<!--                      <mat-label>Start date</mat-label>-->
-<!--                      <input (dateChange)="getDrawTimeForOldResult($event)" matInput [matDatepicker]="picker"-->
-<!--                        [(ngModel)]="newDateFilter" [ngModelOptions]="{standalone: true}">-->
-<!--                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
-<!--                      <mat-datepicker #picker [(ngModel)]="newDateFilter" [ngModelOptions]="{standalone: true}">-->
-<!--                      </mat-datepicker>-->
-<!--                    </mat-form-field>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <mat-form-field class="col-2">-->
-<!--                  <mat-label>Draw time</mat-label>-->
-<!--                  <mat-select formControlName="drawMasterId" placeholder="Category">-->
-<!--                    <mat-option *ngFor="let time of oldDateReultDrawTime" [value]="time.drawId">-->
-<!--                      {{time.endTime}}-->
-<!--                    </mat-option>-->
-<!--                  </mat-select>-->
-<!--                </mat-form-field>-->
-<!--                <div class=" d-flex col-2"-->
-<!--                  style="height: 0px; border-radius: 10px; padding-top: 0px;padding-left: 10px;">-->
-<!--                  <mat-form-field>-->
-<!--                    <mat-label>Game</mat-label>-->
-<!--                    <input type="text" matInput value="Single">-->
-<!--                    &lt;!&ndash; <mat-select formControlName="gameId" placeholder="Category">-->
-<!--                      <mat-option *ngFor="let x of games" [value]="x.id">-->
-<!--                        {{x.game_name}}-->
-<!--                      </mat-option>-->
-<!--                    </mat-select> &ndash;&gt;-->
-<!--                  </mat-form-field>-->
+    <!--    <mat-tab label="Old Day">-->
+    <!--      <div>-->
+    <!--        <form [formGroup]="oldDateResultForm">-->
+    <!--          <div class="d-flex flex-column bd-highlight">-->
+    <!--            <div class="p-2 bd-highlight">-->
+    <!--              <div #targetDiv class="row">-->
+    <!--                <div class="pt-1 d-flex">-->
+    <!--                  <div class="col-3">-->
+    <!--                    <mat-form-field appearance="fill" formControlName="gameDate">-->
+    <!--                      <mat-label>Start date</mat-label>-->
+    <!--                      <input (dateChange)="getDrawTimeForOldResult($event)" matInput [matDatepicker]="picker"-->
+    <!--                        [(ngModel)]="newDateFilter" [ngModelOptions]="{standalone: true}">-->
+    <!--                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+    <!--                      <mat-datepicker #picker [(ngModel)]="newDateFilter" [ngModelOptions]="{standalone: true}">-->
+    <!--                      </mat-datepicker>-->
+    <!--                    </mat-form-field>-->
+    <!--                  </div>-->
+    <!--                </div>-->
+    <!--                <mat-form-field class="col-2">-->
+    <!--                  <mat-label>Draw time</mat-label>-->
+    <!--                  <mat-select formControlName="drawMasterId" placeholder="Category">-->
+    <!--                    <mat-option *ngFor="let time of oldDateReultDrawTime" [value]="time.drawId">-->
+    <!--                      {{time.endTime}}-->
+    <!--                    </mat-option>-->
+    <!--                  </mat-select>-->
+    <!--                </mat-form-field>-->
+    <!--                <div class=" d-flex col-2"-->
+    <!--                  style="height: 0px; border-radius: 10px; padding-top: 0px;padding-left: 10px;">-->
+    <!--                  <mat-form-field>-->
+    <!--                    <mat-label>Game</mat-label>-->
+    <!--                    <input type="text" matInput value="Single">-->
+    <!--                    &lt;!&ndash; <mat-select formControlName="gameId" placeholder="Category">-->
+    <!--                      <mat-option *ngFor="let x of games" [value]="x.id">-->
+    <!--                        {{x.game_name}}-->
+    <!--                      </mat-option>-->
+    <!--                    </mat-select> &ndash;&gt;-->
+    <!--                  </mat-form-field>-->
 
-<!--                </div>-->
-<!--              </div>-->
+    <!--                </div>-->
+    <!--              </div>-->
 
+    <!--              <div>-->
+    <!--                <div class="d-flex">-->
+    <!--                  <div class="col-1"></div>-->
+    <!--                  <div class="card mt-2"-->
+    <!--                    style="width: 18rem; border: 4px solid rgb(217, 255, 2); color: rgb(4, 0, 255);">-->
+    <!--                    <div class="card-header text-center">-->
+    <!--                      Upcoming result-->
+    <!--                    </div>-->
+    <!--                    <ul class="list-group list-group-flush">-->
+    <!--                      <li class="list-group-item text-center">{{oldDateResultForm.value.triple}}</li>-->
 
-<!--              <div>-->
-<!--                <div class="d-flex">-->
-<!--                  <div class="col-1"></div>-->
-<!--                  <div class="card mt-2"-->
-<!--                    style="width: 18rem; border: 4px solid rgb(217, 255, 2); color: rgb(4, 0, 255);">-->
-<!--                    <div class="card-header text-center">-->
-<!--                      Upcoming result-->
-<!--                    </div>-->
-<!--                    <ul class="list-group list-group-flush">-->
-<!--                      <li class="list-group-item text-center">{{oldDateResultForm.value.triple}}</li>-->
+    <!--                      <li class="list-group-item text-center">{{oldDateResultForm.value.single}}</li>-->
+    <!--                    </ul>-->
+    <!--                  </div>-->
+    <!--                </div>-->
+    <!--                <div style="padding-left: 120px;"><button type="button" class="btn btn-primary mt-2"-->
+    <!--                    (click)="saveOldDateResult()" [disabled]="oldDateResultForm.invalid">Save</button></div>-->
 
+    <!--              </div>-->
+    <!--            </div>-->
 
-<!--                      <li class="list-group-item text-center">{{oldDateResultForm.value.single}}</li>-->
-<!--                    </ul>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div style="padding-left: 120px;"><button type="button" class="btn btn-primary mt-2"-->
-<!--                    (click)="saveOldDateResult()" [disabled]="oldDateResultForm.invalid">Save</button></div>-->
+    <!--            <div class="d-flex flex-row bd-highlight">-->
+    <!--              <div class="d-flex flex-column" id="triple-flex-column-{{idxSingle}}"-->
+    <!--                *ngFor="let tableData of numberCombinationMatrix; let idxSingle = index">-->
+    <!--                <div class="p-1">-->
+    <!--                  <button class="single-number-button coder-fab" [class.green]="isDisabledSingleHeaderButton"-->
+    <!--                    [disabled]="isDisabledSingleHeaderButton">-->
+    <!--                    {{tableData.singleNumber}}-->
 
+    <!--                  </button>-->
+    <!--                </div>-->
+    <!--                <div class="p-1" *ngFor="let numberCombination of tableData.numberCombinations">-->
+    <!--                  <button class="coder-fab" mat-fab matBadge="{{tableData.singleNumber}}"-->
+    <!--                    [matBadgeHidden]="currentCombinationMatrixSelectedId != numberCombination.numberCombinationId"-->
+    <!--                    [ngStyle]="{'background-color':(currentCombinationMatrixSelectedId === numberCombination.numberCombinationId) ? 'rgb(30,64,30)' : '#858b8b' }"-->
+    <!--                    aria-label=""-->
+    <!--                    (click)="setOldDateResultInForm(tableData.singleNumber, numberCombination);scroll(targetDiv)">-->
+    <!--                    {{numberCombination.visibleTripleNumber}}-->
+    <!--                  </button>-->
 
-<!--              </div>-->
-<!--            </div>-->
-
-<!--            <div class="d-flex flex-row bd-highlight">-->
-<!--              <div class="d-flex flex-column" id="triple-flex-column-{{idxSingle}}"-->
-<!--                *ngFor="let tableData of numberCombinationMatrix; let idxSingle = index">-->
-<!--                <div class="p-1">-->
-<!--                  <button class="single-number-button coder-fab" [class.green]="isDisabledSingleHeaderButton"-->
-<!--                    [disabled]="isDisabledSingleHeaderButton">-->
-<!--                    {{tableData.singleNumber}}-->
-
-<!--                  </button>-->
-<!--                </div>-->
-<!--                <div class="p-1" *ngFor="let numberCombination of tableData.numberCombinations">-->
-<!--                  <button class="coder-fab" mat-fab matBadge="{{tableData.singleNumber}}"-->
-<!--                    [matBadgeHidden]="currentCombinationMatrixSelectedId != numberCombination.numberCombinationId"-->
-<!--                    [ngStyle]="{'background-color':(currentCombinationMatrixSelectedId === numberCombination.numberCombinationId) ? 'rgb(30,64,30)' : '#858b8b' }"-->
-<!--                    aria-label=""-->
-<!--                    (click)="setOldDateResultInForm(tableData.singleNumber, numberCombination);scroll(targetDiv)">-->
-<!--                    {{numberCombination.visibleTripleNumber}}-->
-<!--                  </button>-->
-
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--        <button class="coder-fab" mat-fab (click)="scroll(targetDiv)">-->
-<!--          <i class="bi bi-arrow-up-circle"></i>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </mat-tab>-->
+    <!--                </div>-->
+    <!--              </div>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </form>-->
+    <!--        <button class="coder-fab" mat-fab (click)="scroll(targetDiv)">-->
+    <!--          <i class="bi bi-arrow-up-circle"></i>-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </mat-tab>-->
   </mat-tab-group>
 </div>
-
-
-
-
-
 
 <div class="d-flex" *ngIf="!isProduction">
   <div class="col-3">
