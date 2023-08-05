@@ -72,42 +72,42 @@ export class PlayGameService {
         this.singleNumberSubject.next([...this.singleNumbers]);
       });
 
-      this.http.get(this.BASE_API_URL + '/numberCombinations/matrix').subscribe((response: ServerResponse) => {
-        this.numberCombinationMatrix = response.data;
-        this.numberCombinationMatrixSubject.next([...this.numberCombinationMatrix]);
-      });
-
-      this.http.get(this.BASE_API_URL + '/dev/results/currentDate').subscribe((response: ServerResponse) => {
-        this.currentDateResult = response.data;
-        this.currentDateResultSubject.next({...this.currentDateResult});
-      });
-
-      this.http.get(this.BASE_API_URL + '/getDoubleNumber').subscribe((response: ServerResponse) => {
-        this.doubleNumbers = response.data;
-        // console.log(this.doubleNumbers);
-        this.doubleNumberSubject.next([...this.doubleNumbers]);
-      });
-
-      this.http.get(this.BASE_API_URL + '/getTwelveCards').subscribe((response: ServerResponse) => {
-        this.twelveCard = response.data;
-        // console.log(this.doubleNumbers);
-        this.twelveCardSubject.next([...this.twelveCard]);
-      });
-
-      this.http.get(this.BASE_API_URL + '/getSixteenCards').subscribe((response: ServerResponse) => {
-        this.sixteenCard = response.data;
-        // console.log(this.doubleNumbers);
-        this.sixteenCardSubject.next([...this.sixteenCard]);
-      });
-      this.http.get(this.BASE_API_URL + '/getAndarNumbers').subscribe((response: ServerResponse) => {
-        this.andaarNumber = response.data;
-        this.AndaarNumberSubject.next([...this.andaarNumber]);
-      });
-
-      this.http.get(this.BASE_API_URL + '/getBaharNumbers').subscribe((response: ServerResponse) => {
-        this.baharNumber = response.data;
-        this.BaharNumberSubject.next([...this.baharNumber]);
-      });
+      // this.http.get(this.BASE_API_URL + '/numberCombinations/matrix').subscribe((response: ServerResponse) => {
+      //   this.numberCombinationMatrix = response.data;
+      //   this.numberCombinationMatrixSubject.next([...this.numberCombinationMatrix]);
+      // });
+      //
+      // this.http.get(this.BASE_API_URL + '/dev/results/currentDate').subscribe((response: ServerResponse) => {
+      //   this.currentDateResult = response.data;
+      //   this.currentDateResultSubject.next({...this.currentDateResult});
+      // });
+      //
+      // this.http.get(this.BASE_API_URL + '/getDoubleNumber').subscribe((response: ServerResponse) => {
+      //   this.doubleNumbers = response.data;
+      //   // console.log(this.doubleNumbers);
+      //   this.doubleNumberSubject.next([...this.doubleNumbers]);
+      // });
+      //
+      // this.http.get(this.BASE_API_URL + '/getTwelveCards').subscribe((response: ServerResponse) => {
+      //   this.twelveCard = response.data;
+      //   // console.log(this.doubleNumbers);
+      //   this.twelveCardSubject.next([...this.twelveCard]);
+      // });
+      //
+      // this.http.get(this.BASE_API_URL + '/getSixteenCards').subscribe((response: ServerResponse) => {
+      //   this.sixteenCard = response.data;
+      //   // console.log(this.doubleNumbers);
+      //   this.sixteenCardSubject.next([...this.sixteenCard]);
+      // });
+      // this.http.get(this.BASE_API_URL + '/getAndarNumbers').subscribe((response: ServerResponse) => {
+      //   this.andaarNumber = response.data;
+      //   this.AndaarNumberSubject.next([...this.andaarNumber]);
+      // });
+      //
+      // this.http.get(this.BASE_API_URL + '/getBaharNumbers').subscribe((response: ServerResponse) => {
+      //   this.baharNumber = response.data;
+      //   this.BaharNumberSubject.next([...this.baharNumber]);
+      // });
     }
 
 

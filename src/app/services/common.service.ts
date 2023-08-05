@@ -46,11 +46,11 @@ export class CommonService {
 
   constructor(private http: HttpClient, private errorService: ErrorService) {
 
-    setInterval(() => {
-      this.currentValue += 10;
-      this.value$.next(this.currentValue);
-      // just testing if it is working
-    }, 1000);
+    // setInterval(() => {
+    //   this.currentValue += 10;
+    //   this.value$.next(this.currentValue);
+    //   // just testing if it is working
+    // }, 1000);
 
     // this.http.get('assets/ProjectData.json').subscribe((data: ProjectData) => {
     //   this.projectData = data;
@@ -186,11 +186,11 @@ export class CommonService {
     return this.http.post( this.BASE_API_URL + '/terminal/updateCancellation');
   }
 
-  loadValue(i) {
-    this.currentValue += i;
-    this.value$.next(this.currentValue);
-    // console.log(this.currentValue);
-  }
+  // loadValue(i) {
+  //   this.currentValue += i;
+  //   this.value$.next(this.currentValue);
+  //   // console.log(this.currentValue);
+  // }
 
   getActiveDrawTime(){
     return {...this.activeDrawTime};

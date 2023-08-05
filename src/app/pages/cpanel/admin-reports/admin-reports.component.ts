@@ -24,7 +24,7 @@ import { findIndex } from 'rxjs';
 export class AdminReportsComponent implements OnInit {
   @ViewChild(ModalDirective) modal: ModalDirective;
 
-  screenWidth: any;  
+  screenWidth: any;
   screenHeight: any;
 
   thisYear = new Date().getFullYear();
@@ -93,8 +93,9 @@ export class AdminReportsComponent implements OnInit {
   // picker1: any;
   constructor(private adminReportService: AdminReportService, private masterTerminalService: MasterTerminalService, private gameService: GameService) {
     // console.log(this.thisDay);
-    this.screenWidth = window.innerWidth;  
+    this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
+    this.drawWiseReport(1);
     // console.log(indexOf(this.seriesName));
   }
 
@@ -110,7 +111,7 @@ export class AdminReportsComponent implements OnInit {
       this.copyBarcodeReportRecords = response;
     });
 
-    
+
 
     this.games = this.gameService.getGame();
     const data = {
@@ -301,13 +302,12 @@ export class AdminReportsComponent implements OnInit {
 
   openPopup(playMasterId: number, barcodeNumber: string){
 
-    
+
     this.adminReportService.getBarcodeDetails(playMasterId).subscribe(response => {
 
       this.barcodeDetails = response.data;
-      const test = this.barcodeDetails.rolletNumber.map(x => x.series_id);    
+      const test = this.barcodeDetails.rolletNumber.map(x => x.series_id);
       this.uniquSeriesId =[...new Set(test)];
-      console.log([...new Set(test)]);
       // const test2= test.filter((item,index)=>test.indexOf(item===index));
     });
   }

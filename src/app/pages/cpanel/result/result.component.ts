@@ -66,8 +66,6 @@ export class ResultComponent implements OnInit {
   screenWidth: any;
   screenHeight: any;
 
-  isIntervalActive = 0;
-
   todaysDate = null;
 
 
@@ -130,9 +128,7 @@ export class ResultComponent implements OnInit {
     });
 
     this.todayResultAutoRefreshControl = setInterval(() => {
-      // if(this.isIntervalActive === 1){
         this.searchResultByDate();
-        // }
     }, 2000);
   }
 
@@ -159,12 +155,6 @@ export class ResultComponent implements OnInit {
   }
   searchResultByDate(){
     const startDate = this.pipe.transform(this.StartDateFilter, 'yyyy-MM-dd');
-    console.log(startDate);
-    if(this.todaysDate === startDate){
-      this.isIntervalActive = 1;
-    }else{
-      this.isIntervalActive = 0;
-    }
     this.resultService.getTodayResultByGameId(startDate).subscribe((response) => {
       // @ts-ignore
       this.todayResult = response.data;

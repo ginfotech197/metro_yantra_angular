@@ -124,8 +124,8 @@ export class ManualResultComponent implements OnInit {
   andaarNumber: AndarNumber[] = [];
   baharNumber: BaharNumber[] = [];
 
-  screenWidth: any;  
-  screenHeight: any; 
+  screenWidth: any;
+  screenHeight: any;
 
 
   // tslint:disable-next-line:max-line-length
@@ -133,9 +133,9 @@ export class ManualResultComponent implements OnInit {
               , private adminReportService: AdminReportService
     ) {
 
-      this.screenWidth = window.innerWidth;  
+      this.screenWidth = window.innerWidth;
       this.screenHeight = window.innerHeight;
-      
+
     this.deviceXs = this.commonService.deviceXs;
     const now = new Date();
     const currentSQLDate = formatDate(now, 'yyyy-MM-dd', 'en');
@@ -195,28 +195,10 @@ export class ManualResultComponent implements OnInit {
 
     this.fetchDrawTime(this.selectedGame);
 
-    this.numberCombinationMatrix = this.playGameService.getNumberCombinationMatrix();
-    // this.numberCombinationMatrix  = JSON.parse(JSON.stringify(this.copyNumberMatrix));
-    this.playGameService.getNumberCombinationMatrixListener().subscribe((response) => {
-      this.numberCombinationMatrix = response;
-      this.copyNumberMatrix = JSON.parse(JSON.stringify(this.numberCombinationMatrix));
-    });
-
 
     this.games = this.gameService.getGame();
     this.gameService.getGameListener().subscribe((response: Game[]) => {
       this.games = response;
-    });
-
-    this.twelveCard = this.playGameService.getTwelveCard();
-    this.playGameService.getTwelveCardListener().subscribe((response: TwelveCard[]) => {
-      this.twelveCard = response;
-      // console.log(this.twelveCard);
-    });
-
-    this.sixteenCard = this.playGameService.getSixteenCard();
-    this.playGameService.getSixteenCardListener().subscribe((response: SixteenCard[]) => {
-      this.sixteenCard = response;
     });
 
     this.singleNumber = this.playGameService.getSingleNumbers();
@@ -225,22 +207,11 @@ export class ManualResultComponent implements OnInit {
       console.log(this.singleNumber);
     });
 
-    this.doubleNumber = this.playGameService.getDoubleNumbers();
-    this.playGameService.getDoubleNumberListener().subscribe((response) => {
-      this.doubleNumber = response;
-    });
-    // this.games = this.manualResultService.getAllGame();
-    // this.manualResultService.getAllGamesListener().subscribe((response : Game[]) => {
-    //   this.games = response;
-    //   console.log(this.games);
-    // });
-
     this.terminals = this.masterTerminalService.getTerminals();
     this.sortedTerminalList = this.masterTerminalService.getTerminals();
     this.masterTerminalService.getTerminalListener().subscribe((response: Terminal[]) => {
       this.terminals = response;
       this.sortedTerminalList = response;
-      // console.log(this.sortedTerminalList);
     });
   }
 
@@ -545,71 +516,12 @@ export class ManualResultComponent implements OnInit {
 
     const loadData = {
       terminal_id: this.terminalId,
-      game_id: this.manualResultForm.value.gameId,
+      game_id: 1,
       draw_id: this.manualResultForm.value.drawMasterId,
     };
 
     this.adminReportService.getLoadReports(loadData).subscribe((response) => {
       this.loadReports = response.data;
-
-      if ('single_number' in this.loadReports){
-          this.singleNumber = this.loadReports.single_number;
-          this.doubleNumber = this.loadReports.double_number;
-          this.numberCombinationMatrix = this.loadReports.triple_number;
-
-          this.twelveCard = [];
-          this.sixteenCard = [];
-          this.singleNumberIndividual = [];
-          this.doubleNumberIndividual = [];
-          this.andaarNumber = [];
-          this.baharNumber = [];
-      }else if ('twelve_card' in this.loadReports){
-          this.twelveCard = this.loadReports.twelve_card;
-
-          this.singleNumber = [];
-          this.doubleNumber = [];
-          this.numberCombinationMatrix = [];
-          this.sixteenCard = [];
-          this.singleNumberIndividual = [];
-          this.doubleNumberIndividual = [];
-          this.andaarNumber = [];
-          this.baharNumber = [];
-      }else if ('sixteen_card' in this.loadReports){
-          this.sixteenCard = this.loadReports.sixteen_card;
-
-          this.singleNumber = [];
-          this.doubleNumber = [];
-          this.numberCombinationMatrix = [];
-          this.twelveCard = [];
-          this.singleNumberIndividual = [];
-          this.doubleNumberIndividual = [];
-          this.andaarNumber = [];
-          this.baharNumber = [];
-
-      }else if ('single_individual' in this.loadReports){
-          this.singleNumberIndividual = this.loadReports.single_individual;
-
-          this.singleNumber = [];
-          this.doubleNumber = [];
-          this.numberCombinationMatrix = [];
-          this.twelveCard = [];
-          this.sixteenCard = [];
-          this.doubleNumberIndividual = [];
-          this.andaarNumber = [];
-          this.baharNumber = [];
-
-      }else if ('double_individual' in this.loadReports){
-          this.doubleNumberIndividual = this.loadReports.double_individual;
-          this.andaarNumber = this.loadReports.andar_number;
-          this.baharNumber = this.loadReports.bahar_number;
-
-          this.singleNumber = [];
-          this.doubleNumber = [];
-          this.numberCombinationMatrix = [];
-          this.twelveCard = [];
-          this.sixteenCard = [];
-          this.singleNumberIndividual = [];
-      }
     });
   }
 
