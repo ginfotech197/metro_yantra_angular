@@ -3,7 +3,7 @@
   <nav *ngIf="!isAuthenticated" class="navbar navbar-expand-lg navbar-dark"
     style="background-color: rgb(6, 7, 82);">
     <a class="navbar-brand" href="#">Metro Yantra</a>
-    
+
 
     <!-- <div class=" " id="navbarSupportedContent"
       style=" display: flex;"> -->
@@ -20,7 +20,7 @@
             href="metro_yanta_api/storage/installer/Metro_Yantra_PrintVersion.zip">
             <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Windows</button>
           </a>
-        </span>       
+        </span>
 
       <!-- </div> -->
 
@@ -62,13 +62,13 @@
       style="color: rgb(255, 255, 255); flex-grow: 2;" matIconSuffix
       [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker style="color: aliceblue; flex-grow: 1"
-      [(ngModel)]="StartDateFilter" #picker></mat-datepicker>
+       #picker></mat-datepicker>
 
-    <div style="text-align: center;">
-      <button mat-button color="accent"
-        style="font-size: 20px;"
-        (click)="searchResultByDate()">Search</button>
-    </div>
+<!--    <div style="text-align: center;">-->
+<!--      <button mat-button color="accent"-->
+<!--        style="font-size: 20px;"-->
+<!--        (click)="searchResultByDate()">Search</button>-->
+<!--    </div>-->
   </div>
 
   <div class="text-center text-dark"><h1>-: Metro Yantra Online :-</h1></div>

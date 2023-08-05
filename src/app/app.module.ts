@@ -13,7 +13,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import {AuthInterceptorInterceptor} from './services/auth-interceptor.interceptor';
 import { DateAdapter } from '@angular/material/core';
 import { DateFormat } from './date-format';
-import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {DatePipe, HashLocationStrategy, LocationStrategy} from '@angular/common';
 import { StockistComponent } from './pages/stockist/stockist.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatMenuModule} from '@angular/material/menu';
@@ -94,7 +94,8 @@ import { TurnOverReportComponent } from './pages/stockist/turn-over-report/turn-
     // SuperStockistResetPasswordModule,
     // AdminResetPasswordModule,
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true},
+  providers: [DatePipe,
+              {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true},
               {provide: LocationStrategy, useClass: HashLocationStrategy},
               {provide: DateAdapter, useClass: DateFormat}, {provide: DEFAULT_CURRENCY_CODE, useValue: 'INR'} ],
 

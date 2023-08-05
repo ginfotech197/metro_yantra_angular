@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import { ResultRoutingModule } from './result-routing.module';
 import {ResultComponent} from '../../../../pages/cpanel/result/result.component';
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,7 +19,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FormsModule
+    FormsModule,
   ],
   exports: [
     ResultComponent

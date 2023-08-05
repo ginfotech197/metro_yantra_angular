@@ -63,21 +63,26 @@ export class ResultComponent implements OnInit {
   isSuperStockist = false;
   isTerminal = false;
 
-  screenWidth: any;  
-  screenHeight: any; 
+  screenWidth: any;
+  screenHeight: any;
+
+  isIntervalActive = 0;
+
+  todaysDate = null;
 
 
-
-
-  constructor(private resultService: ResultService, private gameResultService: GameResultService ,private gameService: GameService, private authService: AuthService) {
-    this.screenWidth = window.innerWidth;  
+  constructor(private resultService: ResultService, private gameResultService: GameResultService ,private gameService: GameService
+              , private authService: AuthService,public datepipe: DatePipe) {
+    this.searchResultByDate();
+    this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
-    console.log(this.screenWidth);
+    this.todaysDate = this.datepipe.transform((new Date), 'yyyy-MM-dd');
+    // console.log(this.todaysDate);
    }
 
   ngOnInit(): void {
 
-    
+
 
     this.userSub = this.authService.userBehaviorSubject.subscribe(user => {
       if (user){
@@ -125,8 +130,10 @@ export class ResultComponent implements OnInit {
     });
 
     this.todayResultAutoRefreshControl = setInterval(() => {
-      this.resultService.getTodayResultByGameId(this.selectedGame);
-    }, 5000);
+      // if(this.isIntervalActive === 1){
+        this.searchResultByDate();
+        // }
+    }, 2000);
   }
 
   ngOnDestroy() {
@@ -138,7 +145,7 @@ export class ResultComponent implements OnInit {
     return this.activeTripleContainerValue == idxSingle;
   }
 
-  
+
 
   setActiveGame(gameData) {
     // console.log(gameData);
@@ -151,17 +158,17 @@ export class ResultComponent implements OnInit {
     this.buttonColours = this.buttonColour[gameData.id - 1];
   }
   searchResultByDate(){
-    
     const startDate = this.pipe.transform(this.StartDateFilter, 'yyyy-MM-dd');
+    console.log(startDate);
+    if(this.todaysDate === startDate){
+      this.isIntervalActive = 1;
+    }else{
+      this.isIntervalActive = 0;
+    }
     this.resultService.getTodayResultByGameId(startDate).subscribe((response) => {
       // @ts-ignore
       this.todayResult = response.data;
-      console.log(this.todayResult);
     });
-    
-    
-    
-    
   }
 
 

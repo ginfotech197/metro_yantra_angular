@@ -43,7 +43,7 @@ export class ResultService {
 
   }
   getTodayResultByGameId(gameDate){
-    // this.http.get(this.BASE_API_URL + '/dev/getTodayResultByGame').subscribe((response: {success: number, data: GameResult[]}) => {      
+    // this.http.get(this.BASE_API_URL + '/dev/getTodayResultByGame').subscribe((response: {success: number, data: GameResult[]}) => {
     //   this.todayResult = response.data;
     //   this.resultSubject.next([...this.todayResult]);
     // });
@@ -66,7 +66,7 @@ export class ResultService {
       tap(((response: {success: number, data: GameResult[]}) => {
         this.result = response.data;
         this.resultSubject.next([...this.result]);
-        console.log(response);
+        // console.log(response);
       })));
   }
 
@@ -90,7 +90,7 @@ export class ResultService {
     return this.resultByDateSubject.asObservable();
   }
 
-  
+
 
   private handleError(errorResponse: HttpErrorResponse){
     if (errorResponse.error.message.includes('1062')){
