@@ -64,17 +64,16 @@ export class MasterTerminalService {
   }
 
   deleteTerminalByAdmin(id){
-    
 
     return this.http.get(this.BASE_API_URL + '/terminals/deleteTerminal/' + id).pipe(catchError(this.handleError),
       tap(((response: ServerResponse) => {
         // @ts-ignore
         const findIndex = this.terminals.findIndex(x => x.terminalId == response.terminalId);
-        this.terminals = this.terminals.splice(findIndex,1);
+        this.terminals.splice(findIndex,1);
         this.terminalSubject.next([...this.terminals]);
       })));
-    
-    
+
+
   }
 
   forceLogoutTerminal(id){
@@ -174,10 +173,6 @@ export class MasterTerminalService {
           this.terminals[x] = response.data;
           this.terminalSubject.next([...this.terminals]);
         }
-        // // tslint:disable-next-line:no-shadowed-variable
-        // const x = this.terminals.findIndex(x => x.terminalId === response.data.terminalId);
-        // this.terminals[x] = response.data;
-        // this.terminalSubject.next([...this.terminals]);
       }));
   }
 
