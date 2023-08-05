@@ -61,15 +61,15 @@ export class MasterTerminalComponent implements OnInit {
   game4 = 0;
   game5 = 0;
   game6 = 0;
-  screenWidth: any;  
-  screenHeight: any; 
+  screenWidth: any;
+  screenHeight: any;
 
   constructor(private masterTerminalService: MasterTerminalService, private masterStockistService: MasterStockistService
               , private transactionReportService: TransactionReportService
               , private authService: AuthService, private masterSuperStockistService: MasterSuperStockistService, private commonService: CommonService) {
 
 
-    this.screenWidth = window.innerWidth;  
+    this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
 
 
@@ -304,7 +304,7 @@ export class MasterTerminalComponent implements OnInit {
       showLoaderOnConfirm: true,
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
-      console.log(result);
+      // console.log(result);
       if (result.isConfirmed) {
         if(this.passwordChecker(result.value)){
           this.masterTerminalService.deleteTerminalByAdmin(id).subscribe((response) => {
@@ -320,8 +320,8 @@ export class MasterTerminalComponent implements OnInit {
           });
         }
       }
-    });    
-    
+    });
+
   }
 
   refreshTerminalList(){
