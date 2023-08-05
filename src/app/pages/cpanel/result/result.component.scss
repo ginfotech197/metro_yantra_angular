@@ -66,6 +66,9 @@
     .x10 {
       font-size: 3px;
     }
+    #result-div{
+      margin-top: 150px;
+    }
   }
   
   
@@ -233,6 +236,13 @@
   .result-heading{
     // background-color: rgb(245, 106, 56);
     color: white;
+  }
+
+
+  @media only screen and (max-width: 300px) {
+    #result-div {
+      margin-top: 150px !important;
+    }
   }
   
   

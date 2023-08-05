@@ -63,11 +63,16 @@ export class ResultComponent implements OnInit {
   isSuperStockist = false;
   isTerminal = false;
 
+  screenWidth: any;  
+  screenHeight: any; 
+
 
 
 
   constructor(private resultService: ResultService, private gameResultService: GameResultService ,private gameService: GameService, private authService: AuthService) {
-   
+    this.screenWidth = window.innerWidth;  
+    this.screenHeight = window.innerHeight;
+    console.log(this.screenWidth);
    }
 
   ngOnInit(): void {

@@ -1,60 +1,78 @@
+<div>
 
-<nav *ngIf="!isAuthenticated" class="navbar navbar-expand-lg navbar-dark"
-  style="background-color: rgb(6, 7, 82);">
-  <!-- <a class="navbar-brand" href="#">Metro Yantra</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button> -->
+  <nav *ngIf="!isAuthenticated" class="navbar navbar-expand-lg navbar-dark"
+    style="background-color: rgb(6, 7, 82);">
+    <a class="navbar-brand" href="#">Metro Yantra</a>
+    
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <label> Print version: </label>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a
-          href="metro_yanta_api/storage/installer/Metro_Yantra_PrintVersion.apk">
-          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
-        </a>
-      </li>
-      <li class="nav-item active">
-        <a
-          href="metro_yanta_api/storage/installer/Metro_Yantra_PrintVersion.zip">
-          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Windows</button>
-        </a>
-      </li>
+    <!-- <div class=" " id="navbarSupportedContent"
+      style=" display: flex;"> -->
+      <label [ngStyle]="{'padding-left': (screenWidth>1280) ? '100px' : '20px' }"> Print version: </label>
+      <!-- <div class="navbar-nav mr-auto" style="display: flex;"> -->
+        <span class="nav-item active" style="flex: row;">
+          <a
+            href="metro_yanta_api/storage/installer/Metro_Yantra_PrintVersion.apk">
+            <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
+          </a>
+        </span>
+        <span class="nav-item active" style="flex: row;">
+          <a
+            href="metro_yanta_api/storage/installer/Metro_Yantra_PrintVersion.zip">
+            <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Windows</button>
+          </a>
+        </span>       
 
-      <!-- <li class="nav-item active">
-        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">64 bits</button>
-      </li>
-      <li class="nav-item active">
-        <button class="btn btn-outline-warning my-2 my-sm-0 m-2">32 bits</button>
-      </li> -->
+      <!-- </div> -->
 
-    </ul>
+      <!-- </ul> -->
 
-    <!-- </ul> -->
+      <!-- <ul class="navbar-nav mr-auto" style="text-align: center; display: flex;"> -->
+        <label [ngStyle]="{'padding-left': (screenWidth>1280) ? '100px' : '20px' }"> Non print version: </label>
+        <span class="nav-item active">
+          <a
+            href="metro_yanta_api/storage/installer/Metro_Yantra_NonPrintVersion.apk">
+            <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
+          </a>
+        </span>
+        <span class="nav-item active">
+          <a
+            href="metro_yanta_api/storage/installer/Metro_Yantra_NonPrintVersion.zip">
+            <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Windows</button>
+          </a>
+        </span>
+      <!-- </ul> -->
 
-    <ul class="navbar-nav mr-auto" style="text-align: center">
-      <label> Non print version: </label>
-      <li class="nav-item active">
-        <a
-          href="metro_yanta_api/storage/installer/Metro_Yantra_NonPrintVersion.apk">
-          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Android</button>
-        </a>
-      </li>
-      <li class="nav-item active">
-        <a
-          href="metro_yanta_api/storage/installer/Metro_Yantra_NonPrintVersion.zip">
-          <button class="btn btn-outline-warning my-2 my-sm-0 m-2">Windows</button>
-        </a>
-      </li>
-    </ul>
+    <!-- </div> -->
+  </nav>
+</div>
+<!-- [ngStyle]="{'font-size': (screenWidth>=1280 ) ? '15px' : '30px' }" -->
 
+<div [ngStyle]="{'margin-top': (screenWidth<=1280) ? '100px' : '20px' }"
+  style="background-color: rgb(255, 183, 0); padding: 4px;">
+  <div style="display: flex;  border: 1px solid rgb(0, 0, 0);" class="col-6">
+    <mat-label style="color: rgb(0, 0, 0); flex-grow: 3; width: 0%;">Choose
+      result date</mat-label>
+    <span style="padding-top: 6px;">
+      <input [(ngModel)]="StartDateFilter" id="selectedDate"
+        style="background-color: aliceblue; color: rgb(0, 0, 0);" matInput
+        [matDatepicker]="picker">
+    </span>
+
+    <mat-datepicker-toggle
+      style="color: rgb(255, 255, 255); flex-grow: 2;" matIconSuffix
+      [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker style="color: aliceblue; flex-grow: 1"
+      [(ngModel)]="StartDateFilter" #picker></mat-datepicker>
+
+    <div style="text-align: center;">
+      <button mat-button color="accent"
+        style="font-size: 20px;"
+        (click)="searchResultByDate()">Search</button>
+    </div>
   </div>
-</nav>
 
-<div style="background-color: rgb(6, 7, 82);">
-  <div class="text-center text-warning"><h1>-: Metro Yantra Online :-</h1></div>
-  <div style=" text-align: center;">
+  <div class="text-center text-dark"><h1>-: Metro Yantra Online :-</h1></div>
+  <!-- <div style=" text-align: center;">
     <div style="background-color: orange; border:2px solid black; height: 80px;">
       <div class="d-flex col-8 m-3"
         style="border: 1px solid black; padding: 8px;">
@@ -64,37 +82,30 @@
           class>{{today}}</span>
 
       </div>
-      
 
     </div>
-  </div>
+  </div> -->
 
-  <div
-        style="background-color: rgb(8, 4, 131); width: 30%; padding: 10px; margin-left: 34%;  text-align: center;">
-        <mat-form-field
-          style="border: 1px solid rgb(255, 255, 255); padding: 10px; text-align: center;">
-          <mat-label style="color: aliceblue;">Choose result date</mat-label>
-          <!-- #docregion toggle -->
-          <input [(ngModel)]="StartDateFilter" id="selectedDate"
-            style="color: aliceblue;" matInput [matDatepicker]="picker">
-          <mat-hint style="color: aliceblue; margin-left: 30%;">MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle 
-            style="color: rgb(255, 255, 255);" matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker style="color: aliceblue;"
-            [(ngModel)]="StartDateFilter" #picker></mat-datepicker>
-          <!-- #enddocregion toggle -->
-        </mat-form-field>
-      </div>
-      <div style="text-align: center;">
-        <button mat-button color="accent"
-        style="font-size: 20px;"
-        (click)="searchResultByDate()">Search</button>
-      </div>
-      
+  <!-- <div
+    style="background-color: rgb(8, 4, 131); width: 30%; padding: 10px; margin-left: 34%;  text-align: center;">
+    <mat-form-field
+      style="border: 1px solid rgb(255, 255, 255); padding: 10px; text-align: center;">
+      <mat-label style="color: aliceblue;">Choose result date</mat-label>
 
-  <div style="border: 2px solid yellow;">
+      <input [(ngModel)]="StartDateFilter" id="selectedDate"
+        style="color: aliceblue;" matInput [matDatepicker]="picker">
+      <mat-hint style="color: aliceblue; margin-left: 30%;">MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        style="color: rgb(255, 255, 255);" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker style="color: aliceblue;"
+        [(ngModel)]="StartDateFilter" #picker></mat-datepicker>
+
+    </mat-form-field>
+  </div> -->
+
+  <div style="border: 2px solid rgb(0, 8, 255);">
     <div class="d-flex m-1 p-1" *ngFor="let x of todayResult"
-      style="border: 1px solid black;  background-color: rgba(199, 0, 0, 0.33);">
+      style="border: 1px solid black;  background-color: rgba(151, 1, 1, 0.646);">
       <span>{{x.draw_time}}</span>
       <span style="padding-left: 150px;">{{x.single_number}}</span>
     </div>

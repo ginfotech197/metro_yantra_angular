@@ -32,6 +32,7 @@ export class AuthComponent implements OnInit {
 
     this.screenWidth = window.innerWidth;  
     this.screenHeight = window.innerHeight;
+    console.log(this.screenWidth);
     
     const data: Data = this.activatedRoute.snapshot.data;
     this.loginType = data.loginType;
